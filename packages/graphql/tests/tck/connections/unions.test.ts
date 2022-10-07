@@ -57,6 +57,343 @@ describe("Cypher -> Connections -> Unions", () => {
         });
     });
 
+    // =================
+    // TODO: 2197
+
+    test("Read Union with first and query options, first > queryOptions.max", async () => {
+        typeDefs = gql`
+            union Publication = Book | Journal
+
+            type Author {
+                name: String!
+                publications: [Publication!]! @relationship(type: "WROTE", direction: OUT, properties: "Wrote")
+            }
+
+            type Book @queryOptions(limit: { default: 3, max: 5 }) {
+                title: String!
+                author: [Author!]! @relationship(type: "WROTE", direction: IN, properties: "Wrote")
+            }
+
+            type Journal @queryOptions(limit: { default: 4, max: 6 }) {
+                subject: String!
+                author: [Author!]! @relationship(type: "WROTE", direction: IN, properties: "Wrote")
+            }
+
+            interface Wrote {
+                words: Int!
+            }
+        `;
+
+        const query = gql`
+            query {
+                authors {
+                    name
+                    publicationsConnection(first: 20) {
+                        edges {
+                            words
+                            node {
+                                ... on Book {
+                                    title
+                                }
+                                ... on Journal {
+                                    subject
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        `;
+
+        const req = createJwtRequest("secret", {});
+        const result = await translateQuery(
+            new Neo4jGraphQL({
+                typeDefs,
+                config: { enableRegex: true },
+            }),
+            query,
+            {
+                req,
+            }
+        );
+
+        // expect 11 results: 5 books and 6 journals
+        expect(formatCypher(result.cypher)).toMatchInlineSnapshot(`
+            "MATCH (this:\`Author\`)
+            CALL {
+                WITH this
+                CALL {
+                    WITH this
+                    MATCH (this)-[this_connection_publicationsConnectionthis0:WROTE]->(this_Book:\`Book\`)
+                    WITH { words: this_connection_publicationsConnectionthis0.words, node: { __resolveType: \\"Book\\", title: this_Book.title } } AS edge
+                    RETURN edge
+                    UNION
+                    WITH this
+                    MATCH (this)-[this_connection_publicationsConnectionthis1:WROTE]->(this_Journal:\`Journal\`)
+                    WITH { words: this_connection_publicationsConnectionthis1.words, node: { __resolveType: \\"Journal\\", subject: this_Journal.subject } } AS edge
+                    RETURN edge
+                }
+                WITH collect(edge) AS edges
+                WITH edges, size(edges) AS totalCount
+                RETURN { edges: edges, totalCount: totalCount } AS this_publicationsConnection
+            }
+            RETURN this { .name, publicationsConnection: this_publicationsConnection } as this"
+        `);
+
+        expect(formatParams(result.params)).toMatchInlineSnapshot(`"{}"`);
+    });
+
+    test("Read Union with first and query options, first < queryOptions.default", async () => {
+        typeDefs = gql`
+            union Publication = Book | Journal
+
+            type Author {
+                name: String!
+                publications: [Publication!]! @relationship(type: "WROTE", direction: OUT, properties: "Wrote")
+            }
+
+            type Book @queryOptions(limit: { default: 3, max: 5 }) {
+                title: String!
+                author: [Author!]! @relationship(type: "WROTE", direction: IN, properties: "Wrote")
+            }
+
+            type Journal @queryOptions(limit: { default: 4, max: 6 }) {
+                subject: String!
+                author: [Author!]! @relationship(type: "WROTE", direction: IN, properties: "Wrote")
+            }
+
+            interface Wrote {
+                words: Int!
+            }
+        `;
+
+        const query = gql`
+            query {
+                authors {
+                    name
+                    publicationsConnection(first: 2) {
+                        edges {
+                            words
+                            node {
+                                ... on Book {
+                                    title
+                                }
+                                ... on Journal {
+                                    subject
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        `;
+
+        const req = createJwtRequest("secret", {});
+        const result = await translateQuery(
+            new Neo4jGraphQL({
+                typeDefs,
+                config: { enableRegex: true },
+            }),
+            query,
+            {
+                req,
+            }
+        );
+
+        // expect 2 results: x books and y journals
+        expect(formatCypher(result.cypher)).toMatchInlineSnapshot(`
+            "MATCH (this:\`Author\`)
+            CALL {
+                WITH this
+                CALL {
+                    WITH this
+                    MATCH (this)-[this_connection_publicationsConnectionthis0:WROTE]->(this_Book:\`Book\`)
+                    WITH { words: this_connection_publicationsConnectionthis0.words, node: { __resolveType: \\"Book\\", title: this_Book.title } } AS edge
+                    RETURN edge
+                    UNION
+                    WITH this
+                    MATCH (this)-[this_connection_publicationsConnectionthis1:WROTE]->(this_Journal:\`Journal\`)
+                    WITH { words: this_connection_publicationsConnectionthis1.words, node: { __resolveType: \\"Journal\\", subject: this_Journal.subject } } AS edge
+                    RETURN edge
+                }
+                WITH collect(edge) AS edges
+                WITH edges, size(edges) AS totalCount
+                RETURN { edges: edges, totalCount: totalCount } AS this_publicationsConnection
+            }
+            RETURN this { .name, publicationsConnection: this_publicationsConnection } as this"
+        `);
+
+        expect(formatParams(result.params)).toMatchInlineSnapshot(`"{}"`);
+    });
+
+    test("Read Union with query options and no first", async () => {
+        typeDefs = gql`
+            union Publication = Book | Journal
+
+            type Author {
+                name: String!
+                publications: [Publication!]! @relationship(type: "WROTE", direction: OUT, properties: "Wrote")
+            }
+
+            type Book @queryOptions(limit: { default: 3, max: 5 }) {
+                title: String!
+                author: [Author!]! @relationship(type: "WROTE", direction: IN, properties: "Wrote")
+            }
+
+            type Journal @queryOptions(limit: { default: 4, max: 6 }) {
+                subject: String!
+                author: [Author!]! @relationship(type: "WROTE", direction: IN, properties: "Wrote")
+            }
+
+            interface Wrote {
+                words: Int!
+            }
+        `;
+
+        const query = gql`
+            query {
+                authors {
+                    name
+                    publicationsConnection {
+                        edges {
+                            words
+                            node {
+                                ... on Book {
+                                    title
+                                }
+                                ... on Journal {
+                                    subject
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        `;
+
+        const req = createJwtRequest("secret", {});
+        const result = await translateQuery(
+            new Neo4jGraphQL({
+                typeDefs,
+                config: { enableRegex: true },
+            }),
+            query,
+            {
+                req,
+            }
+        );
+
+        // expect 7 results: 3 books and 4 journals
+        expect(formatCypher(result.cypher)).toMatchInlineSnapshot(`
+            "MATCH (this:\`Author\`)
+            CALL {
+                WITH this
+                CALL {
+                    WITH this
+                    MATCH (this)-[this_connection_publicationsConnectionthis0:WROTE]->(this_Book:\`Book\`)
+                    WITH { words: this_connection_publicationsConnectionthis0.words, node: { __resolveType: \\"Book\\", title: this_Book.title } } AS edge
+                    RETURN edge
+                    UNION
+                    WITH this
+                    MATCH (this)-[this_connection_publicationsConnectionthis1:WROTE]->(this_Journal:\`Journal\`)
+                    WITH { words: this_connection_publicationsConnectionthis1.words, node: { __resolveType: \\"Journal\\", subject: this_Journal.subject } } AS edge
+                    RETURN edge
+                }
+                WITH collect(edge) AS edges
+                WITH edges, size(edges) AS totalCount
+                RETURN { edges: edges, totalCount: totalCount } AS this_publicationsConnection
+            }
+            RETURN this { .name, publicationsConnection: this_publicationsConnection } as this"
+        `);
+
+        expect(formatParams(result.params)).toMatchInlineSnapshot(`"{}"`);
+    });
+
+    test("Read Union with first and no query options", async () => {
+        typeDefs = gql`
+            union Publication = Book | Journal
+
+            type Author {
+                name: String!
+                publications: [Publication!]! @relationship(type: "WROTE", direction: OUT, properties: "Wrote")
+            }
+
+            type Book {
+                title: String!
+                author: [Author!]! @relationship(type: "WROTE", direction: IN, properties: "Wrote")
+            }
+
+            type Journal {
+                subject: String!
+                author: [Author!]! @relationship(type: "WROTE", direction: IN, properties: "Wrote")
+            }
+
+            interface Wrote {
+                words: Int!
+            }
+        `;
+
+        const query = gql`
+            query {
+                authors {
+                    name
+                    publicationsConnection(first: 20) {
+                        edges {
+                            words
+                            node {
+                                ... on Book {
+                                    title
+                                }
+                                ... on Journal {
+                                    subject
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        `;
+
+        const req = createJwtRequest("secret", {});
+        const result = await translateQuery(
+            new Neo4jGraphQL({
+                typeDefs,
+                config: { enableRegex: true },
+            }),
+            query,
+            {
+                req,
+            }
+        );
+
+        // expect 20 results: x books and y journals
+        expect(formatCypher(result.cypher)).toMatchInlineSnapshot(`
+            "MATCH (this:\`Author\`)
+            CALL {
+                WITH this
+                CALL {
+                    WITH this
+                    MATCH (this)-[this_connection_publicationsConnectionthis0:WROTE]->(this_Book:\`Book\`)
+                    WITH { words: this_connection_publicationsConnectionthis0.words, node: { __resolveType: \\"Book\\", title: this_Book.title } } AS edge
+                    RETURN edge
+                    UNION
+                    WITH this
+                    MATCH (this)-[this_connection_publicationsConnectionthis1:WROTE]->(this_Journal:\`Journal\`)
+                    WITH { words: this_connection_publicationsConnectionthis1.words, node: { __resolveType: \\"Journal\\", subject: this_Journal.subject } } AS edge
+                    RETURN edge
+                }
+                WITH collect(edge) AS edges
+                WITH edges, size(edges) AS totalCount
+                RETURN { edges: edges, totalCount: totalCount } AS this_publicationsConnection
+            }
+            RETURN this { .name, publicationsConnection: this_publicationsConnection } as this"
+        `);
+
+        expect(formatParams(result.params)).toMatchInlineSnapshot(`"{}"`);
+    });
+
+    // =================
+
     test("Projecting union node and relationship properties with no arguments", async () => {
         const query = gql`
             query {

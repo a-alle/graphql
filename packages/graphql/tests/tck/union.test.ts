@@ -54,6 +54,318 @@ describe("Cypher Union", () => {
         });
     });
 
+    // =================
+    // TODO: 2197
+
+    test("Read Union with limit and query options, limit > queryOptions.max", async () => {
+        typeDefs = gql`
+            union Publication = Book | Journal
+
+            type Author {
+                name: String!
+                publications: [Publication!]! @relationship(type: "WROTE", direction: OUT, properties: "Wrote")
+            }
+
+            type Book @queryOptions(limit: { default: 3, max: 5 }) {
+                title: String!
+                author: [Author!]! @relationship(type: "WROTE", direction: IN, properties: "Wrote")
+            }
+
+            type Journal @queryOptions(limit: { default: 4, max: 6 }) {
+                subject: String!
+                author: [Author!]! @relationship(type: "WROTE", direction: IN, properties: "Wrote")
+            }
+
+            interface Wrote {
+                words: Int!
+            }
+        `;
+
+        const query = gql`
+            {
+                authors {
+                    publications(options: { limit: 12 }) {
+                        ... on Book {
+                            title
+                        }
+                        ... on Journal {
+                            subject
+                        }
+                    }
+                }
+            }
+        `;
+
+        const req = createJwtRequest("secret", {});
+        const result = await translateQuery(
+            new Neo4jGraphQL({
+                typeDefs,
+                config: { enableRegex: true },
+            }),
+            query,
+            {
+                req,
+            }
+        );
+
+        // expect 11 results: 5 Books + 6 Journals
+        expect(formatCypher(result.cypher)).toMatchInlineSnapshot(`
+            "MATCH (this:\`Author\`)
+            CALL {
+                WITH this
+                CALL {
+                    WITH this
+                    MATCH (this)-[thisthis0:WROTE]->(this_publications:\`Book\`)
+                    WITH this_publications  { __resolveType: \\"Book\\",  .title } AS this_publications
+                    RETURN this_publications AS this_publications
+                    UNION
+                    WITH this
+                    MATCH (this)-[thisthis1:WROTE]->(this_publications:\`Journal\`)
+                    WITH this_publications  { __resolveType: \\"Journal\\",  .subject } AS this_publications
+                    RETURN this_publications AS this_publications
+                }
+                WITH this_publications
+                LIMIT 12
+                RETURN collect(this_publications) AS this_publications
+            }
+            RETURN this { publications: this_publications } as this"
+        `);
+
+        expect(formatParams(result.params)).toMatchInlineSnapshot(`"{}"`);
+    });
+
+    test("Read Union with limit and query options, limit < queryOptions.default", async () => {
+        typeDefs = gql`
+            union Publication = Book | Journal
+
+            type Author {
+                name: String!
+                publications: [Publication!]! @relationship(type: "WROTE", direction: OUT, properties: "Wrote")
+            }
+
+            type Book @queryOptions(limit: { default: 3, max: 5 }) {
+                title: String!
+                author: [Author!]! @relationship(type: "WROTE", direction: IN, properties: "Wrote")
+            }
+
+            type Journal @queryOptions(limit: { default: 4, max: 6 }) {
+                subject: String!
+                author: [Author!]! @relationship(type: "WROTE", direction: IN, properties: "Wrote")
+            }
+
+            interface Wrote {
+                words: Int!
+            }
+        `;
+
+        const query = gql`
+            {
+                authors {
+                    publications(options: { limit: 1 }) {
+                        ... on Book {
+                            title
+                        }
+                        ... on Journal {
+                            subject
+                        }
+                    }
+                }
+            }
+        `;
+
+        const req = createJwtRequest("secret", {});
+        const result = await translateQuery(
+            new Neo4jGraphQL({
+                typeDefs,
+                config: { enableRegex: true },
+            }),
+            query,
+            {
+                req,
+            }
+        );
+
+        // expect 1 result: x Books + y Journals
+        expect(formatCypher(result.cypher)).toMatchInlineSnapshot(`
+            "MATCH (this:\`Author\`)
+            CALL {
+                WITH this
+                CALL {
+                    WITH this
+                    MATCH (this)-[thisthis0:WROTE]->(this_publications:\`Book\`)
+                    WITH this_publications  { __resolveType: \\"Book\\",  .title } AS this_publications
+                    RETURN this_publications AS this_publications
+                    UNION
+                    WITH this
+                    MATCH (this)-[thisthis1:WROTE]->(this_publications:\`Journal\`)
+                    WITH this_publications  { __resolveType: \\"Journal\\",  .subject } AS this_publications
+                    RETURN this_publications AS this_publications
+                }
+                WITH this_publications
+                LIMIT 1
+                RETURN collect(this_publications) AS this_publications
+            }
+            RETURN this { publications: this_publications } as this"
+        `);
+
+        expect(formatParams(result.params)).toMatchInlineSnapshot(`"{}"`);
+    });
+
+    test("Read Union with query options and no limit", async () => {
+        typeDefs = gql`
+            union Publication = Book | Journal
+
+            type Author {
+                name: String!
+                publications: [Publication!]! @relationship(type: "WROTE", direction: OUT, properties: "Wrote")
+            }
+
+            type Book @queryOptions(limit: { default: 3, max: 5 }) {
+                title: String!
+                author: [Author!]! @relationship(type: "WROTE", direction: IN, properties: "Wrote")
+            }
+
+            type Journal @queryOptions(limit: { default: 4, max: 6 }) {
+                subject: String!
+                author: [Author!]! @relationship(type: "WROTE", direction: IN, properties: "Wrote")
+            }
+
+            interface Wrote {
+                words: Int!
+            }
+        `;
+
+        const query = gql`
+            {
+                authors {
+                    publications {
+                        ... on Book {
+                            title
+                        }
+                        ... on Journal {
+                            subject
+                        }
+                    }
+                }
+            }
+        `;
+
+        const req = createJwtRequest("secret", {});
+        const result = await translateQuery(
+            new Neo4jGraphQL({
+                typeDefs,
+                config: { enableRegex: true },
+            }),
+            query,
+            {
+                req,
+            }
+        );
+
+        // expect 7 results: 3 Books + 4 Journals
+        expect(formatCypher(result.cypher)).toMatchInlineSnapshot(`
+            "MATCH (this:\`Author\`)
+            CALL {
+                WITH this
+                CALL {
+                    WITH this
+                    MATCH (this)-[thisthis0:WROTE]->(this_publications:\`Book\`)
+                    WITH this_publications  { __resolveType: \\"Book\\",  .title } AS this_publications
+                    RETURN this_publications AS this_publications
+                    UNION
+                    WITH this
+                    MATCH (this)-[thisthis1:WROTE]->(this_publications:\`Journal\`)
+                    WITH this_publications  { __resolveType: \\"Journal\\",  .subject } AS this_publications
+                    RETURN this_publications AS this_publications
+                }
+                WITH this_publications
+                RETURN collect(this_publications) AS this_publications
+            }
+            RETURN this { publications: this_publications } as this"
+        `);
+
+        expect(formatParams(result.params)).toMatchInlineSnapshot(`"{}"`);
+    });
+
+    test("Read Union with limit and no query options", async () => {
+        typeDefs = gql`
+            union Publication = Book | Journal
+
+            type Author {
+                name: String!
+                publications: [Publication!]! @relationship(type: "WROTE", direction: OUT, properties: "Wrote")
+            }
+
+            type Book {
+                title: String!
+                author: [Author!]! @relationship(type: "WROTE", direction: IN, properties: "Wrote")
+            }
+
+            type Journal {
+                subject: String!
+                author: [Author!]! @relationship(type: "WROTE", direction: IN, properties: "Wrote")
+            }
+
+            interface Wrote {
+                words: Int!
+            }
+        `;
+
+        const query = gql`
+            {
+                authors {
+                    publications(options: { limit: 12 }) {
+                        ... on Book {
+                            title
+                        }
+                        ... on Journal {
+                            subject
+                        }
+                    }
+                }
+            }
+        `;
+
+        const req = createJwtRequest("secret", {});
+        const result = await translateQuery(
+            new Neo4jGraphQL({
+                typeDefs,
+                config: { enableRegex: true },
+            }),
+            query,
+            {
+                req,
+            }
+        );
+
+        // expect 12 results: x Books + y Journals
+        expect(formatCypher(result.cypher)).toMatchInlineSnapshot(`
+            "MATCH (this:\`Author\`)
+            CALL {
+                WITH this
+                CALL {
+                    WITH this
+                    MATCH (this)-[thisthis0:WROTE]->(this_publications:\`Book\`)
+                    WITH this_publications  { __resolveType: \\"Book\\",  .title } AS this_publications
+                    RETURN this_publications AS this_publications
+                    UNION
+                    WITH this
+                    MATCH (this)-[thisthis1:WROTE]->(this_publications:\`Journal\`)
+                    WITH this_publications  { __resolveType: \\"Journal\\",  .subject } AS this_publications
+                    RETURN this_publications AS this_publications
+                }
+                WITH this_publications
+                LIMIT 12
+                RETURN collect(this_publications) AS this_publications
+            }
+            RETURN this { publications: this_publications } as this"
+        `);
+
+        expect(formatParams(result.params)).toMatchInlineSnapshot(`"{}"`);
+    });
+
+    // =================
+
     test("Read Unions simple", async () => {
         const query = gql`
             {
