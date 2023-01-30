@@ -625,6 +625,7 @@ describe("auth/bind", () => {
     });
 
     describe("connect", () => {
+        // relationship count validation check happens before @auth/bind check
         test("should throw forbidden when connecting a node property with invalid bind", async () => {
             const session = await neo4j.getSession({ defaultAccessMode: "WRITE" });
 
@@ -696,6 +697,9 @@ describe("auth/bind", () => {
     });
 
     describe("disconnect", () => {
+        // made `creator` type non-required `User` bc rel validation throws before bind
+        // one solution would be to move the rel validation out of disconnect CALL st, but then when no nodes exist in the first place the validation fails.
+        // TODO: raise this on `@auth` redesign discussions: validation errors *will* go before bind
         test("should throw forbidden when disconnecting a node property with invalid bind", async () => {
             const session = await neo4j.getSession({ defaultAccessMode: "WRITE" });
 
@@ -706,7 +710,7 @@ describe("auth/bind", () => {
 
                 type Post {
                     id: ID
-                    creator: User! @relationship(type: "HAS_POST", direction: IN)
+                    creator: User @relationship(type: "HAS_POST", direction: IN)
                 }
 
                 extend type Post @auth(rules: [{ operations: [DISCONNECT], bind: { creator: { id: "$jwt.sub" } } }])

@@ -77,9 +77,8 @@ function createConnectAndParams({
         const relationshipName = `${baseName}_relationship`;
         const inStr = relationField.direction === "IN" ? "<-" : "-";
         const outStr = relationField.direction === "OUT" ? "->" : "-";
-        const relTypeStr = `[${relationField.properties || context.subscriptionsEnabled ? relationshipName : ""}:${
-            relationField.type
-        }]`;
+        const relationshipAlias = relationField.properties || context.subscriptionsEnabled ? relationshipName : "";
+        const relTypeStr = `[${relationshipAlias}:${relationField.type}]`;
         const isOverwriteNotAllowed = connect.overwrite === false;
 
         const subquery: string[] = [];
@@ -270,6 +269,43 @@ function createConnectAndParams({
             params = { ...params, ...setA[1] };
         }
 
+        // ==============
+        // TODO
+
+        let innerMetaStr = "";
+        if (includeRelationshipValidation || isOverwriteNotAllowed) {
+            const relValidationStrs: string[] = [];
+            const matrixItems = [[relatedNode, nodeName]] as [Node, string][];
+            if (!isFirstLevel) {
+                // for nested operations the source node will not be validated elsewhere
+                matrixItems.push([parentNode, parentVar]);
+            }
+
+            matrixItems.forEach((mi) => {
+                const relValidationStr = createRelationshipValidationString({
+                    node: mi[0],
+                    context,
+                    varName: mi[1],
+                    ...(isOverwriteNotAllowed && { relationshipFieldNotOverwritable: relationField.fieldName }),
+                });
+                if (relValidationStr) {
+                    relValidationStrs.push(relValidationStr);
+                }
+            });
+
+            if (relValidationStrs.length) {
+                const aliases = [parentVar, nodeName];
+                relationshipAlias && aliases.push(relationshipAlias);
+                subquery.push(`\tWITH ${aliases.join(", ")}${innerMetaStr}`);
+                subquery.push(relValidationStrs.join("\n"));
+
+                if (context.subscriptionsEnabled) {
+                    innerMetaStr = ", meta";
+                }
+            }
+        }
+        // ==============
+
         if (context.subscriptionsEnabled) {
             const [fromVariable, toVariable] =
                 relationField.direction === "IN" ? [nodeName, parentVar] : [parentVar, nodeName];
@@ -303,40 +339,9 @@ function createConnectAndParams({
             subquery.push("\t}");
         }
 
-        let innerMetaStr = "";
         if (context.subscriptionsEnabled) {
             innerMetaStr = `, connect_meta + meta AS meta`;
         }
-
-        if (includeRelationshipValidation || isOverwriteNotAllowed) {
-            const relValidationStrs: string[] = [];
-            const matrixItems = [
-                [parentNode, parentVar],
-                [relatedNode, nodeName],
-            ] as [Node, string][];
-
-            matrixItems.forEach((mi) => {
-                const relValidationStr = createRelationshipValidationString({
-                    node: mi[0],
-                    context,
-                    varName: mi[1],
-                    relationshipFieldNotOverwritable: relationField.fieldName,
-                });
-                if (relValidationStr) {
-                    relValidationStrs.push(relValidationStr);
-                }
-            });
-
-            if (relValidationStrs.length) {
-                subquery.push(`\tWITH ${[...filterMetaVariable(withVars), nodeName].join(", ")}${innerMetaStr}`);
-                subquery.push(relValidationStrs.join("\n"));
-
-                if (context.subscriptionsEnabled) {
-                    innerMetaStr = ", meta";
-                }
-            }
-        }
-
         subquery.push(`WITH ${[...filterMetaVariable(withVars), nodeName].join(", ")}${innerMetaStr}`);
 
         if (connect.connect) {

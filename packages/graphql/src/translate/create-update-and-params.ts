@@ -345,6 +345,7 @@ export default function createUpdateAndParams({
                         }
                     }
 
+                    const assumeReconnect = Boolean(update.disconnect) && Boolean(update.connect);
                     if (update.disconnect) {
                         const disconnectAndParams = createDisconnectAndParams({
                             context,
@@ -359,6 +360,7 @@ export default function createUpdateAndParams({
                             parameterPrefix: `${parameterPrefix}.${key}${
                                 relationField.union ? `.${refNode.name}` : ""
                             }${relationField.typeMeta.array ? `[${index}]` : ""}.disconnect`,
+                            assumeReconnect,
                         });
                         subquery.push(disconnectAndParams[0]);
                         res.params = { ...res.params, ...disconnectAndParams[1] };
@@ -376,6 +378,8 @@ export default function createUpdateAndParams({
                             relationField,
                             labelOverride: relationField.union ? refNode.name : "",
                             parentNode: node,
+                            // TODO
+                            includeRelationshipValidation: true,
                         });
                         subquery.push(connectAndParams[0]);
                         if (context.subscriptionsEnabled) {

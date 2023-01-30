@@ -17,6 +17,7 @@
  * limitations under the License.
  */
 
+import type { RelationField } from "../../dist";
 import type { Node } from "../classes";
 import { RELATIONSHIP_REQUIREMENT_PREFIX } from "../constants";
 import type { Context } from "../types";
@@ -42,54 +43,114 @@ function createRelationshipValidationString({
         }
 
         const toNode = context.nodes.find((n) => n.name === field.typeMeta.name) as Node;
-        const inStr = field.direction === "IN" ? "<-" : "-";
-        const outStr = field.direction === "OUT" ? "->" : "-";
-        const relVarname = `${varName}_${field.fieldName}_${toNode.name}_unique`;
+        const toField = toNode.relationFields.find((r) => r.type === field.type);
 
-        let predicate: string;
-        let errorMsg: string;
-        let subQuery: string | undefined;
-        if (isArray) {
-            if (relationshipFieldNotOverwritable === field.fieldName) {
-                predicate = `c = 1`;
-                errorMsg = `${RELATIONSHIP_REQUIREMENT_PREFIX}${node.name}.${field.fieldName} required exactly once for a specific ${toNode.name}`;
-                subQuery = [
-                    `CALL {`,
-                    `\tWITH ${varName}`,
-                    `\tMATCH (${varName})${inStr}[${relVarname}:${field.type}]${outStr}(other${toNode.getLabelString(
-                        context
-                    )})`,
-                    `\tWITH count(${relVarname}) as c, other`,
-                    `\tCALL apoc.util.validate(NOT (${predicate}), '${errorMsg}', [0])`,
-                    `\tRETURN collect(c) AS ${relVarname}_ignored`,
-                    `}`,
-                ].join("\n");
-            }
-        } else {
-            predicate = `c = 1`;
-            errorMsg = `${RELATIONSHIP_REQUIREMENT_PREFIX}${node.name}.${field.fieldName} required exactly once`;
-            if (!field.typeMeta.required) {
-                predicate = `c <= 1`;
-                errorMsg = `${RELATIONSHIP_REQUIREMENT_PREFIX}${node.name}.${field.fieldName} must be less than or equal to one`;
-            }
+        const isFieldNotOverwritable = relationshipFieldNotOverwritable === field.fieldName;
+        const isToFieldNotOverwritable = Boolean(
+            toField && toField.typeMeta.array && relationshipFieldNotOverwritable === toField.fieldName
+        );
 
-            subQuery = [
-                `CALL {`,
-                `\tWITH ${varName}`,
-                `\tMATCH (${varName})${inStr}[${relVarname}:${field.type}]${outStr}(${toNode.getLabelString(context)})`,
-                `\tWITH count(${relVarname}) as c`,
-                `\tCALL apoc.util.validate(NOT (${predicate}), '${errorMsg}', [0])`,
-                `\tRETURN c AS ${relVarname}_ignored`,
-                `}`,
-            ].join("\n");
+        const shouldCheckForDuplicates = isFieldNotOverwritable || isToFieldNotOverwritable;
+        if (isArray && !shouldCheckForDuplicates) {
+            return;
         }
 
-        if (subQuery) {
-            strs.push(subQuery);
-        }
+        const { predicate, errorMsg } = makeValidation({
+            sourceNodeName: node.name,
+            sourceRelationshipField: field,
+            destinationNodeName: toNode.name,
+            destinationRelationshipFieldName: toField?.fieldName,
+            shouldReverseNodesInErrorMessage: isToFieldNotOverwritable,
+        });
+
+        strs.push(
+            makeSubquery({
+                varName,
+                sourceRelationshipField: field,
+                destinationNodeName: toNode.name,
+                destinationNodeLabels: toNode.getLabelString(context),
+                validateStatement: `CALL apoc.util.validate(NOT (${predicate}), '${errorMsg}', [0])`,
+                alias: isArray ? "other" : undefined,
+            })
+        );
     });
 
     return strs.join("\n");
+}
+
+function makeValidation({
+    sourceNodeName,
+    sourceRelationshipField,
+    destinationNodeName,
+    destinationRelationshipFieldName,
+    shouldReverseNodesInErrorMessage,
+}: {
+    sourceNodeName: string;
+    destinationNodeName: string;
+    sourceRelationshipField: RelationField;
+    destinationRelationshipFieldName: string | undefined;
+    shouldReverseNodesInErrorMessage: boolean;
+}): { predicate: string; errorMsg: string } {
+    // destination node for operation (the one the operation is applied to) is validated first
+    // validation of destination node happens right after the operation, while validation of source node happens at the end of the cypher query
+    // for ease of understanding and readability, return error message with format: source -> destination as defined in the operation
+    if (shouldReverseNodesInErrorMessage) {
+        return {
+            predicate: `c = 1`,
+            errorMsg: `${RELATIONSHIP_REQUIREMENT_PREFIX}${destinationNodeName}.${destinationRelationshipFieldName} required exactly once for a specific ${sourceNodeName}`,
+        };
+    }
+
+    // for array will only end up here if target for duplicate relationships validation
+    if (sourceRelationshipField.typeMeta.array) {
+        return {
+            predicate: `c = 1`,
+            errorMsg: `${RELATIONSHIP_REQUIREMENT_PREFIX}${sourceNodeName}.${sourceRelationshipField.fieldName} required exactly once for a specific ${destinationNodeName}`,
+        };
+    }
+
+    if (!sourceRelationshipField.typeMeta.required) {
+        return {
+            predicate: `c <= 1`,
+            errorMsg: `${RELATIONSHIP_REQUIREMENT_PREFIX}${sourceNodeName}.${sourceRelationshipField.fieldName} must be less than or equal to one`,
+        };
+    }
+
+    return {
+        predicate: `c = 1`,
+        errorMsg: `${RELATIONSHIP_REQUIREMENT_PREFIX}${sourceNodeName}.${sourceRelationshipField.fieldName} required exactly once`,
+    };
+}
+
+function makeSubquery({
+    varName,
+    sourceRelationshipField,
+    destinationNodeName,
+    destinationNodeLabels,
+    validateStatement,
+    alias,
+}: {
+    varName: string;
+    sourceRelationshipField: RelationField;
+    destinationNodeName: string;
+    destinationNodeLabels: string;
+    validateStatement: string;
+    alias: string | undefined;
+}): string {
+    const inStr = sourceRelationshipField.direction === "IN" ? "<-" : "-";
+    const outStr = sourceRelationshipField.direction === "OUT" ? "->" : "-";
+    const relVarname = `${varName}_${sourceRelationshipField.fieldName}_${destinationNodeName}_unique`;
+    return [
+        `CALL {`,
+        `\tWITH ${varName}`,
+        `\tMATCH (${varName})${inStr}[${relVarname}:${sourceRelationshipField.type}]${outStr}(${
+            alias ? alias : ""
+        }${destinationNodeLabels})`,
+        `\tWITH count(${relVarname}) as c${alias ? `, ${alias}` : ""}`,
+        `\t${validateStatement}`,
+        `\tRETURN c AS ${relVarname}_ignored`,
+        `}`,
+    ].join("\n");
 }
 
 export default createRelationshipValidationString;

@@ -534,6 +534,7 @@ describe("integration/rfc/003", () => {
             });
         });
 
+        // comment: check is too early (connect happens before disconnect and at check time c=2 instead of 1)
         describe("reconnect", () => {
             test("should disconnect and then reconnect to a new node on a required relationship", async () => {
                 const session = await neo4j.getSession();

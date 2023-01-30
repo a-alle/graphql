@@ -75,6 +75,7 @@ describe("https://github.com/neo4j/graphql/pull/2068", () => {
             }
         `;
 
+        // comment: optional match continues execution even if null, `c=1` check fails bc no node exists => no rel exists => c=0
         test("Connect node - update within an update", async () => {
             const userID = "someID";
             const contentID = "someContentID";

@@ -77,6 +77,7 @@ describe("https://github.com/neo4j/graphql/issues/894", () => {
         await driver.close();
     });
 
+    // comment: connect happens before disconnect and rel count validation happens right after connect => c=2
     test("should query nested connection", async () => {
         const createUserQuery = gql`
             mutation {

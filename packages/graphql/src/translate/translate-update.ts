@@ -220,6 +220,8 @@ export default async function translateUpdate({
                         withVars,
                         parentNode: node,
                         labelOverride: relationField.union ? refNode.name : "",
+                        //TODO: added this
+                        includeRelationshipValidation: !assumeReconnecting,
                     });
                     connectStrs.push(connectAndParams[0]);
                     cypherParams = { ...cypherParams, ...connectAndParams[1] };

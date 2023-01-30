@@ -28,6 +28,7 @@ import { addCallbackAndSetParamCypher } from "./utils/callback-utils";
 import { findConflictingProperties } from "../utils/is-property-clash";
 import { createConnectionEventMeta } from "./subscriptions/create-connection-event-meta";
 import { filterMetaVariable } from "./subscriptions/filter-meta-variable";
+import createRelationshipValidationString from "./create-relationship-validation-string";
 
 type CreateOrConnectInput = {
     where?: {
@@ -149,6 +150,7 @@ function createConnectOrCreatePartialStatement({
         varName: baseName,
         callbackBucket,
         withVars,
+        parentVar,
     });
 
     const authQuery = createAuthStatement({
@@ -173,6 +175,7 @@ function mergeStatement({
     varName,
     callbackBucket,
     withVars,
+    parentVar,
 }: {
     input: CreateOrConnectInput;
     refNode: Node;
@@ -181,6 +184,7 @@ function mergeStatement({
     relationField: RelationField;
     parentNode: Cypher.Node;
     varName: string;
+    parentVar: string;
     callbackBucket: CallbackBucket;
     withVars: string[];
 }): Cypher.Clause {
@@ -262,7 +266,34 @@ function mergeStatement({
         });
     }
 
-    return Cypher.concat(merge, relationshipMerge, withClause);
+    // =========================
+    //    TODO
+    const validationSubquery = new Cypher.RawCypher((env: Cypher.Environment) => {
+        const relValidationStrs: string[] = [];
+        const matrixItems = [
+            // [parentRefNode, parentVar],
+            [refNode, varName],
+        ] as [Node, string][];
+
+        matrixItems.forEach((mi) => {
+            const relValidationStr = createRelationshipValidationString({
+                node: mi[0],
+                context,
+                varName: mi[1],
+            });
+            if (relValidationStr) {
+                relValidationStrs.push(relValidationStr);
+            }
+        });
+
+        if (relValidationStrs.length) {
+            console.log("VSQ:", relValidationStrs);
+            const vsq = relValidationStrs.join("\n");
+            return [`WITH *`, vsq].join("\n");
+        }
+    });
+
+    return Cypher.concat(merge, relationshipMerge, withClause, validationSubquery);
 }
 
 function createAuthStatement({

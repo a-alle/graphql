@@ -502,6 +502,9 @@ describe("auth/where", () => {
     });
 
     describe("connect", () => {
+        // TODO: I modified the rel direction from Post -> User.
+        // data in db (created in cypher) does not conform to schema
+
         test("should add jwt.id to where - update update", async () => {
             const session = await neo4j.getSession({ defaultAccessMode: "WRITE" });
 
@@ -513,7 +516,7 @@ describe("auth/where", () => {
 
                 type Post {
                     id: ID
-                    creator: User! @relationship(type: "HAS_POST", direction: OUT)
+                    creator: User! @relationship(type: "HAS_POST", direction: IN)
                 }
 
                 extend type User @auth(rules: [{ operations: [CONNECT], where: { id: "$jwt.sub" } }])
@@ -574,7 +577,7 @@ describe("auth/where", () => {
 
                 type Post {
                     id: ID
-                    creator: User! @relationship(type: "HAS_POST", direction: OUT)
+                    creator: User! @relationship(type: "HAS_POST", direction: IN)
                 }
 
                 extend type User @auth(rules: [{ operations: [CONNECT], where: { id: "$jwt.sub" } }])
@@ -626,6 +629,7 @@ describe("auth/where", () => {
     });
 
     describe("disconnect", () => {
+        // TODO: I made `creator` field of a User non-required type.
         test("should add $jwt.id to where (update update)", async () => {
             const session = await neo4j.getSession({ defaultAccessMode: "WRITE" });
 
@@ -637,7 +641,7 @@ describe("auth/where", () => {
 
                 type Post {
                     id: ID
-                    creator: User! @relationship(type: "HAS_POST", direction: OUT)
+                    creator: User @relationship(type: "HAS_POST", direction: OUT)
                 }
 
                 extend type User @auth(rules: [{ operations: [DISCONNECT], where: { id: "$jwt.sub" } }])
@@ -702,7 +706,7 @@ describe("auth/where", () => {
 
                 type Post {
                     id: ID
-                    creator: User! @relationship(type: "HAS_POST", direction: OUT)
+                    creator: User @relationship(type: "HAS_POST", direction: OUT)
                 }
 
                 extend type User @auth(rules: [{ operations: [DISCONNECT], where: { id: "$jwt.sub" } }])

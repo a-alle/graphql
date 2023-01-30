@@ -26,6 +26,7 @@ import { createConnectionEventMetaObject } from "./subscriptions/create-connecti
 import { filterMetaVariable } from "./subscriptions/filter-meta-variable";
 import Cypher from "@neo4j/cypher-builder";
 import { caseWhere } from "../utils/case-where";
+import createRelationshipValidationString from "./create-relationship-validation-string";
 
 interface Res {
     disconnects: string[];
@@ -45,6 +46,7 @@ function createDisconnectAndParams({
     insideDoWhen,
     parameterPrefix,
     isFirstLevel = true,
+    assumeReconnect = false,
 }: {
     withVars: string[];
     value: any;
@@ -58,6 +60,7 @@ function createDisconnectAndParams({
     insideDoWhen?: boolean;
     parameterPrefix: string;
     isFirstLevel?: boolean;
+    assumeReconnect?: boolean;
 }): [string, any] {
     function createSubqueryContents(
         relatedNode: Node,
@@ -70,6 +73,7 @@ function createDisconnectAndParams({
         const relVarName = `${variableName}_rel`;
         const relTypeStr = `[${relVarName}:${relationField.type}]`;
         const subquery: string[] = [];
+        const relValidationStrs: string[] = [];
         let params;
         const labels = relatedNode.getLabelString(context);
         const label = labelOverride ? `:${labelOverride}` : labels;
@@ -140,6 +144,28 @@ function createDisconnectAndParams({
             { node: relatedNode, name: variableName },
         ];
 
+        // =========================
+        //    TODO
+        const matrixItems = [
+            // [parentRefNode, parentVar],
+            [relatedNode, variableName],
+        ] as [Node, string][];
+        if (!isFirstLevel) {
+            // for nested operations the source node will not be validated elsewhere
+            matrixItems.push([parentNode, parentVar]);
+        }
+        matrixItems.forEach((mi) => {
+            const relValidationStr = createRelationshipValidationString({
+                node: mi[0],
+                context,
+                varName: mi[1],
+            });
+            if (relValidationStr) {
+                relValidationStrs.push(relValidationStr);
+            }
+        });
+        // =========================
+
         const preAuth = nodeMatrix.reduce(
             (result: Res, { node, name }, i) => {
                 if (!node.auth) {
@@ -180,11 +206,12 @@ function createDisconnectAndParams({
         subquery.push("CALL {");
         // Trick to avoid execution on null values
         subquery.push(`\tWITH ${variableName}, ${relVarName}, ${parentVar}`);
-        subquery.push(`\tWITH collect(${variableName}) as ${variableName}, ${relVarName}, ${parentVar}`);
-        subquery.push(`\tUNWIND ${variableName} as x`);
+        subquery.push(`\tWITH collect(${variableName}) as ${variableName}_list, ${relVarName}, ${parentVar}`);
+        subquery.push(`\tUNWIND ${variableName}_list as ${variableName}`);
 
         if (context.subscriptionsEnabled) {
-            const [fromVariable, toVariable] = relationField.direction === "IN" ? ["x", parentVar] : [parentVar, "x"];
+            const [fromVariable, toVariable] =
+                relationField.direction === "IN" ? [variableName, parentVar] : [parentVar, variableName];
             const [fromTypename, toTypename] =
                 relationField.direction === "IN"
                     ? [relatedNode.name, parentNode.name]
@@ -198,11 +225,21 @@ function createDisconnectAndParams({
                 fromTypename,
                 toTypename,
             });
-            subquery.push(`\tWITH ${eventWithMetaStr} as meta, ${relVarName}`);
+            subquery.push(`\tWITH ${eventWithMetaStr} as meta, ${relVarName}, ${variableName}, ${parentVar}`);
             subquery.push(`\tDELETE ${relVarName}`);
+            if (!assumeReconnect) {
+                subquery.push("\tWITH *");
+                subquery.push(relValidationStrs.join("\n"));
+            }
+
             subquery.push(`\tRETURN collect(meta) as update_meta`);
         } else {
             subquery.push(`\tDELETE ${relVarName}`);
+            if (!assumeReconnect) {
+                subquery.push("\tWITH *");
+                subquery.push(relValidationStrs.join("\n"));
+            }
+
             subquery.push(`\tRETURN count(*) AS _`); // Avoids CANNOT END WITH DETACH DELETE ERROR
         }
 
@@ -214,7 +251,7 @@ function createDisconnectAndParams({
             );
         }
 
-        // TODO - relationship validation - Blocking, if this were to be enforced it would stop someone from 'reconnecting'
+        // TODO - nested relationship validation - Blocking, if this were to be enforced it would stop someone from 'reconnecting'
 
         if (disconnect.disconnect) {
             const disconnects: Array<any> = Array.isArray(disconnect.disconnect)

@@ -49,6 +49,7 @@ describe("https://github.com/neo4j/graphql/issues/1132", () => {
     });
 
     describe("CONNECT", () => {
+        // comment: if match not optional forbidden error is never thrown bc target with id does not exist (is not matched)
         test("should assert that the error is associated with the correct node", async () => {
             const testSource = generateUniqueType("Source");
             const testTarget = generateUniqueType("Target");
