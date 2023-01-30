@@ -87,9 +87,10 @@ describe("Interface Relationships - Update disconnect", () => {
             WHERE this_disconnect_actedIn0.title STARTS WITH $updateActors_args_disconnect_actedIn0_where_Movieparam0
             CALL {
             	WITH this_disconnect_actedIn0, this_disconnect_actedIn0_rel, this
-            	WITH collect(this_disconnect_actedIn0) as this_disconnect_actedIn0, this_disconnect_actedIn0_rel, this
-            	UNWIND this_disconnect_actedIn0 as x
+            	WITH collect(this_disconnect_actedIn0) as this_disconnect_actedIn0_list, this_disconnect_actedIn0_rel, this
+            	UNWIND this_disconnect_actedIn0_list as this_disconnect_actedIn0
             	DELETE this_disconnect_actedIn0_rel
+            	WITH *
             	RETURN count(*) AS _
             }
             RETURN count(*) AS disconnect_this_disconnect_actedIn_Movie
@@ -100,9 +101,10 @@ describe("Interface Relationships - Update disconnect", () => {
             WHERE this_disconnect_actedIn0.title STARTS WITH $updateActors_args_disconnect_actedIn0_where_Seriesparam0
             CALL {
             	WITH this_disconnect_actedIn0, this_disconnect_actedIn0_rel, this
-            	WITH collect(this_disconnect_actedIn0) as this_disconnect_actedIn0, this_disconnect_actedIn0_rel, this
-            	UNWIND this_disconnect_actedIn0 as x
+            	WITH collect(this_disconnect_actedIn0) as this_disconnect_actedIn0_list, this_disconnect_actedIn0_rel, this
+            	UNWIND this_disconnect_actedIn0_list as this_disconnect_actedIn0
             	DELETE this_disconnect_actedIn0_rel
+            	WITH *
             	RETURN count(*) AS _
             }
             RETURN count(*) AS disconnect_this_disconnect_actedIn_Series
@@ -167,9 +169,10 @@ describe("Interface Relationships - Update disconnect", () => {
             WHERE this_disconnect_actedIn0.title STARTS WITH $updateActors_args_disconnect_actedIn0_where_Movieparam0
             CALL {
             	WITH this_disconnect_actedIn0, this_disconnect_actedIn0_rel, this
-            	WITH collect(this_disconnect_actedIn0) as this_disconnect_actedIn0, this_disconnect_actedIn0_rel, this
-            	UNWIND this_disconnect_actedIn0 as x
+            	WITH collect(this_disconnect_actedIn0) as this_disconnect_actedIn0_list, this_disconnect_actedIn0_rel, this
+            	UNWIND this_disconnect_actedIn0_list as this_disconnect_actedIn0
             	DELETE this_disconnect_actedIn0_rel
+            	WITH *
             	RETURN count(*) AS _
             }
             CALL {
@@ -178,9 +181,10 @@ describe("Interface Relationships - Update disconnect", () => {
             WHERE this_disconnect_actedIn0_actors0.name = $updateActors_args_disconnect_actedIn0_disconnect_actors0_where_Actorparam0
             CALL {
             	WITH this_disconnect_actedIn0_actors0, this_disconnect_actedIn0_actors0_rel, this_disconnect_actedIn0
-            	WITH collect(this_disconnect_actedIn0_actors0) as this_disconnect_actedIn0_actors0, this_disconnect_actedIn0_actors0_rel, this_disconnect_actedIn0
-            	UNWIND this_disconnect_actedIn0_actors0 as x
+            	WITH collect(this_disconnect_actedIn0_actors0) as this_disconnect_actedIn0_actors0_list, this_disconnect_actedIn0_actors0_rel, this_disconnect_actedIn0
+            	UNWIND this_disconnect_actedIn0_actors0_list as this_disconnect_actedIn0_actors0
             	DELETE this_disconnect_actedIn0_actors0_rel
+            	WITH *
             	RETURN count(*) AS _
             }
             RETURN count(*) AS disconnect_this_disconnect_actedIn0_actors_Actor
@@ -193,9 +197,10 @@ describe("Interface Relationships - Update disconnect", () => {
             WHERE this_disconnect_actedIn0.title STARTS WITH $updateActors_args_disconnect_actedIn0_where_Seriesparam0
             CALL {
             	WITH this_disconnect_actedIn0, this_disconnect_actedIn0_rel, this
-            	WITH collect(this_disconnect_actedIn0) as this_disconnect_actedIn0, this_disconnect_actedIn0_rel, this
-            	UNWIND this_disconnect_actedIn0 as x
+            	WITH collect(this_disconnect_actedIn0) as this_disconnect_actedIn0_list, this_disconnect_actedIn0_rel, this
+            	UNWIND this_disconnect_actedIn0_list as this_disconnect_actedIn0
             	DELETE this_disconnect_actedIn0_rel
+            	WITH *
             	RETURN count(*) AS _
             }
             CALL {
@@ -204,9 +209,10 @@ describe("Interface Relationships - Update disconnect", () => {
             WHERE this_disconnect_actedIn0_actors0.name = $updateActors_args_disconnect_actedIn0_disconnect_actors0_where_Actorparam0
             CALL {
             	WITH this_disconnect_actedIn0_actors0, this_disconnect_actedIn0_actors0_rel, this_disconnect_actedIn0
-            	WITH collect(this_disconnect_actedIn0_actors0) as this_disconnect_actedIn0_actors0, this_disconnect_actedIn0_actors0_rel, this_disconnect_actedIn0
-            	UNWIND this_disconnect_actedIn0_actors0 as x
+            	WITH collect(this_disconnect_actedIn0_actors0) as this_disconnect_actedIn0_actors0_list, this_disconnect_actedIn0_actors0_rel, this_disconnect_actedIn0
+            	UNWIND this_disconnect_actedIn0_actors0_list as this_disconnect_actedIn0_actors0
             	DELETE this_disconnect_actedIn0_actors0_rel
+            	WITH *
             	RETURN count(*) AS _
             }
             RETURN count(*) AS disconnect_this_disconnect_actedIn0_actors_Actor
@@ -285,9 +291,10 @@ describe("Interface Relationships - Update disconnect", () => {
             WHERE this_disconnect_actedIn0.title STARTS WITH $updateActors_args_disconnect_actedIn0_where_Movieparam0
             CALL {
             	WITH this_disconnect_actedIn0, this_disconnect_actedIn0_rel, this
-            	WITH collect(this_disconnect_actedIn0) as this_disconnect_actedIn0, this_disconnect_actedIn0_rel, this
-            	UNWIND this_disconnect_actedIn0 as x
+            	WITH collect(this_disconnect_actedIn0) as this_disconnect_actedIn0_list, this_disconnect_actedIn0_rel, this
+            	UNWIND this_disconnect_actedIn0_list as this_disconnect_actedIn0
             	DELETE this_disconnect_actedIn0_rel
+            	WITH *
             	RETURN count(*) AS _
             }
             CALL {
@@ -296,9 +303,10 @@ describe("Interface Relationships - Update disconnect", () => {
             WHERE this_disconnect_actedIn0_actors0.name = $updateActors_args_disconnect_actedIn0_disconnect__on_Movie0_actors0_where_Actorparam0
             CALL {
             	WITH this_disconnect_actedIn0_actors0, this_disconnect_actedIn0_actors0_rel, this_disconnect_actedIn0
-            	WITH collect(this_disconnect_actedIn0_actors0) as this_disconnect_actedIn0_actors0, this_disconnect_actedIn0_actors0_rel, this_disconnect_actedIn0
-            	UNWIND this_disconnect_actedIn0_actors0 as x
+            	WITH collect(this_disconnect_actedIn0_actors0) as this_disconnect_actedIn0_actors0_list, this_disconnect_actedIn0_actors0_rel, this_disconnect_actedIn0
+            	UNWIND this_disconnect_actedIn0_actors0_list as this_disconnect_actedIn0_actors0
             	DELETE this_disconnect_actedIn0_actors0_rel
+            	WITH *
             	RETURN count(*) AS _
             }
             RETURN count(*) AS disconnect_this_disconnect_actedIn0_actors_Actor
@@ -311,9 +319,10 @@ describe("Interface Relationships - Update disconnect", () => {
             WHERE this_disconnect_actedIn0.title STARTS WITH $updateActors_args_disconnect_actedIn0_where_Seriesparam0
             CALL {
             	WITH this_disconnect_actedIn0, this_disconnect_actedIn0_rel, this
-            	WITH collect(this_disconnect_actedIn0) as this_disconnect_actedIn0, this_disconnect_actedIn0_rel, this
-            	UNWIND this_disconnect_actedIn0 as x
+            	WITH collect(this_disconnect_actedIn0) as this_disconnect_actedIn0_list, this_disconnect_actedIn0_rel, this
+            	UNWIND this_disconnect_actedIn0_list as this_disconnect_actedIn0
             	DELETE this_disconnect_actedIn0_rel
+            	WITH *
             	RETURN count(*) AS _
             }
             RETURN count(*) AS disconnect_this_disconnect_actedIn_Series
@@ -399,9 +408,10 @@ describe("Interface Relationships - Update disconnect", () => {
             WHERE this_disconnect_actedIn0.title STARTS WITH $updateActors_args_disconnect_actedIn0_where_Movieparam0
             CALL {
             	WITH this_disconnect_actedIn0, this_disconnect_actedIn0_rel, this
-            	WITH collect(this_disconnect_actedIn0) as this_disconnect_actedIn0, this_disconnect_actedIn0_rel, this
-            	UNWIND this_disconnect_actedIn0 as x
+            	WITH collect(this_disconnect_actedIn0) as this_disconnect_actedIn0_list, this_disconnect_actedIn0_rel, this
+            	UNWIND this_disconnect_actedIn0_list as this_disconnect_actedIn0
             	DELETE this_disconnect_actedIn0_rel
+            	WITH *
             	RETURN count(*) AS _
             }
             CALL {
@@ -410,9 +420,10 @@ describe("Interface Relationships - Update disconnect", () => {
             WHERE this_disconnect_actedIn0_actors0.name = $updateActors_args_disconnect_actedIn0_disconnect__on_Movie0_actors0_where_Actorparam0
             CALL {
             	WITH this_disconnect_actedIn0_actors0, this_disconnect_actedIn0_actors0_rel, this_disconnect_actedIn0
-            	WITH collect(this_disconnect_actedIn0_actors0) as this_disconnect_actedIn0_actors0, this_disconnect_actedIn0_actors0_rel, this_disconnect_actedIn0
-            	UNWIND this_disconnect_actedIn0_actors0 as x
+            	WITH collect(this_disconnect_actedIn0_actors0) as this_disconnect_actedIn0_actors0_list, this_disconnect_actedIn0_actors0_rel, this_disconnect_actedIn0
+            	UNWIND this_disconnect_actedIn0_actors0_list as this_disconnect_actedIn0_actors0
             	DELETE this_disconnect_actedIn0_actors0_rel
+            	WITH *
             	RETURN count(*) AS _
             }
             RETURN count(*) AS disconnect_this_disconnect_actedIn0_actors_Actor
@@ -425,9 +436,10 @@ describe("Interface Relationships - Update disconnect", () => {
             WHERE this_disconnect_actedIn0.title STARTS WITH $updateActors_args_disconnect_actedIn0_where_Seriesparam0
             CALL {
             	WITH this_disconnect_actedIn0, this_disconnect_actedIn0_rel, this
-            	WITH collect(this_disconnect_actedIn0) as this_disconnect_actedIn0, this_disconnect_actedIn0_rel, this
-            	UNWIND this_disconnect_actedIn0 as x
+            	WITH collect(this_disconnect_actedIn0) as this_disconnect_actedIn0_list, this_disconnect_actedIn0_rel, this
+            	UNWIND this_disconnect_actedIn0_list as this_disconnect_actedIn0
             	DELETE this_disconnect_actedIn0_rel
+            	WITH *
             	RETURN count(*) AS _
             }
             CALL {
@@ -436,9 +448,10 @@ describe("Interface Relationships - Update disconnect", () => {
             WHERE this_disconnect_actedIn0_actors0.name = $updateActors_args_disconnect_actedIn0_disconnect_actors0_where_Actorparam0
             CALL {
             	WITH this_disconnect_actedIn0_actors0, this_disconnect_actedIn0_actors0_rel, this_disconnect_actedIn0
-            	WITH collect(this_disconnect_actedIn0_actors0) as this_disconnect_actedIn0_actors0, this_disconnect_actedIn0_actors0_rel, this_disconnect_actedIn0
-            	UNWIND this_disconnect_actedIn0_actors0 as x
+            	WITH collect(this_disconnect_actedIn0_actors0) as this_disconnect_actedIn0_actors0_list, this_disconnect_actedIn0_actors0_rel, this_disconnect_actedIn0
+            	UNWIND this_disconnect_actedIn0_actors0_list as this_disconnect_actedIn0_actors0
             	DELETE this_disconnect_actedIn0_actors0_rel
+            	WITH *
             	RETURN count(*) AS _
             }
             RETURN count(*) AS disconnect_this_disconnect_actedIn0_actors_Actor

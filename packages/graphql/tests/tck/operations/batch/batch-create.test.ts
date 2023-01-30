@@ -410,6 +410,14 @@ describe("Batch Create", () => {
             			UNWIND parentNodes as this0
             			UNWIND connectedNodes as this0_actors_connect0_node
             			MERGE (this0)<-[this0_actors_connect0_relationship:ACTED_IN]-(this0_actors_connect0_node)
+            	WITH this0, this0_actors_connect0_node, this0_actors_connect0_relationship
+            CALL {
+            	WITH this0_actors_connect0_node
+            	MATCH (this0_actors_connect0_node)-[this0_actors_connect0_node_website_Website_unique:HAS_WEBSITE]->(:Website)
+            	WITH count(this0_actors_connect0_node_website_Website_unique) as c
+            	CALL apoc.util.validate(NOT (c <= 1), '@neo4j/graphql/RELATIONSHIP-REQUIREDActor.website must be less than or equal to one', [0])
+            	RETURN c AS this0_actors_connect0_node_website_Website_unique_ignored
+            }
             			RETURN count(*) AS _
             		}
             		RETURN count(*) AS _
@@ -443,6 +451,14 @@ describe("Batch Create", () => {
             			UNWIND parentNodes as this1
             			UNWIND connectedNodes as this1_actors_connect0_node
             			MERGE (this1)<-[this1_actors_connect0_relationship:ACTED_IN]-(this1_actors_connect0_node)
+            	WITH this1, this1_actors_connect0_node, this1_actors_connect0_relationship
+            CALL {
+            	WITH this1_actors_connect0_node
+            	MATCH (this1_actors_connect0_node)-[this1_actors_connect0_node_website_Website_unique:HAS_WEBSITE]->(:Website)
+            	WITH count(this1_actors_connect0_node_website_Website_unique) as c
+            	CALL apoc.util.validate(NOT (c <= 1), '@neo4j/graphql/RELATIONSHIP-REQUIREDActor.website must be less than or equal to one', [0])
+            	RETURN c AS this1_actors_connect0_node_website_Website_unique_ignored
+            }
             			RETURN count(*) AS _
             		}
             		RETURN count(*) AS _
@@ -614,6 +630,14 @@ describe("Batch Create", () => {
             			UNWIND parentNodes as this3
             			UNWIND connectedNodes as this3_actors_connect0_node
             			MERGE (this3)<-[this3_actors_connect0_relationship:ACTED_IN]-(this3_actors_connect0_node)
+            	WITH this3, this3_actors_connect0_node, this3_actors_connect0_relationship
+            CALL {
+            	WITH this3_actors_connect0_node
+            	MATCH (this3_actors_connect0_node)-[this3_actors_connect0_node_website_Website_unique:HAS_WEBSITE]->(:Website)
+            	WITH count(this3_actors_connect0_node_website_Website_unique) as c
+            	CALL apoc.util.validate(NOT (c <= 1), '@neo4j/graphql/RELATIONSHIP-REQUIREDActor.website must be less than or equal to one', [0])
+            	RETURN c AS this3_actors_connect0_node_website_Website_unique_ignored
+            }
             			RETURN count(*) AS _
             		}
             		RETURN count(*) AS _
@@ -641,6 +665,14 @@ describe("Batch Create", () => {
                 ON CREATE SET
                     this4_actors_connectOrCreate0.name = $this4_actors_connectOrCreate_param1
                 MERGE (this4_actors_connectOrCreate0)-[this4_actors_connectOrCreate_this0:ACTED_IN]->(this4)
+                WITH *
+                CALL {
+                	WITH this4_actors_connectOrCreate0
+                	MATCH (this4_actors_connectOrCreate0)-[this4_actors_connectOrCreate0_website_Website_unique:HAS_WEBSITE]->(:Website)
+                	WITH count(this4_actors_connectOrCreate0_website_Website_unique) as c
+                	CALL apoc.util.validate(NOT (c <= 1), '@neo4j/graphql/RELATIONSHIP-REQUIREDActor.website must be less than or equal to one', [0])
+                	RETURN c AS this4_actors_connectOrCreate0_website_Website_unique_ignored
+                }
                 RETURN COUNT(*) AS _
             }
             WITH this4

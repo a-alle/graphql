@@ -389,6 +389,14 @@ describe("Batch Create, Auth", () => {
             			UNWIND parentNodes as this3
             			UNWIND connectedNodes as this3_actors_connect0_node
             			MERGE (this3)<-[this3_actors_connect0_relationship:ACTED_IN]-(this3_actors_connect0_node)
+            	WITH this3, this3_actors_connect0_node, this3_actors_connect0_relationship
+            CALL {
+            	WITH this3_actors_connect0_node
+            	MATCH (this3_actors_connect0_node)-[this3_actors_connect0_node_website_Website_unique:HAS_WEBSITE]->(:Website)
+            	WITH count(this3_actors_connect0_node_website_Website_unique) as c
+            	CALL apoc.util.validate(NOT (c <= 1), '@neo4j/graphql/RELATIONSHIP-REQUIREDActor.website must be less than or equal to one', [0])
+            	RETURN c AS this3_actors_connect0_node_website_Website_unique_ignored
+            }
             			RETURN count(*) AS _
             		}
             		RETURN count(*) AS _
@@ -418,6 +426,14 @@ describe("Batch Create, Auth", () => {
                 ON CREATE SET
                     this4_actors_connectOrCreate0.name = $this4_actors_connectOrCreate_param1
                 MERGE (this4_actors_connectOrCreate0)-[this4_actors_connectOrCreate_this0:ACTED_IN]->(this4)
+                WITH *
+                CALL {
+                	WITH this4_actors_connectOrCreate0
+                	MATCH (this4_actors_connectOrCreate0)-[this4_actors_connectOrCreate0_website_Website_unique:HAS_WEBSITE]->(:Website)
+                	WITH count(this4_actors_connectOrCreate0_website_Website_unique) as c
+                	CALL apoc.util.validate(NOT (c <= 1), '@neo4j/graphql/RELATIONSHIP-REQUIREDActor.website must be less than or equal to one', [0])
+                	RETURN c AS this4_actors_connectOrCreate0_website_Website_unique_ignored
+                }
                 WITH *
                 CALL apoc.util.validate(NOT ((this4_actors_connectOrCreate0.id IS NOT NULL AND this4_actors_connectOrCreate0.id = $this4_actors_connectOrCreate0auth_param0)), \\"@neo4j/graphql/FORBIDDEN\\", [0])
                 RETURN COUNT(*) AS _

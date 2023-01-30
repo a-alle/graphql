@@ -802,6 +802,14 @@ describe("Cypher Auth Where", () => {
             			UNWIND parentNodes as this
             			UNWIND connectedNodes as this_content0_connect0_node
             			MERGE (this)-[:HAS_CONTENT]->(this_content0_connect0_node)
+            	WITH this, this_content0_connect0_node
+            CALL {
+            	WITH this_content0_connect0_node
+            	MATCH (this_content0_connect0_node)<-[this_content0_connect0_node_creator_User_unique:HAS_CONTENT]-(:User)
+            	WITH count(this_content0_connect0_node_creator_User_unique) as c
+            	CALL apoc.util.validate(NOT (c = 1), '@neo4j/graphql/RELATIONSHIP-REQUIREDComment.creator required exactly once', [0])
+            	RETURN c AS this_content0_connect0_node_creator_User_unique_ignored
+            }
             			RETURN count(*) AS _
             		}
             		RETURN count(*) AS _
@@ -828,6 +836,14 @@ describe("Cypher Auth Where", () => {
             			UNWIND parentNodes as this
             			UNWIND connectedNodes as this_content0_connect0_node
             			MERGE (this)-[:HAS_CONTENT]->(this_content0_connect0_node)
+            	WITH this, this_content0_connect0_node
+            CALL {
+            	WITH this_content0_connect0_node
+            	MATCH (this_content0_connect0_node)<-[this_content0_connect0_node_creator_User_unique:HAS_CONTENT]-(:User)
+            	WITH count(this_content0_connect0_node_creator_User_unique) as c
+            	CALL apoc.util.validate(NOT (c = 1), '@neo4j/graphql/RELATIONSHIP-REQUIREDPost.creator required exactly once', [0])
+            	RETURN c AS this_content0_connect0_node_creator_User_unique_ignored
+            }
             			RETURN count(*) AS _
             		}
             		RETURN count(*) AS _
@@ -887,6 +903,14 @@ describe("Cypher Auth Where", () => {
             			UNWIND parentNodes as this
             			UNWIND connectedNodes as this_content0_connect0_node
             			MERGE (this)-[:HAS_CONTENT]->(this_content0_connect0_node)
+            	WITH this, this_content0_connect0_node
+            CALL {
+            	WITH this_content0_connect0_node
+            	MATCH (this_content0_connect0_node)<-[this_content0_connect0_node_creator_User_unique:HAS_CONTENT]-(:User)
+            	WITH count(this_content0_connect0_node_creator_User_unique) as c
+            	CALL apoc.util.validate(NOT (c = 1), '@neo4j/graphql/RELATIONSHIP-REQUIREDComment.creator required exactly once', [0])
+            	RETURN c AS this_content0_connect0_node_creator_User_unique_ignored
+            }
             			RETURN count(*) AS _
             		}
             		RETURN count(*) AS _
@@ -913,6 +937,14 @@ describe("Cypher Auth Where", () => {
             			UNWIND parentNodes as this
             			UNWIND connectedNodes as this_content0_connect0_node
             			MERGE (this)-[:HAS_CONTENT]->(this_content0_connect0_node)
+            	WITH this, this_content0_connect0_node
+            CALL {
+            	WITH this_content0_connect0_node
+            	MATCH (this_content0_connect0_node)<-[this_content0_connect0_node_creator_User_unique:HAS_CONTENT]-(:User)
+            	WITH count(this_content0_connect0_node_creator_User_unique) as c
+            	CALL apoc.util.validate(NOT (c = 1), '@neo4j/graphql/RELATIONSHIP-REQUIREDPost.creator required exactly once', [0])
+            	RETURN c AS this_content0_connect0_node_creator_User_unique_ignored
+            }
             			RETURN count(*) AS _
             		}
             		RETURN count(*) AS _
@@ -1119,9 +1151,17 @@ describe("Cypher Auth Where", () => {
             WHERE (exists((this_content0_disconnect0)<-[:HAS_CONTENT]-(:\`User\`)) AND all(auth_this0 IN [(this_content0_disconnect0)<-[:HAS_CONTENT]-(auth_this0:\`User\`) | auth_this0] WHERE (auth_this0.id IS NOT NULL AND auth_this0.id = $this_content0_disconnect0auth_param0)))
             CALL {
             	WITH this_content0_disconnect0, this_content0_disconnect0_rel, this
-            	WITH collect(this_content0_disconnect0) as this_content0_disconnect0, this_content0_disconnect0_rel, this
-            	UNWIND this_content0_disconnect0 as x
+            	WITH collect(this_content0_disconnect0) as this_content0_disconnect0_list, this_content0_disconnect0_rel, this
+            	UNWIND this_content0_disconnect0_list as this_content0_disconnect0
             	DELETE this_content0_disconnect0_rel
+            	WITH *
+            CALL {
+            	WITH this_content0_disconnect0
+            	MATCH (this_content0_disconnect0)<-[this_content0_disconnect0_creator_User_unique:HAS_CONTENT]-(:User)
+            	WITH count(this_content0_disconnect0_creator_User_unique) as c
+            	CALL apoc.util.validate(NOT (c = 1), '@neo4j/graphql/RELATIONSHIP-REQUIREDComment.creator required exactly once', [0])
+            	RETURN c AS this_content0_disconnect0_creator_User_unique_ignored
+            }
             	RETURN count(*) AS _
             }
             RETURN count(*) AS disconnect_this_content0_disconnect_Comment
@@ -1139,9 +1179,17 @@ describe("Cypher Auth Where", () => {
             WHERE (exists((this_content0_disconnect0)<-[:HAS_CONTENT]-(:\`User\`)) AND all(auth_this0 IN [(this_content0_disconnect0)<-[:HAS_CONTENT]-(auth_this0:\`User\`) | auth_this0] WHERE (auth_this0.id IS NOT NULL AND auth_this0.id = $this_content0_disconnect0auth_param0)))
             CALL {
             	WITH this_content0_disconnect0, this_content0_disconnect0_rel, this
-            	WITH collect(this_content0_disconnect0) as this_content0_disconnect0, this_content0_disconnect0_rel, this
-            	UNWIND this_content0_disconnect0 as x
+            	WITH collect(this_content0_disconnect0) as this_content0_disconnect0_list, this_content0_disconnect0_rel, this
+            	UNWIND this_content0_disconnect0_list as this_content0_disconnect0
             	DELETE this_content0_disconnect0_rel
+            	WITH *
+            CALL {
+            	WITH this_content0_disconnect0
+            	MATCH (this_content0_disconnect0)<-[this_content0_disconnect0_creator_User_unique:HAS_CONTENT]-(:User)
+            	WITH count(this_content0_disconnect0_creator_User_unique) as c
+            	CALL apoc.util.validate(NOT (c = 1), '@neo4j/graphql/RELATIONSHIP-REQUIREDPost.creator required exactly once', [0])
+            	RETURN c AS this_content0_disconnect0_creator_User_unique_ignored
+            }
             	RETURN count(*) AS _
             }
             RETURN count(*) AS disconnect_this_content0_disconnect_Post
@@ -1192,9 +1240,17 @@ describe("Cypher Auth Where", () => {
             WHERE this_content0_disconnect0.id = $updateUsers_args_update_content0_disconnect0_where_Commentparam0 AND (exists((this_content0_disconnect0)<-[:HAS_CONTENT]-(:\`User\`)) AND all(auth_this0 IN [(this_content0_disconnect0)<-[:HAS_CONTENT]-(auth_this0:\`User\`) | auth_this0] WHERE (auth_this0.id IS NOT NULL AND auth_this0.id = $this_content0_disconnect0auth_param0)))
             CALL {
             	WITH this_content0_disconnect0, this_content0_disconnect0_rel, this
-            	WITH collect(this_content0_disconnect0) as this_content0_disconnect0, this_content0_disconnect0_rel, this
-            	UNWIND this_content0_disconnect0 as x
+            	WITH collect(this_content0_disconnect0) as this_content0_disconnect0_list, this_content0_disconnect0_rel, this
+            	UNWIND this_content0_disconnect0_list as this_content0_disconnect0
             	DELETE this_content0_disconnect0_rel
+            	WITH *
+            CALL {
+            	WITH this_content0_disconnect0
+            	MATCH (this_content0_disconnect0)<-[this_content0_disconnect0_creator_User_unique:HAS_CONTENT]-(:User)
+            	WITH count(this_content0_disconnect0_creator_User_unique) as c
+            	CALL apoc.util.validate(NOT (c = 1), '@neo4j/graphql/RELATIONSHIP-REQUIREDComment.creator required exactly once', [0])
+            	RETURN c AS this_content0_disconnect0_creator_User_unique_ignored
+            }
             	RETURN count(*) AS _
             }
             RETURN count(*) AS disconnect_this_content0_disconnect_Comment
@@ -1212,9 +1268,17 @@ describe("Cypher Auth Where", () => {
             WHERE this_content0_disconnect0.id = $updateUsers_args_update_content0_disconnect0_where_Postparam0 AND (exists((this_content0_disconnect0)<-[:HAS_CONTENT]-(:\`User\`)) AND all(auth_this0 IN [(this_content0_disconnect0)<-[:HAS_CONTENT]-(auth_this0:\`User\`) | auth_this0] WHERE (auth_this0.id IS NOT NULL AND auth_this0.id = $this_content0_disconnect0auth_param0)))
             CALL {
             	WITH this_content0_disconnect0, this_content0_disconnect0_rel, this
-            	WITH collect(this_content0_disconnect0) as this_content0_disconnect0, this_content0_disconnect0_rel, this
-            	UNWIND this_content0_disconnect0 as x
+            	WITH collect(this_content0_disconnect0) as this_content0_disconnect0_list, this_content0_disconnect0_rel, this
+            	UNWIND this_content0_disconnect0_list as this_content0_disconnect0
             	DELETE this_content0_disconnect0_rel
+            	WITH *
+            CALL {
+            	WITH this_content0_disconnect0
+            	MATCH (this_content0_disconnect0)<-[this_content0_disconnect0_creator_User_unique:HAS_CONTENT]-(:User)
+            	WITH count(this_content0_disconnect0_creator_User_unique) as c
+            	CALL apoc.util.validate(NOT (c = 1), '@neo4j/graphql/RELATIONSHIP-REQUIREDPost.creator required exactly once', [0])
+            	RETURN c AS this_content0_disconnect0_creator_User_unique_ignored
+            }
             	RETURN count(*) AS _
             }
             RETURN count(*) AS disconnect_this_content0_disconnect_Post
@@ -1283,9 +1347,17 @@ describe("Cypher Auth Where", () => {
             WHERE (exists((this_disconnect_content0)<-[:HAS_CONTENT]-(:\`User\`)) AND all(auth_this0 IN [(this_disconnect_content0)<-[:HAS_CONTENT]-(auth_this0:\`User\`) | auth_this0] WHERE (auth_this0.id IS NOT NULL AND auth_this0.id = $this_disconnect_content0auth_param0)))
             CALL {
             	WITH this_disconnect_content0, this_disconnect_content0_rel, this
-            	WITH collect(this_disconnect_content0) as this_disconnect_content0, this_disconnect_content0_rel, this
-            	UNWIND this_disconnect_content0 as x
+            	WITH collect(this_disconnect_content0) as this_disconnect_content0_list, this_disconnect_content0_rel, this
+            	UNWIND this_disconnect_content0_list as this_disconnect_content0
             	DELETE this_disconnect_content0_rel
+            	WITH *
+            CALL {
+            	WITH this_disconnect_content0
+            	MATCH (this_disconnect_content0)<-[this_disconnect_content0_creator_User_unique:HAS_CONTENT]-(:User)
+            	WITH count(this_disconnect_content0_creator_User_unique) as c
+            	CALL apoc.util.validate(NOT (c = 1), '@neo4j/graphql/RELATIONSHIP-REQUIREDComment.creator required exactly once', [0])
+            	RETURN c AS this_disconnect_content0_creator_User_unique_ignored
+            }
             	RETURN count(*) AS _
             }
             RETURN count(*) AS disconnect_this_disconnect_content_Comment
@@ -1296,9 +1368,17 @@ describe("Cypher Auth Where", () => {
             WHERE (exists((this_disconnect_content0)<-[:HAS_CONTENT]-(:\`User\`)) AND all(auth_this0 IN [(this_disconnect_content0)<-[:HAS_CONTENT]-(auth_this0:\`User\`) | auth_this0] WHERE (auth_this0.id IS NOT NULL AND auth_this0.id = $this_disconnect_content0auth_param0)))
             CALL {
             	WITH this_disconnect_content0, this_disconnect_content0_rel, this
-            	WITH collect(this_disconnect_content0) as this_disconnect_content0, this_disconnect_content0_rel, this
-            	UNWIND this_disconnect_content0 as x
+            	WITH collect(this_disconnect_content0) as this_disconnect_content0_list, this_disconnect_content0_rel, this
+            	UNWIND this_disconnect_content0_list as this_disconnect_content0
             	DELETE this_disconnect_content0_rel
+            	WITH *
+            CALL {
+            	WITH this_disconnect_content0
+            	MATCH (this_disconnect_content0)<-[this_disconnect_content0_creator_User_unique:HAS_CONTENT]-(:User)
+            	WITH count(this_disconnect_content0_creator_User_unique) as c
+            	CALL apoc.util.validate(NOT (c = 1), '@neo4j/graphql/RELATIONSHIP-REQUIREDPost.creator required exactly once', [0])
+            	RETURN c AS this_disconnect_content0_creator_User_unique_ignored
+            }
             	RETURN count(*) AS _
             }
             RETURN count(*) AS disconnect_this_disconnect_content_Post
@@ -1356,9 +1436,17 @@ describe("Cypher Auth Where", () => {
             WHERE this_disconnect_content0.id = $updateUsers_args_disconnect_content0_where_Commentparam0 AND (exists((this_disconnect_content0)<-[:HAS_CONTENT]-(:\`User\`)) AND all(auth_this0 IN [(this_disconnect_content0)<-[:HAS_CONTENT]-(auth_this0:\`User\`) | auth_this0] WHERE (auth_this0.id IS NOT NULL AND auth_this0.id = $this_disconnect_content0auth_param0)))
             CALL {
             	WITH this_disconnect_content0, this_disconnect_content0_rel, this
-            	WITH collect(this_disconnect_content0) as this_disconnect_content0, this_disconnect_content0_rel, this
-            	UNWIND this_disconnect_content0 as x
+            	WITH collect(this_disconnect_content0) as this_disconnect_content0_list, this_disconnect_content0_rel, this
+            	UNWIND this_disconnect_content0_list as this_disconnect_content0
             	DELETE this_disconnect_content0_rel
+            	WITH *
+            CALL {
+            	WITH this_disconnect_content0
+            	MATCH (this_disconnect_content0)<-[this_disconnect_content0_creator_User_unique:HAS_CONTENT]-(:User)
+            	WITH count(this_disconnect_content0_creator_User_unique) as c
+            	CALL apoc.util.validate(NOT (c = 1), '@neo4j/graphql/RELATIONSHIP-REQUIREDComment.creator required exactly once', [0])
+            	RETURN c AS this_disconnect_content0_creator_User_unique_ignored
+            }
             	RETURN count(*) AS _
             }
             RETURN count(*) AS disconnect_this_disconnect_content_Comment
@@ -1369,9 +1457,17 @@ describe("Cypher Auth Where", () => {
             WHERE this_disconnect_content0.id = $updateUsers_args_disconnect_content0_where_Postparam0 AND (exists((this_disconnect_content0)<-[:HAS_CONTENT]-(:\`User\`)) AND all(auth_this0 IN [(this_disconnect_content0)<-[:HAS_CONTENT]-(auth_this0:\`User\`) | auth_this0] WHERE (auth_this0.id IS NOT NULL AND auth_this0.id = $this_disconnect_content0auth_param0)))
             CALL {
             	WITH this_disconnect_content0, this_disconnect_content0_rel, this
-            	WITH collect(this_disconnect_content0) as this_disconnect_content0, this_disconnect_content0_rel, this
-            	UNWIND this_disconnect_content0 as x
+            	WITH collect(this_disconnect_content0) as this_disconnect_content0_list, this_disconnect_content0_rel, this
+            	UNWIND this_disconnect_content0_list as this_disconnect_content0
             	DELETE this_disconnect_content0_rel
+            	WITH *
+            CALL {
+            	WITH this_disconnect_content0
+            	MATCH (this_disconnect_content0)<-[this_disconnect_content0_creator_User_unique:HAS_CONTENT]-(:User)
+            	WITH count(this_disconnect_content0_creator_User_unique) as c
+            	CALL apoc.util.validate(NOT (c = 1), '@neo4j/graphql/RELATIONSHIP-REQUIREDPost.creator required exactly once', [0])
+            	RETURN c AS this_disconnect_content0_creator_User_unique_ignored
+            }
             	RETURN count(*) AS _
             }
             RETURN count(*) AS disconnect_this_disconnect_content_Post

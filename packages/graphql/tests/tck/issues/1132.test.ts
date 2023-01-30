@@ -138,9 +138,10 @@ describe("https://github.com/neo4j/graphql/issues/1132", () => {
             CALL apoc.util.validate(NOT ((this.id IS NOT NULL AND this.id = $thisauth_param0)), \\"@neo4j/graphql/FORBIDDEN\\", [0])
             CALL {
             	WITH this_disconnect_targets0, this_disconnect_targets0_rel, this
-            	WITH collect(this_disconnect_targets0) as this_disconnect_targets0, this_disconnect_targets0_rel, this
-            	UNWIND this_disconnect_targets0 as x
+            	WITH collect(this_disconnect_targets0) as this_disconnect_targets0_list, this_disconnect_targets0_rel, this
+            	UNWIND this_disconnect_targets0_list as this_disconnect_targets0
             	DELETE this_disconnect_targets0_rel
+            	WITH *
             	RETURN count(*) AS _
             }
             RETURN count(*) AS disconnect_this_disconnect_targets_Target

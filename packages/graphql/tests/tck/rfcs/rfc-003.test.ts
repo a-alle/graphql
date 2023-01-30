@@ -1184,6 +1184,14 @@ describe("tck/rfs/003", () => {
                             			UNWIND parentNodes as this0
                             			UNWIND connectedNodes as this0_director_connect0_node
                             			MERGE (this0)<-[:DIRECTED]-(this0_director_connect0_node)
+                            	WITH this0, this0_director_connect0_node
+                            CALL {
+                            	WITH this0_director_connect0_node
+                            	MATCH (this0_director_connect0_node)-[this0_director_connect0_node_address_Address_unique:HAS_ADDRESS]->(:Address)
+                            	WITH count(this0_director_connect0_node_address_Address_unique) as c
+                            	CALL apoc.util.validate(NOT (c = 1), '@neo4j/graphql/RELATIONSHIP-REQUIREDDirector.address required exactly once', [0])
+                            	RETURN c AS this0_director_connect0_node_address_Address_unique_ignored
+                            }
                             			RETURN count(*) AS _
                             		}
                             		RETURN count(*) AS _
@@ -1201,11 +1209,7 @@ describe("tck/rfs/003", () => {
                             			UNWIND parentNodes as this0_director_connect0_node
                             			UNWIND connectedNodes as this0_director_connect0_node_address0_node
                             			MERGE (this0_director_connect0_node)-[:HAS_ADDRESS]->(this0_director_connect0_node_address0_node)
-                            			RETURN count(*) AS _
-                            		}
-                            		RETURN count(*) AS _
-                            	}
-                            	WITH this0, this0_director_connect0_node, this0_director_connect0_node_address0_node
+                            	WITH this0_director_connect0_node, this0_director_connect0_node_address0_node
                             CALL {
                             	WITH this0_director_connect0_node
                             	MATCH (this0_director_connect0_node)-[this0_director_connect0_node_address_Address_unique:HAS_ADDRESS]->(:Address)
@@ -1213,6 +1217,10 @@ describe("tck/rfs/003", () => {
                             	CALL apoc.util.validate(NOT (c = 1), '@neo4j/graphql/RELATIONSHIP-REQUIREDDirector.address required exactly once', [0])
                             	RETURN c AS this0_director_connect0_node_address_Address_unique_ignored
                             }
+                            			RETURN count(*) AS _
+                            		}
+                            		RETURN count(*) AS _
+                            	}
                             WITH this0, this0_director_connect0_node, this0_director_connect0_node_address0_node
                             	RETURN count(*) AS connect_this0_director_connect0_node_address_Address
                             }
@@ -1285,9 +1293,10 @@ describe("tck/rfs/003", () => {
                         WHERE this_disconnect_director0.id = $updateMovies_args_disconnect_director_where_Directorparam0
                         CALL {
                         	WITH this_disconnect_director0, this_disconnect_director0_rel, this
-                        	WITH collect(this_disconnect_director0) as this_disconnect_director0, this_disconnect_director0_rel, this
-                        	UNWIND this_disconnect_director0 as x
+                        	WITH collect(this_disconnect_director0) as this_disconnect_director0_list, this_disconnect_director0_rel, this
+                        	UNWIND this_disconnect_director0_list as this_disconnect_director0
                         	DELETE this_disconnect_director0_rel
+                        	WITH *
                         	RETURN count(*) AS _
                         }
                         RETURN count(*) AS disconnect_this_disconnect_director_Director
@@ -1401,9 +1410,10 @@ describe("tck/rfs/003", () => {
                         WHERE this_disconnect_director0.id = $updateMovies_args_disconnect_director_where_Directorparam0
                         CALL {
                         	WITH this_disconnect_director0, this_disconnect_director0_rel, this
-                        	WITH collect(this_disconnect_director0) as this_disconnect_director0, this_disconnect_director0_rel, this
-                        	UNWIND this_disconnect_director0 as x
+                        	WITH collect(this_disconnect_director0) as this_disconnect_director0_list, this_disconnect_director0_rel, this
+                        	UNWIND this_disconnect_director0_list as this_disconnect_director0
                         	DELETE this_disconnect_director0_rel
+                        	WITH *
                         	RETURN count(*) AS _
                         }
                         RETURN count(*) AS disconnect_this_disconnect_director_Director
@@ -1522,9 +1532,10 @@ describe("tck/rfs/003", () => {
                         WHERE this_disconnect_director0.id = $updateMovies_args_disconnect_director_where_Directorparam0
                         CALL {
                         	WITH this_disconnect_director0, this_disconnect_director0_rel, this
-                        	WITH collect(this_disconnect_director0) as this_disconnect_director0, this_disconnect_director0_rel, this
-                        	UNWIND this_disconnect_director0 as x
+                        	WITH collect(this_disconnect_director0) as this_disconnect_director0_list, this_disconnect_director0_rel, this
+                        	UNWIND this_disconnect_director0_list as this_disconnect_director0
                         	DELETE this_disconnect_director0_rel
+                        	WITH *
                         	RETURN count(*) AS _
                         }
                         RETURN count(*) AS disconnect_this_disconnect_director_Director

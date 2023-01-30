@@ -297,9 +297,10 @@ describe("Cypher Auth isAuthenticated", () => {
             CALL apoc.util.validate(NOT (apoc.util.validatePredicate(NOT ($auth.isAuthenticated = true), \\"@neo4j/graphql/UNAUTHENTICATED\\", [0]) AND apoc.util.validatePredicate(NOT ($auth.isAuthenticated = true), \\"@neo4j/graphql/UNAUTHENTICATED\\", [0])), \\"@neo4j/graphql/FORBIDDEN\\", [0])
             CALL {
             	WITH this_disconnect_content0, this_disconnect_content0_rel, this
-            	WITH collect(this_disconnect_content0) as this_disconnect_content0, this_disconnect_content0_rel, this
-            	UNWIND this_disconnect_content0 as x
+            	WITH collect(this_disconnect_content0) as this_disconnect_content0_list, this_disconnect_content0_rel, this
+            	UNWIND this_disconnect_content0_list as this_disconnect_content0
             	DELETE this_disconnect_content0_rel
+            	WITH *
             	RETURN count(*) AS _
             }
             RETURN count(*) AS disconnect_this_disconnect_content_Comment
@@ -311,9 +312,10 @@ describe("Cypher Auth isAuthenticated", () => {
             CALL apoc.util.validate(NOT (apoc.util.validatePredicate(NOT ($auth.isAuthenticated = true), \\"@neo4j/graphql/UNAUTHENTICATED\\", [0]) AND apoc.util.validatePredicate(NOT ($auth.isAuthenticated = true), \\"@neo4j/graphql/UNAUTHENTICATED\\", [0])), \\"@neo4j/graphql/FORBIDDEN\\", [0])
             CALL {
             	WITH this_disconnect_content0, this_disconnect_content0_rel, this
-            	WITH collect(this_disconnect_content0) as this_disconnect_content0, this_disconnect_content0_rel, this
-            	UNWIND this_disconnect_content0 as x
+            	WITH collect(this_disconnect_content0) as this_disconnect_content0_list, this_disconnect_content0_rel, this
+            	UNWIND this_disconnect_content0_list as this_disconnect_content0
             	DELETE this_disconnect_content0_rel
+            	WITH *
             	RETURN count(*) AS _
             }
             RETURN count(*) AS disconnect_this_disconnect_content_Post

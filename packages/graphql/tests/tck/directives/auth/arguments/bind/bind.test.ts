@@ -444,9 +444,10 @@ describe("Cypher Auth Allow", () => {
             WHERE this_disconnect_creator0.id = $updatePosts_args_disconnect_creator_where_Userparam0
             CALL {
             	WITH this_disconnect_creator0, this_disconnect_creator0_rel, this
-            	WITH collect(this_disconnect_creator0) as this_disconnect_creator0, this_disconnect_creator0_rel, this
-            	UNWIND this_disconnect_creator0 as x
+            	WITH collect(this_disconnect_creator0) as this_disconnect_creator0_list, this_disconnect_creator0_rel, this
+            	UNWIND this_disconnect_creator0_list as this_disconnect_creator0
             	DELETE this_disconnect_creator0_rel
+            	WITH *
             	RETURN count(*) AS _
             }
             WITH this, this_disconnect_creator0

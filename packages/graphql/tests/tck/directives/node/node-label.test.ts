@@ -443,9 +443,10 @@ describe("Label in Node directive", () => {
             WHERE this_disconnect_actors0.name = $updateMovies_args_disconnect_actors0_where_Actorparam0
             CALL {
             	WITH this_disconnect_actors0, this_disconnect_actors0_rel, this
-            	WITH collect(this_disconnect_actors0) as this_disconnect_actors0, this_disconnect_actors0_rel, this
-            	UNWIND this_disconnect_actors0 as x
+            	WITH collect(this_disconnect_actors0) as this_disconnect_actors0_list, this_disconnect_actors0_rel, this
+            	UNWIND this_disconnect_actors0_list as this_disconnect_actors0
             	DELETE this_disconnect_actors0_rel
+            	WITH *
             	RETURN count(*) AS _
             }
             RETURN count(*) AS disconnect_this_disconnect_actors_Actor

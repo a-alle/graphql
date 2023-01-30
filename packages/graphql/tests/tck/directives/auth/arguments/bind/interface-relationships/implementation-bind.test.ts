@@ -483,9 +483,17 @@ describe("Cypher Auth Allow", () => {
             WHERE this_disconnect_content0.id = $updateUsers_args_disconnect_content0_where_Commentparam0
             CALL {
             	WITH this_disconnect_content0, this_disconnect_content0_rel, this
-            	WITH collect(this_disconnect_content0) as this_disconnect_content0, this_disconnect_content0_rel, this
-            	UNWIND this_disconnect_content0 as x
+            	WITH collect(this_disconnect_content0) as this_disconnect_content0_list, this_disconnect_content0_rel, this
+            	UNWIND this_disconnect_content0_list as this_disconnect_content0
             	DELETE this_disconnect_content0_rel
+            	WITH *
+            CALL {
+            	WITH this_disconnect_content0
+            	MATCH (this_disconnect_content0)<-[this_disconnect_content0_creator_User_unique:HAS_CONTENT]-(:User)
+            	WITH count(this_disconnect_content0_creator_User_unique) as c
+            	CALL apoc.util.validate(NOT (c = 1), '@neo4j/graphql/RELATIONSHIP-REQUIREDComment.creator required exactly once', [0])
+            	RETURN c AS this_disconnect_content0_creator_User_unique_ignored
+            }
             	RETURN count(*) AS _
             }
             WITH this, this_disconnect_content0
@@ -498,9 +506,17 @@ describe("Cypher Auth Allow", () => {
             WHERE this_disconnect_content0.id = $updateUsers_args_disconnect_content0_where_Postparam0
             CALL {
             	WITH this_disconnect_content0, this_disconnect_content0_rel, this
-            	WITH collect(this_disconnect_content0) as this_disconnect_content0, this_disconnect_content0_rel, this
-            	UNWIND this_disconnect_content0 as x
+            	WITH collect(this_disconnect_content0) as this_disconnect_content0_list, this_disconnect_content0_rel, this
+            	UNWIND this_disconnect_content0_list as this_disconnect_content0
             	DELETE this_disconnect_content0_rel
+            	WITH *
+            CALL {
+            	WITH this_disconnect_content0
+            	MATCH (this_disconnect_content0)<-[this_disconnect_content0_creator_User_unique:HAS_CONTENT]-(:User)
+            	WITH count(this_disconnect_content0_creator_User_unique) as c
+            	CALL apoc.util.validate(NOT (c = 1), '@neo4j/graphql/RELATIONSHIP-REQUIREDPost.creator required exactly once', [0])
+            	RETURN c AS this_disconnect_content0_creator_User_unique_ignored
+            }
             	RETURN count(*) AS _
             }
             WITH this, this_disconnect_content0

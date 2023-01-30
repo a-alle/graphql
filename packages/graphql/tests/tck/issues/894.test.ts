@@ -97,9 +97,10 @@ describe("https://github.com/neo4j/graphql/issues/894", () => {
             WHERE NOT (this_disconnect_activeOrganization0._id = $updateUsers_args_disconnect_activeOrganization_where_Organizationparam0)
             CALL {
             	WITH this_disconnect_activeOrganization0, this_disconnect_activeOrganization0_rel, this
-            	WITH collect(this_disconnect_activeOrganization0) as this_disconnect_activeOrganization0, this_disconnect_activeOrganization0_rel, this
-            	UNWIND this_disconnect_activeOrganization0 as x
+            	WITH collect(this_disconnect_activeOrganization0) as this_disconnect_activeOrganization0_list, this_disconnect_activeOrganization0_rel, this
+            	UNWIND this_disconnect_activeOrganization0_list as this_disconnect_activeOrganization0
             	DELETE this_disconnect_activeOrganization0_rel
+            	WITH *
             	RETURN count(*) AS _
             }
             RETURN count(*) AS disconnect_this_disconnect_activeOrganization_Organization

@@ -111,9 +111,11 @@ describe("createDisconnectAndParams", () => {
             WHERE this0.title = $this0_where_Movieparam0
             CALL {
             	WITH this0, this0_rel, this
-            	WITH collect(this0) as this0, this0_rel, this
-            	UNWIND this0 as x
+            	WITH collect(this0) as this0_list, this0_rel, this
+            	UNWIND this0_list as this0
             	DELETE this0_rel
+            	WITH *
+
             	RETURN count(*) AS _
             }
             CALL {
@@ -122,9 +124,11 @@ describe("createDisconnectAndParams", () => {
             WHERE this0_similarMovies0.title = $this0_disconnect_similarMovies0_where_Movieparam0
             CALL {
             	WITH this0_similarMovies0, this0_similarMovies0_rel, this0
-            	WITH collect(this0_similarMovies0) as this0_similarMovies0, this0_similarMovies0_rel, this0
-            	UNWIND this0_similarMovies0 as x
+            	WITH collect(this0_similarMovies0) as this0_similarMovies0_list, this0_similarMovies0_rel, this0
+            	UNWIND this0_similarMovies0_list as this0_similarMovies0
             	DELETE this0_similarMovies0_rel
+            	WITH *
+
             	RETURN count(*) AS _
             }
             RETURN count(*) AS disconnect_this0_similarMovies_Movie

@@ -512,9 +512,24 @@ describe("@auth allow with interface relationships", () => {
             CALL apoc.util.validate(NOT ((this.id IS NOT NULL AND this.id = $thisauth_param0) AND (exists((this_disconnect_content0)<-[:HAS_CONTENT]-(:\`User\`)) AND any(auth_this0 IN [(this_disconnect_content0)<-[:HAS_CONTENT]-(auth_this0:\`User\`) | auth_this0] WHERE (auth_this0.id IS NOT NULL AND auth_this0.id = $this_disconnect_content0auth_param0)))), \\"@neo4j/graphql/FORBIDDEN\\", [0])
             CALL {
             	WITH this_disconnect_content0, this_disconnect_content0_rel, this
-            	WITH collect(this_disconnect_content0) as this_disconnect_content0, this_disconnect_content0_rel, this
-            	UNWIND this_disconnect_content0 as x
+            	WITH collect(this_disconnect_content0) as this_disconnect_content0_list, this_disconnect_content0_rel, this
+            	UNWIND this_disconnect_content0_list as this_disconnect_content0
             	DELETE this_disconnect_content0_rel
+            	WITH *
+            CALL {
+            	WITH this_disconnect_content0
+            	MATCH (this_disconnect_content0)<-[this_disconnect_content0_creator_User_unique:HAS_CONTENT]-(:User)
+            	WITH count(this_disconnect_content0_creator_User_unique) as c
+            	CALL apoc.util.validate(NOT (c = 1), '@neo4j/graphql/RELATIONSHIP-REQUIREDComment.creator required exactly once', [0])
+            	RETURN c AS this_disconnect_content0_creator_User_unique_ignored
+            }
+            CALL {
+            	WITH this_disconnect_content0
+            	MATCH (this_disconnect_content0)<-[this_disconnect_content0_post_Post_unique:HAS_COMMENT]-(:Post)
+            	WITH count(this_disconnect_content0_post_Post_unique) as c
+            	CALL apoc.util.validate(NOT (c = 1), '@neo4j/graphql/RELATIONSHIP-REQUIREDComment.post required exactly once', [0])
+            	RETURN c AS this_disconnect_content0_post_Post_unique_ignored
+            }
             	RETURN count(*) AS _
             }
             RETURN count(*) AS disconnect_this_disconnect_content_Comment
@@ -527,9 +542,17 @@ describe("@auth allow with interface relationships", () => {
             CALL apoc.util.validate(NOT ((this.id IS NOT NULL AND this.id = $thisauth_param0) AND (exists((this_disconnect_content0)<-[:HAS_CONTENT]-(:\`User\`)) AND any(auth_this0 IN [(this_disconnect_content0)<-[:HAS_CONTENT]-(auth_this0:\`User\`) | auth_this0] WHERE (auth_this0.id IS NOT NULL AND auth_this0.id = $this_disconnect_content0auth_param0)))), \\"@neo4j/graphql/FORBIDDEN\\", [0])
             CALL {
             	WITH this_disconnect_content0, this_disconnect_content0_rel, this
-            	WITH collect(this_disconnect_content0) as this_disconnect_content0, this_disconnect_content0_rel, this
-            	UNWIND this_disconnect_content0 as x
+            	WITH collect(this_disconnect_content0) as this_disconnect_content0_list, this_disconnect_content0_rel, this
+            	UNWIND this_disconnect_content0_list as this_disconnect_content0
             	DELETE this_disconnect_content0_rel
+            	WITH *
+            CALL {
+            	WITH this_disconnect_content0
+            	MATCH (this_disconnect_content0)<-[this_disconnect_content0_creator_User_unique:HAS_CONTENT]-(:User)
+            	WITH count(this_disconnect_content0_creator_User_unique) as c
+            	CALL apoc.util.validate(NOT (c = 1), '@neo4j/graphql/RELATIONSHIP-REQUIREDPost.creator required exactly once', [0])
+            	RETURN c AS this_disconnect_content0_creator_User_unique_ignored
+            }
             	RETURN count(*) AS _
             }
             RETURN count(*) AS disconnect_this_disconnect_content_Post
@@ -603,9 +626,24 @@ describe("@auth allow with interface relationships", () => {
             CALL apoc.util.validate(NOT ((this.id IS NOT NULL AND this.id = $thisauth_param0) AND (exists((this_disconnect_content0)<-[:HAS_CONTENT]-(:\`User\`)) AND any(auth_this0 IN [(this_disconnect_content0)<-[:HAS_CONTENT]-(auth_this0:\`User\`) | auth_this0] WHERE (auth_this0.id IS NOT NULL AND auth_this0.id = $this_disconnect_content0auth_param0)))), \\"@neo4j/graphql/FORBIDDEN\\", [0])
             CALL {
             	WITH this_disconnect_content0, this_disconnect_content0_rel, this
-            	WITH collect(this_disconnect_content0) as this_disconnect_content0, this_disconnect_content0_rel, this
-            	UNWIND this_disconnect_content0 as x
+            	WITH collect(this_disconnect_content0) as this_disconnect_content0_list, this_disconnect_content0_rel, this
+            	UNWIND this_disconnect_content0_list as this_disconnect_content0
             	DELETE this_disconnect_content0_rel
+            	WITH *
+            CALL {
+            	WITH this_disconnect_content0
+            	MATCH (this_disconnect_content0)<-[this_disconnect_content0_creator_User_unique:HAS_CONTENT]-(:User)
+            	WITH count(this_disconnect_content0_creator_User_unique) as c
+            	CALL apoc.util.validate(NOT (c = 1), '@neo4j/graphql/RELATIONSHIP-REQUIREDComment.creator required exactly once', [0])
+            	RETURN c AS this_disconnect_content0_creator_User_unique_ignored
+            }
+            CALL {
+            	WITH this_disconnect_content0
+            	MATCH (this_disconnect_content0)<-[this_disconnect_content0_post_Post_unique:HAS_COMMENT]-(:Post)
+            	WITH count(this_disconnect_content0_post_Post_unique) as c
+            	CALL apoc.util.validate(NOT (c = 1), '@neo4j/graphql/RELATIONSHIP-REQUIREDComment.post required exactly once', [0])
+            	RETURN c AS this_disconnect_content0_post_Post_unique_ignored
+            }
             	RETURN count(*) AS _
             }
             RETURN count(*) AS disconnect_this_disconnect_content_Comment
@@ -618,9 +656,17 @@ describe("@auth allow with interface relationships", () => {
             CALL apoc.util.validate(NOT ((this.id IS NOT NULL AND this.id = $thisauth_param0) AND (exists((this_disconnect_content0)<-[:HAS_CONTENT]-(:\`User\`)) AND any(auth_this0 IN [(this_disconnect_content0)<-[:HAS_CONTENT]-(auth_this0:\`User\`) | auth_this0] WHERE (auth_this0.id IS NOT NULL AND auth_this0.id = $this_disconnect_content0auth_param0)))), \\"@neo4j/graphql/FORBIDDEN\\", [0])
             CALL {
             	WITH this_disconnect_content0, this_disconnect_content0_rel, this
-            	WITH collect(this_disconnect_content0) as this_disconnect_content0, this_disconnect_content0_rel, this
-            	UNWIND this_disconnect_content0 as x
+            	WITH collect(this_disconnect_content0) as this_disconnect_content0_list, this_disconnect_content0_rel, this
+            	UNWIND this_disconnect_content0_list as this_disconnect_content0
             	DELETE this_disconnect_content0_rel
+            	WITH *
+            CALL {
+            	WITH this_disconnect_content0
+            	MATCH (this_disconnect_content0)<-[this_disconnect_content0_creator_User_unique:HAS_CONTENT]-(:User)
+            	WITH count(this_disconnect_content0_creator_User_unique) as c
+            	CALL apoc.util.validate(NOT (c = 1), '@neo4j/graphql/RELATIONSHIP-REQUIREDPost.creator required exactly once', [0])
+            	RETURN c AS this_disconnect_content0_creator_User_unique_ignored
+            }
             	RETURN count(*) AS _
             }
             CALL {
@@ -631,9 +677,31 @@ describe("@auth allow with interface relationships", () => {
             CALL apoc.util.validate(NOT ((exists((this_disconnect_content0)<-[:HAS_CONTENT]-(:\`User\`)) AND any(auth_this0 IN [(this_disconnect_content0)<-[:HAS_CONTENT]-(auth_this0:\`User\`) | auth_this0] WHERE (auth_this0.id IS NOT NULL AND auth_this0.id = $this_disconnect_content0auth_param0))) AND (exists((this_disconnect_content0_comments0)<-[:HAS_CONTENT]-(:\`User\`)) AND any(auth_this0 IN [(this_disconnect_content0_comments0)<-[:HAS_CONTENT]-(auth_this0:\`User\`) | auth_this0] WHERE (auth_this0.id IS NOT NULL AND auth_this0.id = $this_disconnect_content0_comments0auth_param0)))), \\"@neo4j/graphql/FORBIDDEN\\", [0])
             CALL {
             	WITH this_disconnect_content0_comments0, this_disconnect_content0_comments0_rel, this_disconnect_content0
-            	WITH collect(this_disconnect_content0_comments0) as this_disconnect_content0_comments0, this_disconnect_content0_comments0_rel, this_disconnect_content0
-            	UNWIND this_disconnect_content0_comments0 as x
+            	WITH collect(this_disconnect_content0_comments0) as this_disconnect_content0_comments0_list, this_disconnect_content0_comments0_rel, this_disconnect_content0
+            	UNWIND this_disconnect_content0_comments0_list as this_disconnect_content0_comments0
             	DELETE this_disconnect_content0_comments0_rel
+            	WITH *
+            CALL {
+            	WITH this_disconnect_content0_comments0
+            	MATCH (this_disconnect_content0_comments0)<-[this_disconnect_content0_comments0_creator_User_unique:HAS_CONTENT]-(:User)
+            	WITH count(this_disconnect_content0_comments0_creator_User_unique) as c
+            	CALL apoc.util.validate(NOT (c = 1), '@neo4j/graphql/RELATIONSHIP-REQUIREDComment.creator required exactly once', [0])
+            	RETURN c AS this_disconnect_content0_comments0_creator_User_unique_ignored
+            }
+            CALL {
+            	WITH this_disconnect_content0_comments0
+            	MATCH (this_disconnect_content0_comments0)<-[this_disconnect_content0_comments0_post_Post_unique:HAS_COMMENT]-(:Post)
+            	WITH count(this_disconnect_content0_comments0_post_Post_unique) as c
+            	CALL apoc.util.validate(NOT (c = 1), '@neo4j/graphql/RELATIONSHIP-REQUIREDComment.post required exactly once', [0])
+            	RETURN c AS this_disconnect_content0_comments0_post_Post_unique_ignored
+            }
+            CALL {
+            	WITH this_disconnect_content0
+            	MATCH (this_disconnect_content0)<-[this_disconnect_content0_creator_User_unique:HAS_CONTENT]-(:User)
+            	WITH count(this_disconnect_content0_creator_User_unique) as c
+            	CALL apoc.util.validate(NOT (c = 1), '@neo4j/graphql/RELATIONSHIP-REQUIREDPost.creator required exactly once', [0])
+            	RETURN c AS this_disconnect_content0_creator_User_unique_ignored
+            }
             	RETURN count(*) AS _
             }
             RETURN count(*) AS disconnect_this_disconnect_content0_comments_Comment

@@ -236,9 +236,10 @@ describe("Nested Unions", () => {
             WHERE this_disconnect_actors_LeadActor0.name = $updateMovies_args_disconnect_actors_LeadActor0_where_LeadActorparam0
             CALL {
             	WITH this_disconnect_actors_LeadActor0, this_disconnect_actors_LeadActor0_rel, this
-            	WITH collect(this_disconnect_actors_LeadActor0) as this_disconnect_actors_LeadActor0, this_disconnect_actors_LeadActor0_rel, this
-            	UNWIND this_disconnect_actors_LeadActor0 as x
+            	WITH collect(this_disconnect_actors_LeadActor0) as this_disconnect_actors_LeadActor0_list, this_disconnect_actors_LeadActor0_rel, this
+            	UNWIND this_disconnect_actors_LeadActor0_list as this_disconnect_actors_LeadActor0
             	DELETE this_disconnect_actors_LeadActor0_rel
+            	WITH *
             	RETURN count(*) AS _
             }
             CALL {
@@ -247,9 +248,10 @@ describe("Nested Unions", () => {
             WHERE this_disconnect_actors_LeadActor0_actedIn_Series0.name = $updateMovies_args_disconnect_actors_LeadActor0_disconnect_actedIn_Series0_where_Seriesparam0
             CALL {
             	WITH this_disconnect_actors_LeadActor0_actedIn_Series0, this_disconnect_actors_LeadActor0_actedIn_Series0_rel, this_disconnect_actors_LeadActor0
-            	WITH collect(this_disconnect_actors_LeadActor0_actedIn_Series0) as this_disconnect_actors_LeadActor0_actedIn_Series0, this_disconnect_actors_LeadActor0_actedIn_Series0_rel, this_disconnect_actors_LeadActor0
-            	UNWIND this_disconnect_actors_LeadActor0_actedIn_Series0 as x
+            	WITH collect(this_disconnect_actors_LeadActor0_actedIn_Series0) as this_disconnect_actors_LeadActor0_actedIn_Series0_list, this_disconnect_actors_LeadActor0_actedIn_Series0_rel, this_disconnect_actors_LeadActor0
+            	UNWIND this_disconnect_actors_LeadActor0_actedIn_Series0_list as this_disconnect_actors_LeadActor0_actedIn_Series0
             	DELETE this_disconnect_actors_LeadActor0_actedIn_Series0_rel
+            	WITH *
             	RETURN count(*) AS _
             }
             RETURN count(*) AS disconnect_this_disconnect_actors_LeadActor0_actedIn_Series_Series
