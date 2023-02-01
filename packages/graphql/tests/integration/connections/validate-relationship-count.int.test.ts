@@ -568,7 +568,7 @@ describe("Validate relationship count on connections from both sides", () => {
         expect((result?.errors as any[])[0].message).toBe(`${typeMovie}.director required exactly once`);
     });
 
-    // TODO: why is the error msg different?
+    // TODO: java.lang exception
     test.skip("should return error bc cannot have more than one node linked [update - create]", async () => {
         const query = `
           mutation($movieTitle: String!) {
@@ -1542,6 +1542,98 @@ describe("Validate relationship count on connections from both sides", () => {
             expect(result.errors).toBeUndefined();
         });
 
+        test.only("2should not return error on valid connect, disconnect combination [update - nested (connect + disconnect)]", async () => {
+            const query = `
+          mutation($pageID: ID!, $postID: ID!, $userID: ID!, $otherUserID: ID!) {
+            ${typePost.operations.update}(where: {
+              id: $postID
+            },
+            disconnect: {
+              creator: {
+                where: {
+                  node: {
+                    id: $userID
+                  }
+                }
+              },
+              blog: {
+                disconnect: {
+                  owner: {
+                    where: {
+                      node: {
+                        id: $otherUserID
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            connect: {
+              blog: {
+                where: {
+                  node: {
+                    id: $pageID
+                  }
+                },
+                overwrite: true,
+                connect: {
+                  owner: {
+                    where: {
+                      node: {
+                        id: $userID
+                      }
+                    },
+                    overwrite: false
+                  }
+                }
+              },
+              creator: {
+                where: {
+                  node: {
+                    id: $otherUserID
+                  }
+                },
+                overwrite: false,
+              }
+            }) {
+                info {
+                    nodesCreated
+                }
+            }
+          }
+        `;
+
+            await session.run(
+                `
+            CREATE (page1:${typePage} {id: $pageID})
+            CREATE (page2:${typePage} {id: $otherPageID})
+            CREATE (usr1:${typeUser} {id: $userID})
+            CREATE (usr2:${typeUser} {id: $otherUserID})
+            CREATE (usr1)-[:OWNS]->(page2)
+            CREATE (usr2)-[:OWNS]->(page1)
+            CREATE (post:${typePost} {id: $postID})
+            CREATE (usr1)-[:HAS_POST]->(post)
+            CREATE (page1)<-[:IN_PAGE]-(post)
+        `,
+                {
+                    userID,
+                    pageID,
+                    postID,
+                    otherPageID,
+                    otherUserID,
+                }
+            );
+
+            const result = await graphql({
+                schema,
+                source: query,
+                variableValues: { pageID, postID, userID, otherUserID },
+                contextValue: neo4j.getContextValuesWithBookmarks(session.lastBookmark()),
+            });
+
+            expect(result.errors).toBeUndefined();
+        });
+
         test.skip("should not return error on valid connect, disconnect combination [update - update - nested (connect + disconnect)]", async () => {
             const query = `
           mutation($pageID: ID!, $postID: ID!, $userID: ID!, $otherUserID: ID!) {
@@ -1638,6 +1730,694 @@ describe("Validate relationship count on connections from both sides", () => {
             });
 
             expect(result.errors).toBeUndefined();
+        });
+    });
+
+    describe("Interfaces 1:1", () => {
+        let typeSeries: UniqueType;
+
+        beforeEach(async () => {
+            typeMovie = generateUniqueType("Movie");
+            typePerson = generateUniqueType("Person");
+            typeSeries = generateUniqueType("Series");
+
+            const typeDefs = gql`
+            type ${typeMovie} implements Production {
+                title: String!
+                id: ID @unique
+                director: Creature!
+            }
+
+            type ${typeSeries} implements Production {
+              title: String!
+              episode: Int!
+              id: ID @unique
+              director: Creature!
+          }
+
+            interface Production {
+              title: String!
+              director: Creature! @relationship(type: "DIRECTED", direction: IN)
+            }
+            
+            type ${typePerson} implements Creature {
+                name: String!
+                id: ID @unique
+                movies: Production! 
+            }
+
+            interface Creature {
+              name: String!
+              movies: Production! @relationship(type: "DIRECTED",  direction: OUT)
+            }
+        `;
+
+            const neoSchema = new Neo4jGraphQL({ typeDefs });
+            schema = await neoSchema.getSchema();
+        });
+
+        test("should return error on resulting movie connected to 2 directors [create - connect]", async () => {
+            const query = `
+        mutation($directorName: String!, $movieTitle: String!) {
+          ${typePerson.operations.create}(input: [
+              {
+                name: $directorName,
+                movies: {
+                  connect: 
+                    {
+                      where: {
+                        node: {
+                          title: $movieTitle
+                        }
+                      }
+                    }
+                  
+                }
+              }
+            ]) {
+              info {
+                  nodesCreated
+              }
+          }
+        }
+      `;
+
+            await session.run(
+                `
+                  CREATE (movie:${typeMovie} {title: $movieTitle})
+                  CREATE (actor:${typePerson} {name: $directorName})
+                  CREATE (actor)-[:DIRECTED]->(movie)
+              `,
+                {
+                    movieTitle,
+                    directorName,
+                }
+            );
+
+            const result = await graphql({
+                schema,
+                source: query,
+                variableValues: { directorName, movieTitle },
+                contextValue: neo4j.getContextValuesWithBookmarks(session.lastBookmark()),
+            });
+
+            expect(result.errors).toBeDefined();
+            console.log("ERROR FOUND::", result.errors);
+            expect((result?.errors as any[])[0].message).toBe(`${typeMovie}.director required exactly once`);
+        });
+
+        test("should return error on resulting movie connected to 2 directors [create - create - connect]", async () => {
+            const query = `
+            mutation($movieTitle: String!) {
+              ${typeMovie.operations.create}(input: [
+                  {
+                      title: "Avatar",
+                      director: {
+                        create: {
+                          node: {
+                            ${typePerson.name}: {
+                              name: "Jim",
+                              movies: {
+                                connect: 
+                                  {
+                                    where: {
+                                      node: {
+                                        title: $movieTitle
+                                      }
+                                    }
+                                  }
+                               }
+                            }
+                          }
+                        }
+                      }
+                    }
+                ]) {
+                  info {
+                      nodesCreated
+                  }
+              }
+            }
+          `;
+
+            await session.run(
+                `
+                      CREATE (movie:${typeMovie} {title: $movieTitle})
+                      CREATE (actor:${typePerson} {name: $directorName})
+                      CREATE (actor)-[:DIRECTED]->(movie)
+                  `,
+                {
+                    movieTitle,
+                    directorName,
+                }
+            );
+
+            const result = await graphql({
+                schema,
+                source: query,
+                variableValues: { movieTitle },
+                contextValue: neo4j.getContextValuesWithBookmarks(session.lastBookmark()),
+            });
+
+            expect(result.errors).toBeDefined();
+            expect((result?.errors as any[])[0].message).toBe(`${typeMovie}.director required exactly once`);
+        });
+
+        // where + _on
+        test("should return error on resulting person connected to 2 productions [create - create - connect]", async () => {
+            const query = `
+          mutation($movieTitle: String!) {
+            ${typeMovie.operations.create}(input: [
+                {
+                    title: "Avatar",
+                    director: {
+                      create: {
+                        node: {
+                          ${typePerson.name}: {
+                            name: "Jim",
+                            movies: {
+                              connect: 
+                                {
+                                  where: {
+                                    node: {
+                                      _on: {
+                                        ${typeMovie.name}: {
+                                          title: $movieTitle
+                                        },
+                                        ${typeSeries.name}: {
+                                          episode: 1
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                             }
+                          }
+                        }
+                      }
+                    }
+                  }
+              ]) {
+                info {
+                    nodesCreated
+                }
+            }
+          }
+        `;
+
+            await session.run(
+                `
+                    CREATE (series:${typeSeries} {title: "some series", episode: 1})
+                    CREATE (:${typeMovie} {title: $movieTitle})
+                    CREATE (actor:${typePerson} {name: $directorName})
+                    CREATE (actor)-[:DIRECTED]->(series)
+                `,
+                {
+                    movieTitle,
+                    directorName,
+                }
+            );
+
+            const result = await graphql({
+                schema,
+                source: query,
+                variableValues: { movieTitle },
+                contextValue: neo4j.getContextValuesWithBookmarks(session.lastBookmark()),
+            });
+
+            expect(result.errors).toBeDefined();
+            expect((result?.errors as any[])[0].message).toBe(`${typeMovie}.director required exactly once`);
+        });
+
+        test("should return error on resulting movie connected to 2 directors [update - connect]", async () => {
+            const query = `
+            mutation($movieTitle: String!) {
+              ${typePerson.operations.create}(input: [
+                  {
+                      name: "Jim",
+                  }
+                ]) {
+                  info {
+                      nodesCreated
+                  }
+              }
+  
+              ${typePerson.operations.update}(  
+                where: {
+                  name: "Jim"
+                },
+                connect: {
+                  movies: 
+                    {
+                      where: {
+                        node: {
+                          title: $movieTitle
+                        }
+                      }
+                    }
+                  
+                }) {
+                  info {
+                      relationshipsCreated
+                  }
+              }
+            }
+          `;
+
+            await session.run(
+                `
+                      CREATE (movie:${typeMovie} {title: $movieTitle})
+                      CREATE (actor:${typePerson} {name: $directorName})
+                      CREATE (actor)-[:DIRECTED]->(movie)
+                  `,
+                {
+                    movieTitle,
+                    directorName,
+                }
+            );
+
+            const result = await graphql({
+                schema,
+                source: query,
+                variableValues: { movieTitle },
+                contextValue: neo4j.getContextValuesWithBookmarks(session.lastBookmark()),
+            });
+
+            expect(result.errors).toBeDefined();
+            expect((result?.errors as any[])[0].message).toBe(`${typeMovie}.director required exactly once`);
+        });
+
+        // TODO: java.lang exception
+        test.skip("should return error on resulting movie connected to 2 directors [update - connect - connect]", async () => {
+            const query = `
+            mutation($movieTitle: String!) {
+              ${typePerson.operations.create}(input: [
+                  {
+                      name: "Jim",
+                  }
+                ]) {
+                  info {
+                      nodesCreated
+                  }
+              }
+  
+              ${typeMovie.operations.update}(  
+                where: {
+                  title: "Avatar"
+                },
+                disconnect: {
+                  director: {
+                    where: {
+                      node: {
+                        name: "John"
+                      }
+                    }
+                  }
+                },
+                connect: {
+                  director: {
+                    where: {
+                      node: {
+                        name: "Jim"
+                      }
+                    },
+                    connect: {
+                      movies: 
+                        {
+                          where: {
+                            node: {
+                              title: $movieTitle
+                            }
+                          }
+                        }
+                      
+                    }
+                  }
+                }) {
+                  info {
+                      relationshipsCreated
+                  }
+              }
+            }
+          `;
+
+            await session.run(
+                `
+                      CREATE (movie:${typeMovie} {title: $movieTitle})
+                      CREATE (movie2:${typeMovie} {title: "Avatar"})
+                      CREATE (actor:${typePerson} {name: $directorName})
+                      CREATE (actor2:${typePerson} {name: "John"})
+                      CREATE (actor)-[:DIRECTED]->(movie)
+                      CREATE (actor2)-[:DIRECTED]->(movie2)
+                  `,
+                {
+                    movieTitle,
+                    directorName,
+                }
+            );
+
+            const result = await graphql({
+                schema,
+                source: query,
+                variableValues: { movieTitle },
+                contextValue: neo4j.getContextValuesWithBookmarks(session.lastBookmark()),
+            });
+
+            expect(result.errors).toBeDefined();
+            expect((result?.errors as any[])[0].message).toBe(`${typeMovie}.director required exactly once`);
+        });
+
+        test("should return error on resulting movie connected to 2 directors [update - update - connect]", async () => {
+            const query = `
+            mutation($movieTitle: String!) {
+              ${typePerson.operations.create}(input: [
+                  {
+                      name: "Jim",
+                  }
+                ]) {
+                  info {
+                      nodesCreated
+                  }
+              }
+  
+              ${typePerson.operations.update}(  
+                where: {
+                  name: "Jim"
+                },
+                update: {
+                  movies: {
+                    connect: {
+                      where: {
+                        node: {
+                          title: $movieTitle
+                        }
+                      }
+                    }
+                  }
+                  
+                }) {
+                  info {
+                      relationshipsCreated
+                  }
+              }
+            }
+          `;
+
+            await session.run(
+                `
+                      CREATE (movie:${typeMovie} {title: $movieTitle})
+                      CREATE (actor:${typePerson} {name: $directorName})
+                      CREATE (actor)-[:DIRECTED]->(movie)
+                  `,
+                {
+                    movieTitle,
+                    directorName,
+                }
+            );
+
+            const result = await graphql({
+                schema,
+                source: query,
+                variableValues: { movieTitle },
+                contextValue: neo4j.getContextValuesWithBookmarks(session.lastBookmark()),
+            });
+
+            expect(result.errors).toBeDefined();
+            expect((result?.errors as any[])[0].message).toBe(`${typeMovie}.director required exactly once`);
+        });
+
+        // TODO: java.lang exception
+        test.skip("should return error bc cannot have more than one node linked [update - create]", async () => {
+            const query = `
+        mutation($movieTitle: String!) {
+          ${typeMovie.operations.update}(  
+            where: {
+              title: $movieTitle
+            },
+            create: {
+              director: {
+                node: {
+                  ${typePerson.name}: {
+                    name: "Jim"
+                  }
+                }
+              }
+            }) {
+              info {
+                  relationshipsCreated
+              }
+          }
+        }
+      `;
+
+            await session.run(
+                `
+                  CREATE (movie:${typeMovie} {title: $movieTitle})
+                  CREATE (actor:${typePerson} {name: $directorName})
+                  CREATE (actor)-[:DIRECTED]->(movie)
+              `,
+                {
+                    movieTitle,
+                    directorName,
+                }
+            );
+
+            const result = await graphql({
+                schema,
+                source: query,
+                variableValues: { movieTitle },
+                contextValue: neo4j.getContextValuesWithBookmarks(session.lastBookmark()),
+            });
+
+            // console.log(result.errors);
+            expect(result.errors).toBeDefined();
+            // Failed to invoke procedure `apoc.util.validate`: Caused by: java.lang.RuntimeException: Relationship field \"Movie.director\" cannot have more than one node linked
+            expect((result?.errors as any[])[0].message).toBe(`${typeMovie}.director required exactly once`);
+        });
+
+        // TODO: java.lang exception
+        test.skip("should return error on resulting movie connected to 2 directors [update - create - connect]", async () => {
+            const query = `
+        mutation($directorName: String!, $movieTitle: String!) {
+          ${typePerson.operations.update}(  
+            where: {
+              name: $directorName
+            },
+            create: {
+              movies: 
+                {
+                  node: {
+                    ${typeMovie.name}: {
+                      title: "Avatar",
+                      director: {
+                        create: {
+                          node: {
+                            ${typePerson.name}: {
+                              name: "Jim",
+                              movies: {
+                                connect: {
+                                    where: {
+                                      node: {
+                                        title: $movieTitle
+                                      }
+                                    }
+                                  }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+            }) {
+              info {
+                  relationshipsCreated
+              }
+          }
+        }
+      `;
+
+            await session.run(
+                `
+                  CREATE (movie:${typeMovie} {title: $movieTitle})
+                  CREATE (director:${typePerson} {name: $directorName})
+                  CREATE (director)-[:DIRECTED]->(movie)
+              `,
+                {
+                    movieTitle,
+                    directorName,
+                }
+            );
+
+            const result = await graphql({
+                schema,
+                source: query,
+                variableValues: { directorName, movieTitle },
+                contextValue: neo4j.getContextValuesWithBookmarks(session.lastBookmark()),
+            });
+
+            expect(result.errors).toBeDefined();
+            expect((result?.errors as any[])[0].message).toBe(`${typeMovie}.director required exactly once`);
+        });
+
+        test("should return error on resulting movie left w/o connections [update - disconnect]", async () => {
+            const query = `
+        mutation($directorName: String!, $movieTitle: String!) {
+          ${typePerson.operations.update}(  
+            where: {
+              name: $directorName
+            },
+            disconnect: {
+              movies: 
+                {
+                  where: {
+                    node: {
+                      title: $movieTitle
+                    }
+                  }
+                }
+              
+            }) {
+              info {
+                  relationshipsCreated
+              }
+          }
+        }
+      `;
+
+            await session.run(
+                `
+                  CREATE (movie:${typeMovie} {title: $movieTitle})
+                  CREATE (actor:${typePerson} {name: $directorName})
+                  CREATE (actor)-[:DIRECTED]->(movie)
+              `,
+                {
+                    movieTitle,
+                    directorName,
+                }
+            );
+
+            const result = await graphql({
+                schema,
+                source: query,
+                variableValues: { directorName, movieTitle },
+                contextValue: neo4j.getContextValuesWithBookmarks(session.lastBookmark()),
+            });
+
+            expect(result.errors).toBeDefined();
+            expect((result?.errors as any[])[0].message).toBe(`${typeMovie}.director required exactly once`);
+        });
+
+        test("[inverse] should return error on resulting movie left w/o connections [update - disconnect]", async () => {
+            const query = `
+      mutation($directorName: String!, $movieTitle: String!) {
+        ${typeMovie.operations.update}(  
+          where: {
+            title: $movieTitle
+          },
+          disconnect: {
+            director: 
+              {
+                where: {
+                  node: {
+                    name: $directorName
+                  }
+                }
+              }
+            
+          }) {
+            info {
+                relationshipsCreated
+            }
+        }
+      }
+    `;
+
+            await session.run(
+                `
+                CREATE (movie:${typeMovie} {title: $movieTitle})
+                CREATE (actor:${typePerson} {name: $directorName})
+                CREATE (actor)-[:DIRECTED]->(movie)
+            `,
+                {
+                    movieTitle,
+                    directorName,
+                }
+            );
+
+            const result = await graphql({
+                schema,
+                source: query,
+                variableValues: { directorName, movieTitle },
+                contextValue: neo4j.getContextValuesWithBookmarks(session.lastBookmark()),
+            });
+
+            expect(result.errors).toBeDefined();
+            expect((result?.errors as any[])[0].message).toBe(`${typeMovie}.director required exactly once`);
+        });
+
+        test("should return error on resulting movie left w/o connections [update - update - disconnect]", async () => {
+            const otherMovieTitle = "Avatar";
+            const query = `
+        mutation($directorName: String!, $movieTitle: String!, $otherMovieTitle: String!) {
+          ${typeMovie.operations.update}(  
+            where: {
+              title: $otherMovieTitle
+            },
+            update: {
+              director: {
+                where: {
+                  node: {
+                    name: $directorName
+                  }
+                },
+                update: {
+                  node: {
+                    movies: {
+                        disconnect: {
+                            where: {
+                              node: {
+                                title: $movieTitle
+                              }
+                            }
+                          } 
+                      }
+                  }
+                }
+              }
+            }) {
+              info {
+                  relationshipsCreated
+              }
+          }
+        }
+      `;
+
+            await session.run(
+                `
+                  CREATE (movie:${typeMovie} {title: $movieTitle})
+                  CREATE (movie2:${typeMovie} {title: $otherMovieTitle})
+                  CREATE (actor:${typePerson} {name: $directorName})
+                  CREATE (actor)-[:DIRECTED]->(movie)
+                  CREATE (actor)-[:DIRECTED]->(movie2)
+              `,
+                {
+                    movieTitle,
+                    otherMovieTitle,
+                    directorName,
+                }
+            );
+
+            const result = await graphql({
+                schema,
+                source: query,
+                variableValues: { directorName, movieTitle, otherMovieTitle },
+                contextValue: neo4j.getContextValuesWithBookmarks(session.lastBookmark()),
+            });
+
+            expect(result.errors).toBeDefined();
+            expect((result?.errors as any[])[0].message).toBe(`${typeMovie}.director required exactly once`);
         });
     });
 });
