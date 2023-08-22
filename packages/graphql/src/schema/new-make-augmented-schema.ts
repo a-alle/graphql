@@ -32,41 +32,41 @@ import type {
     SchemaExtensionNode,
 } from "graphql";
 import { GraphQLID, GraphQLNonNull, Kind, parse, print } from "graphql";
-import { SchemaComposer } from "graphql-compose";
 import type { InputTypeComposer, InputTypeComposerFieldConfigMapDefinition, ObjectTypeComposer } from "graphql-compose";
+import { SchemaComposer } from "graphql-compose";
 import pluralize from "pluralize";
+import { AggregationTypesMapper } from "./aggregations/aggregation-types-mapper";
+import { augmentFulltextSchema } from "./augment/fulltext";
 import { cypherResolver } from "./resolvers/field/cypher";
 import { numericalResolver } from "./resolvers/field/numerical";
-import { aggregateResolver } from "./resolvers/query/aggregate";
-import { findResolver } from "./resolvers/query/read";
-import { rootConnectionResolver } from "./resolvers/query/root-connection";
 import { createResolver } from "./resolvers/mutation/create";
 import { deleteResolver } from "./resolvers/mutation/delete";
 import { updateResolver } from "./resolvers/mutation/update";
-import { AggregationTypesMapper } from "./aggregations/aggregation-types-mapper";
-import { augmentFulltextSchema } from "./augment/fulltext";
+import { aggregateResolver } from "./resolvers/query/aggregate";
+import { findResolver } from "./resolvers/query/read";
+import { rootConnectionResolver } from "./resolvers/query/root-connection";
 // import * as constants from "../constants";
-import * as Scalars from "../graphql/scalars";
 import type { Node } from "../classes";
 import type Relationship from "../classes/Relationship";
+import * as Scalars from "../graphql/scalars";
+import { isRootType } from "../utils/is-root-type";
+import { upperFirst } from "../utils/upper-first";
 import createConnectionFields from "./create-connection-fields";
+import { ensureNonEmptyInput } from "./ensure-non-empty-input";
 import getCustomResolvers from "./get-custom-resolvers";
+import type { DefinitionNodes } from "./get-definition-nodes";
+import { getDefinitionNodes } from "./get-definition-nodes";
 import type { ObjectFields } from "./get-obj-field-meta";
 import getObjFieldMeta from "./get-obj-field-meta";
 import getSortableFields from "./get-sortable-fields";
+import getUniqueFields from "./get-unique-fields";
+import getWhereFields from "./get-where-fields";
 import {
     graphqlDirectivesToCompose,
     objectFieldsToComposeFields,
     objectFieldsToCreateInputFields,
     objectFieldsToUpdateInputFields,
 } from "./to-compose";
-import getUniqueFields from "./get-unique-fields";
-import getWhereFields from "./get-where-fields";
-import { upperFirst } from "../utils/upper-first";
-import { ensureNonEmptyInput } from "./ensure-non-empty-input";
-import type { DefinitionNodes } from "./get-definition-nodes";
-import { getDefinitionNodes } from "./get-definition-nodes";
-import { isRootType } from "../utils/is-root-type";
 
 // GraphQL type imports
 import type { Subgraph } from "../classes/Subgraph";
@@ -83,21 +83,21 @@ import { DeleteInfo } from "../graphql/objects/DeleteInfo";
 import { PageInfo } from "../graphql/objects/PageInfo";
 import { Point } from "../graphql/objects/Point";
 import { UpdateInfo } from "../graphql/objects/UpdateInfo";
+import type { Neo4jGraphQLSchemaModel } from "../schema-model/Neo4jGraphQLSchemaModel";
+import type { CompositeEntity } from "../schema-model/entity/CompositeEntity";
+import { ConcreteEntity } from "../schema-model/entity/ConcreteEntity";
+import { CompositeEntityAdapter } from "../schema-model/entity/model-adapters/CompositeEntityAdapter";
+import { ConcreteEntityAdapter } from "../schema-model/entity/model-adapters/ConcreteEntityAdapter";
+import type { BaseField, Neo4jFeaturesSettings } from "../types";
 import { addArrayMethodsToITC } from "./array-methods";
 import { addGlobalNodeFields } from "./create-global-nodes";
+import createRelationshipFields from "./create-relationship-fields/create-relationship-fields";
 import getNodes from "./get-nodes";
 import { getResolveAndSubscriptionMethods } from "./get-resolve-and-subscription-methods";
 import { filterInterfaceTypes } from "./make-augmented-schema/filter-interface-types";
 import { addMathOperatorsToITC } from "./math";
 import { getSchemaConfigurationFlags, schemaConfigurationFromSchemaExtensions } from "./schema-configuration";
 import { generateSubscriptionTypes } from "./subscriptions/generate-subscription-types";
-import type { BaseField, Neo4jFeaturesSettings } from "../types";
-import createRelationshipFields from "./create-relationship-fields/create-relationship-fields";
-import type { CompositeEntity } from "../schema-model/entity/CompositeEntity";
-import { CompositeEntityAdapter } from "../schema-model/entity/model-adapters/CompositeEntityAdapter";
-import { ConcreteEntity } from "../schema-model/entity/ConcreteEntity";
-import { ConcreteEntityAdapter } from "../schema-model/entity/model-adapters/ConcreteEntityAdapter";
-import type { Neo4jGraphQLSchemaModel } from "../schema-model/Neo4jGraphQLSchemaModel";
 
 function definitionNodeHasName(x: DefinitionNode): x is DefinitionNode & { name: NameNode } {
     return "name" in x;
@@ -118,20 +118,20 @@ class SchemaGeneratorModel {
 }
 
 class AugmentedSchemaGenerator {
-    _composer: SchemaComposer;
+    private composer: SchemaComposer;
 
     constructor(
         private schemaModel: Neo4jGraphQLSchemaModel,
         private definitionNodes: DefinitionNodes,
         private rootTypesCustomResolvers: ObjectTypeDefinitionNode[]
     ) {
-        this._composer = new SchemaComposer();
+        this.composer = new SchemaComposer();
     }
 
     generate() {
-        let pointInTypeDefs,
-            cartesianPointInTypeDefs,
-            floatWhereInTypeDefs = false;
+        let pointInTypeDefs = false;
+        let cartesianPointInTypeDefs = false;
+        let floatWhereInTypeDefs = false;
 
         for (const entity of this.schemaModel.entities.values()) {
             // TODO: add an EntityModel to schema model to avoid these checks everywhere?
@@ -153,8 +153,8 @@ class AugmentedSchemaGenerator {
                 floatWhereInTypeDefs = true;
             }
             if (model instanceof ConcreteEntityAdapter) {
-                for (const rel of model.relationships.values()) {
-                    for (const attribute of rel.attributes.values()) {
+                for (const relationship of model.relationships.values()) {
+                    for (const attribute of relationship.attributes.values()) {
                         if (attribute.isPoint()) {
                             pointInTypeDefs = true;
                         }
@@ -167,9 +167,9 @@ class AugmentedSchemaGenerator {
         }
 
         // this.pipeDefs();
-        this.add(this.getStaticTypes());
-        this.add(this.getSpatialTypes(pointInTypeDefs, cartesianPointInTypeDefs));
-        this.add(this.getTemporalTypes(floatWhereInTypeDefs));
+        this.addToComposer(this.getStaticTypes());
+        this.addToComposer(this.getSpatialTypes(pointInTypeDefs, cartesianPointInTypeDefs));
+        this.addToComposer(this.getTemporalTypes(floatWhereInTypeDefs));
 
         // this.add(this.getEntityTypes());
         // const relationshipPropertiesTypes = this.getRelationshipProperties(
@@ -177,7 +177,7 @@ class AugmentedSchemaGenerator {
         // );
         // this.add(relationshipPropertiesTypes);
 
-        return this._composer;
+        return this.composer;
     }
 
     private pipeDefs() {
@@ -190,7 +190,7 @@ class AugmentedSchemaGenerator {
             ...this.rootTypesCustomResolvers,
         ].filter(Boolean);
         if (pipedDefs.length) {
-            this._composer.addTypeDefs(print({ kind: Kind.DOCUMENT, definitions: pipedDefs }));
+            this.composer.addTypeDefs(print({ kind: Kind.DOCUMENT, definitions: pipedDefs }));
         }
     }
 
@@ -203,7 +203,13 @@ class AugmentedSchemaGenerator {
         };
     }
 
-    private getSpatialTypes(pointInTypeDefs: boolean, cartesianPointInTypeDefs: boolean) {
+    private getSpatialTypes(
+        pointInTypeDefs: boolean,
+        cartesianPointInTypeDefs: boolean
+    ): {
+        objects: GraphQLObjectType[];
+        inputs: GraphQLInputObjectType[];
+    } {
         const objects: GraphQLObjectType[] = [];
         const inputs: GraphQLInputObjectType[] = [];
         if (pointInTypeDefs) {
@@ -219,7 +225,10 @@ class AugmentedSchemaGenerator {
             inputs,
         };
     }
-    private getTemporalTypes(floatWhereInTypeDefs: boolean) {
+
+    private getTemporalTypes(floatWhereInTypeDefs: boolean): {
+        inputs: GraphQLInputObjectType[];
+    } {
         const inputs: GraphQLInputObjectType[] = [];
         if (floatWhereInTypeDefs) {
             inputs.push(FloatWhere);
@@ -277,7 +286,7 @@ class AugmentedSchemaGenerator {
     }
 
 */
-    private add({
+    private addToComposer({
         objects = [],
         inputs = [],
         enums = [],
@@ -290,11 +299,11 @@ class AugmentedSchemaGenerator {
         scalars?: GraphQLScalarType[];
         interfaces?: GraphQLInterfaceType[];
     }) {
-        objects.forEach((x) => this._composer.createObjectTC(x));
-        inputs.forEach((x) => this._composer.createInputTC(x));
-        enums.forEach((x) => this._composer.createEnumTC(x));
-        interfaces.forEach((x) => this._composer.createInterfaceTC(x));
-        scalars.forEach((scalar) => this._composer.addTypeDefs(`scalar ${scalar.name}`));
+        objects.forEach((x) => this.composer.createObjectTC(x));
+        inputs.forEach((x) => this.composer.createInputTC(x));
+        enums.forEach((x) => this.composer.createEnumTC(x));
+        interfaces.forEach((x) => this.composer.createInterfaceTC(x));
+        scalars.forEach((scalar) => this.composer.addTypeDefs(`scalar ${scalar.name}`));
     }
 }
 
@@ -512,8 +521,8 @@ function makeAugmentedSchema(
         scalarTypes,
         objectTypes,
         enumTypes,
-        inputObjectTypes,
-        directives,
+        // inputObjectTypes,
+        // directives,
         unionTypes,
         schemaExtensions,
     } = definitionNodes;
