@@ -17,15 +17,11 @@
  * limitations under the License.
  */
 
-import { MathAdapter } from "./MathAdapter";
-import { AggregationAdapter } from "./AggregationAdapter";
-import { ListAdapter } from "./ListAdapter";
-import type { Attribute, InputValue } from "../Attribute";
 import type { Annotations } from "../../annotation/Annotation";
+import type { Attribute } from "../Attribute";
 import type { AttributeType } from "../AttributeType";
 import {
     EnumType,
-    UserScalarType,
     GraphQLBuiltInScalarType,
     InterfaceType,
     ListType,
@@ -34,21 +30,26 @@ import {
     Neo4jGraphQLSpatialType,
     Neo4jGraphQLTemporalType,
     Neo4jPointType,
+    ObjectType,
     ScalarType,
     UnionType,
-    ObjectType,
+    UserScalarType,
 } from "../AttributeType";
+import type { InputValue } from "../InputValue";
+import { AggregationAdapter } from "./AggregationAdapter";
+import { ListAdapter } from "./ListAdapter";
+import { MathAdapter } from "./MathAdapter";
 
 export class AttributeAdapter {
     private _listModel: ListAdapter | undefined;
     private _mathModel: MathAdapter | undefined;
     private _aggregationModel: AggregationAdapter | undefined;
-    public name: string;
-    public annotations: Partial<Annotations>;
-    public type: AttributeType;
-    public databaseName: string;
-    public description: string;
-    public attributeArguments: InputValue[];
+    public readonly name: string;
+    public readonly annotations: Partial<Annotations>;
+    public readonly type: AttributeType;
+    public readonly databaseName: string;
+    public readonly description: string;
+    public readonly attributeArguments: InputValue[];
     private assertionOptions: {
         includeLists: boolean;
     };
@@ -115,6 +116,76 @@ export class AttributeAdapter {
             this.isTemporal() ||
             this.isPoint() ||
             this.isCartesianPoint()
+        );
+    }
+
+    /**
+    * Previously defined as:
+    * const nodeFields = objectFieldsToComposeFields([
+        ...node.primitiveFields,
+        ...node.cypherFields,
+        ...node.enumFields,
+        ...node.scalarFields,
+        ...node.interfaceFields,
+        ...node.objectFields,
+        ...node.unionFields,
+        ...node.temporalFields,
+        ...node.pointFields,
+        ...node.customResolverFields,
+    ]);
+    */
+    isObjectField(): boolean {
+        return (
+            this.isGraphQLBuiltInScalar() ||
+            this.isCypher() ||
+            this.isEnum() ||
+            this.isUserScalar() ||
+            this.isInterface() ||
+            this.isObject() ||
+            this.isUnion() ||
+            this.isTemporal() ||
+            this.isPoint() ||
+            this.isCartesianPoint() ||
+            this.isBigInt()
+            // this.isCustomResolver()
+        );
+    }
+
+    /*
+    return [
+        ...obj.primitiveFields,
+        ...obj.scalarFields,
+        ...obj.enumFields,
+        ...obj.temporalFields,
+        ...obj.pointFields,
+        ...obj.cypherFields.filter((field) =>
+            [
+                "Boolean",
+                "ID",
+                "Int",
+                "BigInt",
+                "Float",
+                "String",
+                "DateTime",
+                "LocalDateTime",
+                "Time",
+                "LocalTime",
+                "Date",
+                "Duration",
+            ].includes(field.typeMeta.name)
+        ),
+    ].filter((field) => !field.typeMeta.array);
+    */
+    isSortable(): boolean {
+        return (
+            !this.isList() &&
+            (this.isGraphQLBuiltInScalar() ||
+                this.isUserScalar() ||
+                this.isEnum() ||
+                this.isTemporal() ||
+                this.isPoint() ||
+                this.isCartesianPoint() ||
+                this.isCypher()) // TODO: Double check if this is a weird thingy
         );
     }
 
@@ -319,16 +390,16 @@ export class AttributeAdapter {
 
     getTypePrettyName(): string {
         if (this.isList()) {
-            return `[${this.name}${this.isListElementRequired() ? "!" : ""}]${this.isRequired() ? "!" : ""}`;
+            return `[${this.getTypeName()}${this.isListElementRequired() ? "!" : ""}]${this.isRequired() ? "!" : ""}`;
         }
-        return `${this.name}${this.isRequired() ? "!" : ""}`;
+        return `${this.getTypeName()}${this.isRequired() ? "!" : ""}`;
     }
 
     getTypeName(): string {
         return this.isList() ? this.type.ofType.name : this.type.name;
     }
 
-    getInputTypenames(): InputTypeNames {
+    getInputTypeNames(): InputTypeNames {
         let typeName = this.getTypeName();
         let pretty = this.getTypePrettyName();
         if (this.isSpatial()) {

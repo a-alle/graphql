@@ -17,16 +17,17 @@
  * limitations under the License.
  */
 
+import { toGlobalId } from "../../../utils/global-ids";
+import type { Annotations } from "../../annotation/Annotation";
+import type { Attribute } from "../../attribute/Attribute";
 import { AttributeAdapter } from "../../attribute/model-adapters/AttributeAdapter";
 import type { Relationship } from "../../relationship/Relationship";
-import { getFromMap } from "../../utils/get-from-map";
-import { singular, plural } from "../../utils/string-manipulation";
-import type { ConcreteEntity } from "../ConcreteEntity";
-import type { Attribute } from "../../attribute/Attribute";
 import { RelationshipAdapter } from "../../relationship/model-adapters/RelationshipAdapter";
-import type { Annotations } from "../../annotation/Annotation";
-import { ConcreteEntityOperations } from "./ConcreteEntityOperations";
+import { getFromMap } from "../../utils/get-from-map";
+import { plural, singular } from "../../utils/string-manipulation";
+import type { ConcreteEntity } from "../ConcreteEntity";
 import type { CompositeEntityAdapter } from "./CompositeEntityAdapter";
+import { ConcreteEntityOperations } from "./ConcreteEntityOperations";
 
 export class ConcreteEntityAdapter {
     public readonly name: string;
@@ -34,6 +35,7 @@ export class ConcreteEntityAdapter {
     public readonly attributes: Map<string, AttributeAdapter> = new Map();
     public readonly relationships: Map<string, RelationshipAdapter> = new Map();
     public readonly annotations: Partial<Annotations>;
+    public readonly description: string;
 
     // These keys allow to store the keys of the map in memory and avoid keep iterating over the map.
     private mutableFieldsKeys: string[] = [];
@@ -55,6 +57,7 @@ export class ConcreteEntityAdapter {
         this.annotations = entity.annotations;
         this.initAttributes(entity.attributes);
         this.initRelationships(entity.relationships);
+        this.description = entity.description;
     }
 
     private initAttributes(attributes: Map<string, Attribute>) {
@@ -103,6 +106,14 @@ export class ConcreteEntityAdapter {
         return this._relatedEntities;
     }
 
+    public get objectFields(): AttributeAdapter[] {
+        return Array.from(this.attributes.values()).filter((attribute) => attribute.isObjectField());
+    }
+
+    public get sortableFields(): AttributeAdapter[] {
+        return Array.from(this.attributes.values()).filter((attribute) => attribute.isSortable());
+    }
+
     // TODO: identify usage of old Node.[getLabels | getLabelsString] and migrate them if needed
     public getLabels(): string[] {
         return Array.from(this.labels);
@@ -142,7 +153,19 @@ export class ConcreteEntityAdapter {
         return this._globalIdField;
     }
 
-    public isGlobalNode() {
+    public isGlobalNode(): this is this & { globalIdField: AttributeAdapter } {
         return !!this._globalIdField;
+    }
+
+    public toGlobalId(id: string | number): string {
+        if (!this.isGlobalNode()) {
+            throw new Error(`Entity ${this.name} is not a global node`);
+        }
+
+        return toGlobalId({
+            typeName: this.name,
+            field: this.globalIdField.name,
+            id,
+        });
     }
 }

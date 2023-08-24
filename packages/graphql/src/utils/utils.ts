@@ -96,3 +96,7 @@ export function omitFields<T>(obj: Record<string, T>, fields: string[]): Record<
             return acc;
         }, {});
 }
+
+export function tupleIncludes<T>(tuple: readonly T[], value: unknown): boolean {
+    return tuple.indexOf(value as T) !== -1;
+}

@@ -109,3 +109,45 @@ export const META_OLD_PROPS_CYPHER_VARIABLE = "oldProps";
 
 export const DBMS_COMPONENTS_QUERY =
     "CALL dbms.components() YIELD versions, edition UNWIND versions AS version RETURN version, edition";
+
+export const FIELD_DIRECTIVES = [
+    "relationship",
+    "cypher",
+    "id",
+    "authorization",
+    "authentication",
+    "readonly",
+    "writeonly",
+    "customResolver",
+    "default",
+    "coalesce",
+    "timestamp",
+    "alias",
+    "unique",
+    "callback",
+    "populatedBy",
+    "jwtClaim",
+    "selectable",
+    "settable",
+    "subscriptionsAuthorization",
+    "filterable",
+] as const;
+
+export const OBJECT_DIRECTIVES = [
+    "authorization",
+    "authentication",
+    "exclude",
+    "node",
+    "fulltext",
+    "queryOptions",
+    "plural",
+    "shareable",
+    "subscriptionsAuthorization",
+    "deprecated",
+    "query",
+    "mutation",
+    "subscription",
+    "jwt",
+] as const;
+
+export const PROPAGATED_DIRECTIVES = ["shared", "deprecated"] as const;

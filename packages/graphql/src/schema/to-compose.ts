@@ -19,10 +19,13 @@
 
 import type { DirectiveNode, InputValueDefinitionNode } from "graphql";
 import type { Directive, DirectiveArgs, ObjectTypeComposerFieldConfigAsObjectDefinition } from "graphql-compose";
+import type { InputValue } from "../schema-model/attribute/InputValue";
+import type { AttributeAdapter } from "../schema-model/attribute/model-adapters/AttributeAdapter";
+import { InputValueAdapter } from "../schema-model/attribute/model-adapters/InputValueAdapter";
+import { parseValueNode } from "../schema-model/parser/parse-value-node";
 import type { BaseField, InputField, PrimitiveField, TemporalField } from "../types";
 import { DEPRECATE_NOT } from "./constants";
 import getFieldTypeMeta from "./get-field-type-meta";
-import { parseValueNode } from "../schema-model/parser/parse-value-node";
 import { idResolver } from "./resolvers/field/id";
 import { numericalResolver } from "./resolvers/field/numerical";
 
@@ -36,6 +39,21 @@ export function graphqlArgsToCompose(args: InputValueDefinitionNode[]) {
                 type: meta.pretty,
                 description: arg.description,
                 ...(arg.defaultValue ? { defaultValue: parseValueNode(arg.defaultValue) } : {}),
+            },
+        };
+    }, {});
+}
+
+export function graphqlArgsToCompose2(args: InputValue[]) {
+    return args.reduce((res, arg) => {
+        const inputValueAdapter = new InputValueAdapter(arg);
+
+        return {
+            ...res,
+            [arg.name]: {
+                type: inputValueAdapter.getTypePrettyName(),
+                description: inputValueAdapter.description,
+                ...(inputValueAdapter.defaultValue ? { defaultValue: inputValueAdapter.defaultValue } : {}),
             },
         };
     }, {});
@@ -83,6 +101,47 @@ export function objectFieldsToComposeFields(fields: BaseField[]): {
 
         return { ...res, [field.fieldName]: newField };
     }, {});
+}
+
+export function concreteEntityToComposeFields(
+    objectFields: AttributeAdapter[],
+    userDefinedDirectives: Map<string, DirectiveNode[]>
+): {
+    [k: string]: ObjectTypeComposerFieldConfigAsObjectDefinition<any, any>;
+} {
+    const composeFields = {};
+    for (const field of objectFields) {
+        if (field.annotations.selectable?.onRead === false) {
+            continue;
+        }
+
+        const newField: ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> = {
+            type: field.getTypePrettyName(),
+            args: {},
+            description: field.description,
+        };
+
+        const userDefinedDirectivesOnField = userDefinedDirectives.get(field.name);
+        if (userDefinedDirectivesOnField) {
+            newField.directives = graphqlDirectivesToCompose(userDefinedDirectivesOnField);
+        }
+
+        if (field.isInt() || field.isFloat()) {
+            newField.resolve = numericalResolver;
+        }
+
+        if (field.isID()) {
+            newField.resolve = idResolver;
+        }
+
+        if (field.attributeArguments) {
+            newField.args = graphqlArgsToCompose2(field.attributeArguments);
+        }
+
+        composeFields[field.name] = newField;
+    }
+
+    return composeFields;
 }
 
 export function objectFieldsToCreateInputFields(fields: BaseField[]): Record<string, InputField> {

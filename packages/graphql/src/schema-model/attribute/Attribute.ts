@@ -17,37 +17,10 @@
  * limitations under the License.
  */
 
-import type { ValueNode } from "graphql";
 import { Neo4jGraphQLSchemaValidationError } from "../../classes/Error";
 import { annotationToKey, type Annotation, type Annotations } from "../annotation/Annotation";
-import { parseValueNode } from "../parser/parse-value-node";
 import type { AttributeType } from "./AttributeType";
-
-export class InputValue {
-    // these are arguments (eg field arguments)
-    public readonly name: string;
-    public readonly type: AttributeType;
-    public readonly defaultValue?: string;
-    public readonly description: string;
-    // public readonly annotations: Partial<Annotations> = {};
-
-    constructor({
-        name,
-        type,
-        defaultValue,
-        description,
-    }: {
-        name: string;
-        type: AttributeType;
-        defaultValue?: ValueNode;
-        description?: string;
-    }) {
-        this.name = name;
-        this.type = type;
-        this.defaultValue = defaultValue ? parseValueNode(defaultValue) : undefined;
-        this.description = description || "";
-    }
-}
+import type { InputValue } from "./InputValue";
 
 export class Attribute {
     public readonly name: string;

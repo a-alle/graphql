@@ -18,26 +18,26 @@
  */
 import type { DirectiveNode, DocumentNode, FieldDefinitionNode, ObjectTypeDefinitionNode } from "graphql";
 import { Neo4jGraphQLSchemaValidationError } from "../classes";
+import { nodeDirective, privateDirective, relationshipDirective } from "../graphql/directives";
 import getFieldTypeMeta from "../schema/get-field-type-meta";
 import { filterTruthy } from "../utils/utils";
-import { Neo4jGraphQLSchemaModel } from "./Neo4jGraphQLSchemaModel";
 import type { Operations } from "./Neo4jGraphQLSchemaModel";
+import { Neo4jGraphQLSchemaModel } from "./Neo4jGraphQLSchemaModel";
+import { Operation } from "./Operation";
 import type { Annotation } from "./annotation/Annotation";
 import type { Attribute } from "./attribute/Attribute";
 import type { CompositeEntityType } from "./entity/CompositeEntity";
 import { CompositeEntity } from "./entity/CompositeEntity";
 import { ConcreteEntity } from "./entity/ConcreteEntity";
-import { findDirective } from "./parser/utils";
-import { parseArguments } from "./parser/parse-arguments";
-import type { NestedOperation, QueryDirection, RelationshipDirection } from "./relationship/Relationship";
-import { Relationship } from "./relationship/Relationship";
+import { parseKeyAnnotation } from "./parser/annotations-parser/key-annotation";
 import type { DefinitionCollection } from "./parser/definition-collection";
 import { getDefinitionCollection } from "./parser/definition-collection";
-import { Operation } from "./Operation";
-import { parseAttribute, parseField } from "./parser/parse-attribute";
-import { nodeDirective, privateDirective, relationshipDirective } from "../graphql/directives";
-import { parseKeyAnnotation } from "./parser/annotations-parser/key-annotation";
 import { parseAnnotations } from "./parser/parse-annotation";
+import { parseArguments } from "./parser/parse-arguments";
+import { parseAttribute, parseField } from "./parser/parse-attribute";
+import { findDirective } from "./parser/utils";
+import type { NestedOperation, QueryDirection, RelationshipDirection } from "./relationship/Relationship";
+import { Relationship } from "./relationship/Relationship";
 
 export function generateModel(document: DocumentNode): Neo4jGraphQLSchemaModel {
     const definitionCollection: DefinitionCollection = getDefinitionCollection(document);
@@ -255,6 +255,7 @@ function generateConcreteEntity(
     // TODO: add annotations inherited from interface
     return new ConcreteEntity({
         name: definition.name.value,
+        description: definition.description?.value,
         labels: getLabels(definition),
         attributes: filterTruthy(fields) as Attribute[],
         annotations,

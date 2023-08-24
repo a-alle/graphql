@@ -20,6 +20,7 @@
 import type { IResolvers } from "@graphql-tools/utils";
 import type {
     DefinitionNode,
+    DirectiveNode,
     DocumentNode,
     GraphQLEnumType,
     GraphQLInputObjectType,
@@ -62,6 +63,7 @@ import getSortableFields from "./get-sortable-fields";
 import getUniqueFields from "./get-unique-fields";
 import getWhereFields from "./get-where-fields";
 import {
+    concreteEntityToComposeFields,
     graphqlDirectivesToCompose,
     objectFieldsToComposeFields,
     objectFieldsToCreateInputFields,
@@ -70,6 +72,7 @@ import {
 
 // GraphQL type imports
 import type { Subgraph } from "../classes/Subgraph";
+import { FIELD_DIRECTIVES, OBJECT_DIRECTIVES, PROPAGATED_DIRECTIVES } from "../constants";
 import { SortDirection } from "../graphql/enums/SortDirection";
 import { CartesianPointDistance } from "../graphql/input-objects/CartesianPointDistance";
 import { CartesianPointInput } from "../graphql/input-objects/CartesianPointInput";
@@ -89,6 +92,7 @@ import { ConcreteEntity } from "../schema-model/entity/ConcreteEntity";
 import { CompositeEntityAdapter } from "../schema-model/entity/model-adapters/CompositeEntityAdapter";
 import { ConcreteEntityAdapter } from "../schema-model/entity/model-adapters/ConcreteEntityAdapter";
 import type { BaseField, Neo4jFeaturesSettings } from "../types";
+import { tupleIncludes } from "../utils/utils";
 import { addArrayMethodsToITC } from "./array-methods";
 import { addGlobalNodeFields } from "./create-global-nodes";
 import createRelationshipFields from "./create-relationship-fields/create-relationship-fields";
@@ -307,11 +311,11 @@ class AugmentedSchemaGenerator {
     }
 }
 
-/*
-    abstract ComposerBuilder
-    ConcreteEntityBuilder extends ComposerBuilder
-    CompositeEntityBuilder extends ComposerBuilder
+// abstract ComposerBuilder
+// ConcreteEntityBuilder extends ComposerBuilder
+// CompositeEntityBuilder extends ComposerBuilder
 
+/*
 class ToComposer {
     _entity: ConcreteEntity | CompositeEntity;
     _entityModel: ConcreteEntityAdapter | CompositeEntityAdapter;
@@ -968,34 +972,71 @@ function makeAugmentedSchema(
     });
 
     nodes.forEach((node) => {
-        const nodeFields = objectFieldsToComposeFields([
-            ...node.primitiveFields,
-            ...node.cypherFields,
-            ...node.enumFields,
-            ...node.scalarFields,
-            ...node.interfaceFields,
-            ...node.objectFields,
-            ...node.unionFields,
-            ...node.temporalFields,
-            ...node.pointFields,
-            ...node.customResolverFields,
-        ]);
+        const concreteEntity = schemaModel.getEntity(node.name) as ConcreteEntity;
+        const concreteEntityAdapter = new ConcreteEntityAdapter(concreteEntity);
+
+        // We wanted to get the userDefinedDirectives
+        const definitionNode = definitionNodes.objectTypes.find((type) => type.name.value === node.name);
+        if (!definitionNode) {
+            console.error(`Definition node not found for ${node.name}`);
+            return;
+        }
+
+        const userDefinedFieldDirectives = new Map<string, DirectiveNode[]>();
+        for (const field of definitionNode.fields || []) {
+            if (!field.directives) {
+                return;
+            }
+
+            const matched = field.directives.filter(
+                (directive) => !tupleIncludes(FIELD_DIRECTIVES, directive.name.value)
+            );
+            if (matched.length) {
+                userDefinedFieldDirectives.set(field.name.value, matched);
+            }
+        }
+
+        const nodeFields = concreteEntityToComposeFields(
+            concreteEntityAdapter.objectFields,
+            userDefinedFieldDirectives
+        );
+        // const nodeFields = objectFieldsToComposeFields([
+        //     ...node.primitiveFields,
+        //     ...node.cypherFields,
+        //     ...node.enumFields,
+        //     ...node.scalarFields,
+        //     ...node.interfaceFields,
+        //     ...node.objectFields,
+        //     ...node.unionFields,
+        //     ...node.temporalFields,
+        //     ...node.pointFields,
+        //     ...node.customResolverFields,
+        // ]);
+
+        const userDefinedObjectDirectives =
+            definitionNode.directives?.filter((directive) => !tupleIncludes(OBJECT_DIRECTIVES, directive.name.value)) ||
+            [];
+
+        const propagatedDirectives =
+            definitionNode.directives?.filter((directive) =>
+                tupleIncludes(PROPAGATED_DIRECTIVES, directive.name.value)
+            ) || [];
 
         const composeNode = composer.createObjectTC({
-            name: node.name,
+            name: concreteEntity.name,
             fields: nodeFields,
-            description: node.description,
-            directives: graphqlDirectivesToCompose([...node.otherDirectives, ...node.propagatedDirectives]),
-            interfaces: node.interfaces.map((x) => x.name.value),
+            description: concreteEntityAdapter.description,
+            directives: graphqlDirectivesToCompose([...userDefinedObjectDirectives, ...propagatedDirectives]),
+            interfaces: definitionNode.interfaces?.map((x) => x.name.value), // TODO: we need to get the interfaces from somewhere else?
         });
 
-        if (node.isGlobalNode) {
+        if (concreteEntityAdapter.isGlobalNode()) {
             composeNode.setField("id", {
                 type: new GraphQLNonNull(GraphQLID),
                 resolve: (src) => {
-                    const field = node.getGlobalIdField();
+                    const field = concreteEntityAdapter.globalIdField.name;
                     const value = src[field] as string | number;
-                    return node.toGlobalId(value.toString());
+                    return concreteEntityAdapter.toGlobalId(value.toString());
                 },
             });
 

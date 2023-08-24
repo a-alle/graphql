@@ -24,7 +24,12 @@ import type { Directive } from "graphql-compose";
 import type { ResolveTree } from "graphql-parse-resolve-info";
 import type { JWTVerifyOptions, RemoteJWKSetOptions } from "jose";
 import type { Integer } from "neo4j-driver";
-import type { RelationshipNestedOperationsOption, RelationshipQueryDirectionOption } from "../constants";
+import type {
+    FIELD_DIRECTIVES,
+    OBJECT_DIRECTIVES,
+    RelationshipNestedOperationsOption,
+    RelationshipQueryDirectionOption,
+} from "../constants";
 import type { JwtPayload } from "./jwt-payload";
 import type { Neo4jGraphQLContext } from "./neo4j-graphql-context";
 
@@ -465,3 +470,7 @@ export type PredicateReturn = {
 };
 
 export type CypherFieldReferenceMap = Record<string, Cypher.Node | Cypher.Variable>;
+
+export type Neo4jFieldDirective = (typeof FIELD_DIRECTIVES)[number];
+
+export type Neo4jObjectDirective = (typeof OBJECT_DIRECTIVES)[number];
