@@ -64,7 +64,9 @@ describe("@selectable", () => {
               relationshipsDeleted: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               title: String!
             }
 
@@ -226,8 +228,11 @@ describe("@selectable", () => {
               relationshipsDeleted: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               description: String
+              \\"\\"\\"\\"\\"\\"
               title: String!
             }
 
@@ -383,7 +388,9 @@ describe("@selectable", () => {
               relationshipsDeleted: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               title: String!
             }
 
@@ -548,7 +555,9 @@ describe("@selectable", () => {
               UPDATE
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               title: String!
             }
 
@@ -754,8 +763,10 @@ describe("@selectable", () => {
                   mutation: Mutation
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Actor {
                   actedInAggregate(directed: Boolean = true, where: MovieWhere): ActorMovieActedInAggregationSelection
+                  \\"\\"\\"\\"\\"\\"
                   name: String!
                 }
 
@@ -1030,8 +1041,11 @@ describe("@selectable", () => {
                   relationshipsDeleted: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
+                  \\"\\"\\"\\"\\"\\"
                   description: String
+                  \\"\\"\\"\\"\\"\\"
                   title: String!
                 }
 
@@ -1195,10 +1209,12 @@ describe("@selectable", () => {
                   mutation: Mutation
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Actor {
                   actedIn(directed: Boolean = true, options: MovieOptions, where: MovieWhere): [Movie!]!
                   actedInAggregate(directed: Boolean = true, where: MovieWhere): ActorMovieActedInAggregationSelection
                   actedInConnection(after: String, directed: Boolean = true, first: Int, sort: [ActorActedInConnectionSort!], where: ActorActedInConnectionWhere): ActorActedInConnection!
+                  \\"\\"\\"\\"\\"\\"
                   name: String!
                 }
 
@@ -1488,8 +1504,11 @@ describe("@selectable", () => {
                   relationshipsDeleted: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
+                  \\"\\"\\"\\"\\"\\"
                   description: String
+                  \\"\\"\\"\\"\\"\\"
                   title: String!
                 }
 
@@ -1663,7 +1682,9 @@ describe("@selectable", () => {
                   mutation: Mutation
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Actor {
+                  \\"\\"\\"\\"\\"\\"
                   name: String!
                 }
 
@@ -1907,8 +1928,11 @@ describe("@selectable", () => {
                   relationshipsDeleted: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
+                  \\"\\"\\"\\"\\"\\"
                   description: String
+                  \\"\\"\\"\\"\\"\\"
                   title: String!
                 }
 
@@ -2018,8 +2042,11 @@ describe("@selectable", () => {
                   seriesConnection(after: String, first: Int, sort: [SeriesSort], where: SeriesWhere): SeriesConnection!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Series {
+                  \\"\\"\\"\\"\\"\\"
                   description: String
+                  \\"\\"\\"\\"\\"\\"
                   name: String!
                 }
 
@@ -2169,9 +2196,11 @@ describe("@selectable", () => {
                   mutation: Mutation
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Actor {
                   actedIn(directed: Boolean = true, options: QueryOptions, where: ProductionWhere): [Production!]!
                   actedInConnection(after: String, directed: Boolean = true, first: Int, where: ActorActedInConnectionWhere): ActorActedInConnection!
+                  \\"\\"\\"\\"\\"\\"
                   name: String!
                 }
 
@@ -2426,8 +2455,11 @@ describe("@selectable", () => {
                   relationshipsDeleted: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
+                  \\"\\"\\"\\"\\"\\"
                   description: String
+                  \\"\\"\\"\\"\\"\\"
                   title: String!
                 }
 
@@ -2550,8 +2582,11 @@ describe("@selectable", () => {
                   offset: Int
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Series {
+                  \\"\\"\\"\\"\\"\\"
                   description: String
+                  \\"\\"\\"\\"\\"\\"
                   name: String!
                 }
 
@@ -2707,7 +2742,9 @@ describe("@selectable", () => {
                   mutation: Mutation
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Actor {
+                  \\"\\"\\"\\"\\"\\"
                   name: String!
                 }
 
@@ -2874,8 +2911,11 @@ describe("@selectable", () => {
                   relationshipsDeleted: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie implements Production {
+                  \\"\\"\\"\\"\\"\\"
                   description: String
+                  \\"\\"\\"\\"\\"\\"
                   title: String!
                 }
 
@@ -3035,8 +3075,11 @@ describe("@selectable", () => {
                   seriesConnection(after: String, first: Int, sort: [SeriesSort], where: SeriesWhere): SeriesConnection!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Series implements Production {
+                  \\"\\"\\"\\"\\"\\"
                   description: String
+                  \\"\\"\\"\\"\\"\\"
                   title: String!
                 }
 
@@ -3185,9 +3228,11 @@ describe("@selectable", () => {
                   mutation: Mutation
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Actor {
                   actedIn(directed: Boolean = true, options: ProductionOptions, where: ProductionWhere): [Production!]!
                   actedInConnection(after: String, directed: Boolean = true, first: Int, sort: [ActorActedInConnectionSort!], where: ActorActedInConnectionWhere): ActorActedInConnection!
+                  \\"\\"\\"\\"\\"\\"
                   name: String!
                 }
 
@@ -3369,8 +3414,11 @@ describe("@selectable", () => {
                   relationshipsDeleted: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie implements Production {
+                  \\"\\"\\"\\"\\"\\"
                   description: String
+                  \\"\\"\\"\\"\\"\\"
                   title: String!
                 }
 
@@ -3547,8 +3595,11 @@ describe("@selectable", () => {
                   seriesConnection(after: String, first: Int, sort: [SeriesSort], where: SeriesWhere): SeriesConnection!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Series implements Production {
+                  \\"\\"\\"\\"\\"\\"
                   description: String
+                  \\"\\"\\"\\"\\"\\"
                   title: String!
                 }
 

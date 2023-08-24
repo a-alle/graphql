@@ -106,10 +106,12 @@ describe("Query Direction", () => {
               users: [User!]!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type User {
               friends(directed: Boolean = false, options: UserOptions, where: UserWhere): [User!]!
               friendsAggregate(directed: Boolean = false, where: UserWhere): UserUserFriendsAggregationSelection
               friendsConnection(after: String, directed: Boolean = false, first: Int, sort: [UserFriendsConnectionSort!], where: UserFriendsConnectionWhere): UserFriendsConnection!
+              \\"\\"\\"\\"\\"\\"
               name: String!
             }
 
@@ -430,10 +432,12 @@ describe("Query Direction", () => {
               users: [User!]!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type User {
               friends(options: UserOptions, where: UserWhere): [User!]!
               friendsAggregate(where: UserWhere): UserUserFriendsAggregationSelection
               friendsConnection(after: String, first: Int, sort: [UserFriendsConnectionSort!], where: UserFriendsConnectionWhere): UserFriendsConnection!
+              \\"\\"\\"\\"\\"\\"
               name: String!
             }
 
@@ -754,10 +758,12 @@ describe("Query Direction", () => {
               users: [User!]!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type User {
               friends(options: UserOptions, where: UserWhere): [User!]!
               friendsAggregate(where: UserWhere): UserUserFriendsAggregationSelection
               friendsConnection(after: String, first: Int, sort: [UserFriendsConnectionSort!], where: UserFriendsConnectionWhere): UserFriendsConnection!
+              \\"\\"\\"\\"\\"\\"
               name: String!
             }
 

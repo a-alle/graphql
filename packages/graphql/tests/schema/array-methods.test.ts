@@ -78,10 +78,12 @@ describe("Arrays Methods", () => {
               pay_NOT_INCLUDES: Float @deprecated(reason: \\"Negation filters will be deprecated, use the NOT operator to achieve the same behavior\\")
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Actor {
               actedIn(directed: Boolean = true, options: MovieOptions, where: MovieWhere): [Movie!]!
               actedInAggregate(directed: Boolean = true, where: MovieWhere): ActorMovieActedInAggregationSelection
               actedInConnection(after: String, directed: Boolean = true, first: Int, sort: [ActorActedInConnectionSort!], where: ActorActedInConnectionWhere): ActorActedInConnection!
+              \\"\\"\\"\\"\\"\\"
               name: String
             }
 
@@ -353,12 +355,16 @@ describe("Arrays Methods", () => {
               shortest: ID!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
               actors(directed: Boolean = true, options: ActorOptions, where: ActorWhere): [Actor!]!
               actorsAggregate(directed: Boolean = true, where: ActorWhere): MovieActorActorsAggregationSelection
               actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+              \\"\\"\\"\\"\\"\\"
               averageRating: Float!
+              \\"\\"\\"\\"\\"\\"
               id: ID!
+              \\"\\"\\"\\"\\"\\"
               ratings: [Float!]!
             }
 

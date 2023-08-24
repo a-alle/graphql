@@ -79,10 +79,12 @@ describe("Enums", () => {
               roleType_NOT_IN: [RoleType!] @deprecated(reason: \\"Negation filters will be deprecated, use the NOT operator to achieve the same behavior\\")
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Actor {
               movies(directed: Boolean = true, options: MovieOptions, where: MovieWhere): [Movie!]!
               moviesAggregate(directed: Boolean = true, where: MovieWhere): ActorMovieMoviesAggregationSelection
               moviesConnection(after: String, directed: Boolean = true, first: Int, sort: [ActorMoviesConnectionSort!], where: ActorMoviesConnectionWhere): ActorMoviesConnection!
+              \\"\\"\\"\\"\\"\\"
               name: String!
             }
 
@@ -350,10 +352,12 @@ describe("Enums", () => {
               relationshipsDeleted: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
               actors(directed: Boolean = true, options: ActorOptions, where: ActorWhere): [Actor!]!
               actorsAggregate(directed: Boolean = true, where: ActorWhere): MovieActorActorsAggregationSelection
               actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+              \\"\\"\\"\\"\\"\\"
               title: String!
             }
 

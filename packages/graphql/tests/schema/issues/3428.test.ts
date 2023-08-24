@@ -78,10 +78,12 @@ describe("Relationship nested operations", () => {
               shortest: ID
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
               actors(directed: Boolean = true, options: PersonOptions, where: PersonWhere): [Person!]!
               actorsAggregate(directed: Boolean = true, where: PersonWhere): MoviePersonActorsAggregationSelection
               actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+              \\"\\"\\"\\"\\"\\"
               id: ID
             }
 
@@ -280,8 +282,11 @@ describe("Relationship nested operations", () => {
               totalCount: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Person {
+              \\"\\"\\"\\"\\"\\"
               id: ID!
+              \\"\\"\\"\\"\\"\\"
               name: String
             }
 
@@ -450,9 +455,11 @@ describe("Relationship nested operations", () => {
               shortest: ID
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
               actors(directed: Boolean = true, options: QueryOptions, where: PersonWhere): [Person!]!
               actorsConnection(after: String, directed: Boolean = true, first: Int, where: MovieActorsConnectionWhere): MovieActorsConnection!
+              \\"\\"\\"\\"\\"\\"
               id: ID
             }
 
@@ -584,7 +591,9 @@ describe("Relationship nested operations", () => {
 
             union Person = PersonOne | PersonTwo
 
+            \\"\\"\\"\\"\\"\\"
             type PersonOne {
+              \\"\\"\\"\\"\\"\\"
               name: String
             }
 
@@ -644,7 +653,9 @@ describe("Relationship nested operations", () => {
               totalCount: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type PersonTwo {
+              \\"\\"\\"\\"\\"\\"
               nameTwo: String
             }
 

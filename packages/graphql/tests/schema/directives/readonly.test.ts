@@ -110,8 +110,11 @@ describe("@readonly directive", () => {
               users: [User!]!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type User {
+              \\"\\"\\"\\"\\"\\"
               id: ID!
+              \\"\\"\\"\\"\\"\\"
               username: String!
             }
 
@@ -278,8 +281,11 @@ describe("@readonly directive", () => {
               users: [User!]!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type User implements UserInterface {
+              \\"\\"\\"\\"\\"\\"
               id: ID!
+              \\"\\"\\"\\"\\"\\"
               username: String!
             }
 

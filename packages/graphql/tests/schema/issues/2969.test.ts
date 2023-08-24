@@ -91,10 +91,12 @@ describe("https://github.com/neo4j/graphql/issues/2969", () => {
               startCursor: String
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Post {
               author(directed: Boolean = true, options: UserOptions, where: UserWhere): User!
               authorAggregate(directed: Boolean = true, where: UserWhere): PostUserAuthorAggregationSelection
               authorConnection(after: String, directed: Boolean = true, first: Int, sort: [PostAuthorConnectionSort!], where: PostAuthorConnectionWhere): PostAuthorConnection!
+              \\"\\"\\"\\"\\"\\"
               content: String!
             }
 
@@ -350,8 +352,11 @@ describe("https://github.com/neo4j/graphql/issues/2969", () => {
               users: [User!]!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type User {
+              \\"\\"\\"\\"\\"\\"
               id: ID!
+              \\"\\"\\"\\"\\"\\"
               name: String!
               posts(directed: Boolean = true, options: PostOptions, where: PostWhere): [Post!]!
               postsAggregate(directed: Boolean = true, where: PostWhere): UserPostPostsAggregationSelection

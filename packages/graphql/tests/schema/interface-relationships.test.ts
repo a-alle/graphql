@@ -89,9 +89,11 @@ describe("Interface Relationships", () => {
               screenTime_NOT_IN: [Int!] @deprecated(reason: \\"Negation filters will be deprecated, use the NOT operator to achieve the same behavior\\")
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Actor {
               actedIn(directed: Boolean = true, options: ProductionOptions, where: ProductionWhere): [Production!]!
               actedInConnection(after: String, directed: Boolean = true, first: Int, sort: [ActorActedInConnectionSort!], where: ActorActedInConnectionWhere): ActorActedInConnection!
+              \\"\\"\\"\\"\\"\\"
               name: String!
             }
 
@@ -287,8 +289,11 @@ describe("Interface Relationships", () => {
               sum: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie implements Production {
+              \\"\\"\\"\\"\\"\\"
               runtime: Int!
+              \\"\\"\\"\\"\\"\\"
               title: String!
             }
 
@@ -452,8 +457,11 @@ describe("Interface Relationships", () => {
               seriesConnection(after: String, first: Int, sort: [SeriesSort], where: SeriesWhere): SeriesConnection!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Series implements Production {
+              \\"\\"\\"\\"\\"\\"
               episodes: Int!
+              \\"\\"\\"\\"\\"\\"
               title: String!
             }
 
@@ -641,9 +649,11 @@ describe("Interface Relationships", () => {
               screenTime_NOT_IN: [Int!] @deprecated(reason: \\"Negation filters will be deprecated, use the NOT operator to achieve the same behavior\\")
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Actor {
               actedIn(directed: Boolean = true, options: ProductionOptions, where: ProductionWhere): [Production!]!
               actedInConnection(after: String, directed: Boolean = true, first: Int, sort: [ActorActedInConnectionSort!], where: ActorActedInConnectionWhere): ActorActedInConnection!
+              \\"\\"\\"\\"\\"\\"
               name: String!
             }
 
@@ -844,7 +854,9 @@ describe("Interface Relationships", () => {
               relationshipsDeleted: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Episode {
+              \\"\\"\\"\\"\\"\\"
               runtime: Int!
               series(directed: Boolean = true, options: SeriesOptions, where: SeriesWhere): Series!
               seriesAggregate(directed: Boolean = true, where: SeriesWhere): EpisodeSeriesSeriesAggregationSelection
@@ -1093,11 +1105,14 @@ describe("Interface Relationships", () => {
               sum: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie implements Production {
               actors(directed: Boolean = true, options: ActorOptions, where: ActorWhere): [Actor!]!
               actorsAggregate(directed: Boolean = true, where: ActorWhere): MovieActorActorsAggregationSelection
               actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [ProductionActorsConnectionSort!], where: ProductionActorsConnectionWhere): ProductionActorsConnection!
+              \\"\\"\\"\\"\\"\\"
               runtime: Int!
+              \\"\\"\\"\\"\\"\\"
               title: String!
             }
 
@@ -1631,14 +1646,17 @@ describe("Interface Relationships", () => {
               seriesConnection(after: String, first: Int, sort: [SeriesSort], where: SeriesWhere): SeriesConnection!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Series implements Production {
               actors(directed: Boolean = true, options: ActorOptions, where: ActorWhere): [Actor!]!
               actorsAggregate(directed: Boolean = true, where: ActorWhere): SeriesActorActorsAggregationSelection
               actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [ProductionActorsConnectionSort!], where: ProductionActorsConnectionWhere): ProductionActorsConnection!
+              \\"\\"\\"\\"\\"\\"
               episodeCount: Int!
               episodes(directed: Boolean = true, options: EpisodeOptions, where: EpisodeWhere): [Episode!]!
               episodesAggregate(directed: Boolean = true, where: EpisodeWhere): SeriesEpisodeEpisodesAggregationSelection
               episodesConnection(after: String, directed: Boolean = true, first: Int, sort: [SeriesEpisodesConnectionSort!], where: SeriesEpisodesConnectionWhere): SeriesEpisodesConnection!
+              \\"\\"\\"\\"\\"\\"
               title: String!
             }
 
@@ -2421,7 +2439,9 @@ describe("Interface Relationships", () => {
               shortest: String!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Type1 {
+              \\"\\"\\"\\"\\"\\"
               field1: String!
               interface1(directed: Boolean = true, options: Interface1Options, where: Interface1Where): [Interface1!]!
               interface1Connection(after: String, directed: Boolean = true, first: Int, sort: [Type1Interface1ConnectionSort!], where: Type1Interface1ConnectionWhere): Type1Interface1Connection!
@@ -2454,7 +2474,9 @@ describe("Interface Relationships", () => {
               node: Type1!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Type1Interface1 implements Interface1 {
+              \\"\\"\\"\\"\\"\\"
               field1: String!
               interface2(directed: Boolean = true, options: Interface2Options, where: Interface2Where): [Interface2!]!
               interface2Connection(after: String, directed: Boolean = true, first: Int, sort: [Interface1Interface2ConnectionSort!], where: Interface1Interface2ConnectionWhere): Interface1Interface2Connection!
@@ -2641,7 +2663,9 @@ describe("Interface Relationships", () => {
               totalCount: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Type1Interface2 implements Interface2 {
+              \\"\\"\\"\\"\\"\\"
               field2: String!
             }
 
@@ -2766,7 +2790,9 @@ describe("Interface Relationships", () => {
               totalCount: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Type2Interface1 implements Interface1 {
+              \\"\\"\\"\\"\\"\\"
               field1: String!
               interface2(directed: Boolean = true, options: Interface2Options, where: Interface2Where): [Interface2!]!
               interface2Connection(after: String, directed: Boolean = true, first: Int, sort: [Interface1Interface2ConnectionSort!], where: Interface1Interface2ConnectionWhere): Interface1Interface2Connection!
@@ -2893,7 +2919,9 @@ describe("Interface Relationships", () => {
               totalCount: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Type2Interface2 implements Interface2 {
+              \\"\\"\\"\\"\\"\\"
               field2: String!
             }
 
@@ -3032,11 +3060,14 @@ describe("Interface Relationships", () => {
               mutation: Mutation
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Comment implements Content {
+              \\"\\"\\"\\"\\"\\"
               content: String
               creator(directed: Boolean = true, options: UserOptions, where: UserWhere): User!
               creatorAggregate(directed: Boolean = true, where: UserWhere): CommentUserCreatorAggregationSelection
               creatorConnection(after: String, directed: Boolean = true, first: Int, sort: [ContentCreatorConnectionSort!], where: ContentCreatorConnectionWhere): ContentCreatorConnection!
+              \\"\\"\\"\\"\\"\\"
               id: ID
               post(directed: Boolean = true, options: PostOptions, where: PostWhere): Post!
               postAggregate(directed: Boolean = true, where: PostWhere): CommentPostPostAggregationSelection
@@ -3624,14 +3655,17 @@ describe("Interface Relationships", () => {
               startCursor: String
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Post implements Content {
               comments(directed: Boolean = true, options: CommentOptions, where: CommentWhere): [Comment!]!
               commentsAggregate(directed: Boolean = true, where: CommentWhere): PostCommentCommentsAggregationSelection
               commentsConnection(after: String, directed: Boolean = true, first: Int, sort: [PostCommentsConnectionSort!], where: PostCommentsConnectionWhere): PostCommentsConnection!
+              \\"\\"\\"\\"\\"\\"
               content: String
               creator(directed: Boolean = true, options: UserOptions, where: UserWhere): User!
               creatorAggregate(directed: Boolean = true, where: UserWhere): PostUserCreatorAggregationSelection
               creatorConnection(after: String, directed: Boolean = true, first: Int, sort: [ContentCreatorConnectionSort!], where: ContentCreatorConnectionWhere): ContentCreatorConnection!
+              \\"\\"\\"\\"\\"\\"
               id: ID
             }
 
@@ -4008,10 +4042,13 @@ describe("Interface Relationships", () => {
               users: [User!]!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type User {
               content(directed: Boolean = true, options: ContentOptions, where: ContentWhere): [Content!]!
               contentConnection(after: String, directed: Boolean = true, first: Int, sort: [UserContentConnectionSort!], where: UserContentConnectionWhere): UserContentConnection!
+              \\"\\"\\"\\"\\"\\"
               id: ID
+              \\"\\"\\"\\"\\"\\"
               name: String
             }
 

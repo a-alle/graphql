@@ -69,8 +69,11 @@ describe("Algebraic", () => {
               sum: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               id: ID
+              \\"\\"\\"\\"\\"\\"
               viewers: Int!
             }
 
@@ -239,8 +242,11 @@ describe("Algebraic", () => {
               shortest: ID
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               id: ID
+              \\"\\"\\"\\"\\"\\"
               viewers: BigInt!
             }
 
@@ -405,8 +411,11 @@ describe("Algebraic", () => {
               shortest: ID
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               id: ID
+              \\"\\"\\"\\"\\"\\"
               viewers: Float!
             }
 
@@ -571,10 +580,12 @@ describe("Algebraic", () => {
               relationshipsDeleted: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Director {
               directs(directed: Boolean = true, options: MovieOptions, where: MovieWhere): [Movie!]!
               directsAggregate(directed: Boolean = true, where: MovieWhere): DirectorMovieDirectsAggregationSelection
               directsConnection(after: String, directed: Boolean = true, first: Int, sort: [DirectorDirectsConnectionSort!], where: DirectorDirectsConnectionWhere): DirectorDirectsConnection!
+              \\"\\"\\"\\"\\"\\"
               lastName: String!
             }
 
@@ -815,11 +826,14 @@ describe("Algebraic", () => {
               sum: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
               directedBy(directed: Boolean = true, options: DirectorOptions, where: DirectorWhere): Director
               directedByAggregate(directed: Boolean = true, where: DirectorWhere): MovieDirectorDirectedByAggregationSelection
               directedByConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieDirectedByConnectionSort!], where: MovieDirectedByConnectionWhere): MovieDirectedByConnection!
+              \\"\\"\\"\\"\\"\\"
               id: ID
+              \\"\\"\\"\\"\\"\\"
               viewers: Int!
             }
 
@@ -1167,8 +1181,11 @@ describe("Algebraic", () => {
               sum: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie implements Production {
+              \\"\\"\\"\\"\\"\\"
               id: ID
+              \\"\\"\\"\\"\\"\\"
               viewers: Int!
               workers(directed: Boolean = true, options: PersonOptions, where: PersonWhere): [Person!]!
               workersAggregate(directed: Boolean = true, where: PersonWhere): MoviePersonWorkersAggregationSelection
@@ -1441,7 +1458,9 @@ describe("Algebraic", () => {
               totalCount: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Person {
+              \\"\\"\\"\\"\\"\\"
               name: String!
               worksInProduction(directed: Boolean = true, options: ProductionOptions, where: ProductionWhere): [Production!]!
               worksInProductionConnection(after: String, directed: Boolean = true, first: Int, sort: [PersonWorksInProductionConnectionSort!], where: PersonWorksInProductionConnectionWhere): PersonWorksInProductionConnection!
@@ -1820,10 +1839,12 @@ describe("Algebraic", () => {
               sum: Float
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
               actors(directed: Boolean = true, options: PersonOptions, where: PersonWhere): [Person!]!
               actorsAggregate(directed: Boolean = true, where: PersonWhere): MoviePersonActorsAggregationSelection
               actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+              \\"\\"\\"\\"\\"\\"
               title: String!
             }
 
@@ -2128,10 +2149,12 @@ describe("Algebraic", () => {
               totalCount: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Person {
               actedInMovies(directed: Boolean = true, options: MovieOptions, where: MovieWhere): [Movie!]!
               actedInMoviesAggregate(directed: Boolean = true, where: MovieWhere): PersonMovieActedInMoviesAggregationSelection
               actedInMoviesConnection(after: String, directed: Boolean = true, first: Int, sort: [PersonActedInMoviesConnectionSort!], where: PersonActedInMoviesConnectionWhere): PersonActedInMoviesConnection!
+              \\"\\"\\"\\"\\"\\"
               name: String!
             }
 

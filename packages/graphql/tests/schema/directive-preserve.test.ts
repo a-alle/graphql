@@ -69,7 +69,9 @@ describe("Directive-preserve", () => {
               shortest: ID
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie @preservedTopLevel {
+              \\"\\"\\"\\"\\"\\"
               id: ID @preservedFieldLevel(string: \\"str\\", int: 12, float: 1.2, boolean: true)
             }
 
@@ -227,10 +229,12 @@ describe("Directive-preserve", () => {
               sum: Float
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Genre {
               movies(directed: Boolean = true, options: MovieOptions, where: MovieWhere): [Movie!]!
               moviesAggregate(directed: Boolean = true, where: MovieWhere): GenreMovieMoviesAggregationSelection
               moviesConnection(after: String, directed: Boolean = true, first: Int, sort: [GenreMoviesConnectionSort!], where: GenreMoviesConnectionWhere): GenreMoviesConnection!
+              \\"\\"\\"\\"\\"\\"
               name: String
             }
 
@@ -526,12 +530,16 @@ describe("Directive-preserve", () => {
               sum: Int
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
               genres(directed: Boolean = true, options: GenreOptions, where: GenreWhere): [Genre!]! @deprecated(reason: \\"Do not use\\")
               genresAggregate(directed: Boolean = true, where: GenreWhere): MovieGenreGenresAggregationSelection @deprecated(reason: \\"Do not use\\")
               genresConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieGenresConnectionSort!], where: MovieGenresConnectionWhere): MovieGenresConnection! @deprecated(reason: \\"Do not use\\")
+              \\"\\"\\"\\"\\"\\"
               imdbRating: Float
+              \\"\\"\\"\\"\\"\\"
               title: String
+              \\"\\"\\"\\"\\"\\"
               year: Int
             }
 
@@ -929,9 +937,11 @@ describe("Directive-preserve", () => {
               role_STARTS_WITH: String
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Actor {
               actedIn(directed: Boolean = true, options: ProductionOptions, where: ProductionWhere): [Production!]!
               actedInConnection(after: String, directed: Boolean = true, first: Int, sort: [ActorActedInConnectionSort!], where: ActorActedInConnectionWhere): ActorActedInConnection!
+              \\"\\"\\"\\"\\"\\"
               name: String!
             }
 
@@ -1134,11 +1144,14 @@ describe("Directive-preserve", () => {
               sum: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie implements Production {
               actors(directed: Boolean = true, options: ActorOptions, where: ActorWhere): [Actor!]! @deprecated(reason: \\"Do not use\\")
               actorsAggregate(directed: Boolean = true, where: ActorWhere): MovieActorActorsAggregationSelection @deprecated(reason: \\"Do not use\\")
               actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [ProductionActorsConnectionSort!], where: ProductionActorsConnectionWhere): ProductionActorsConnection! @deprecated(reason: \\"Do not use\\")
+              \\"\\"\\"\\"\\"\\"
               runtime: Int!
+              \\"\\"\\"\\"\\"\\"
               title: String!
             }
 
@@ -1557,11 +1570,14 @@ describe("Directive-preserve", () => {
               seriesConnection(after: String, first: Int, sort: [SeriesSort], where: SeriesWhere): SeriesConnection!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Series implements Production {
               actors(directed: Boolean = true, options: ActorOptions, where: ActorWhere): [Actor!]!
               actorsAggregate(directed: Boolean = true, where: ActorWhere): SeriesActorActorsAggregationSelection
               actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [ProductionActorsConnectionSort!], where: ProductionActorsConnectionWhere): ProductionActorsConnection!
+              \\"\\"\\"\\"\\"\\"
               episodes: Int!
+              \\"\\"\\"\\"\\"\\"
               title: String!
             }
 
@@ -1899,9 +1915,11 @@ describe("Directive-preserve", () => {
               role_STARTS_WITH: String
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Actor {
               actedIn(directed: Boolean = true, options: ProductionOptions, where: ProductionWhere): [Production!]!
               actedInConnection(after: String, directed: Boolean = true, first: Int, sort: [ActorActedInConnectionSort!], where: ActorActedInConnectionWhere): ActorActedInConnection!
+              \\"\\"\\"\\"\\"\\"
               name: String!
             }
 
@@ -2104,11 +2122,14 @@ describe("Directive-preserve", () => {
               sum: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie implements Production {
               actors(directed: Boolean = true, options: ActorOptions, where: ActorWhere): [Actor!]! @deprecated(reason: \\"Do not use\\")
               actorsAggregate(directed: Boolean = true, where: ActorWhere): MovieActorActorsAggregationSelection @deprecated(reason: \\"Do not use\\")
               actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [ProductionActorsConnectionSort!], where: ProductionActorsConnectionWhere): ProductionActorsConnection! @deprecated(reason: \\"Do not use\\")
+              \\"\\"\\"\\"\\"\\"
               runtime: Int!
+              \\"\\"\\"\\"\\"\\"
               title: String!
             }
 
@@ -2527,11 +2548,14 @@ describe("Directive-preserve", () => {
               seriesConnection(after: String, first: Int, sort: [SeriesSort], where: SeriesWhere): SeriesConnection!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Series implements Production {
               actors(directed: Boolean = true, options: ActorOptions, where: ActorWhere): [Actor!]! @deprecated(reason: \\"Do not use\\")
               actorsAggregate(directed: Boolean = true, where: ActorWhere): SeriesActorActorsAggregationSelection @deprecated(reason: \\"Do not use\\")
               actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [ProductionActorsConnectionSort!], where: ProductionActorsConnectionWhere): ProductionActorsConnection! @deprecated(reason: \\"Do not use\\")
+              \\"\\"\\"\\"\\"\\"
               episodes: Int!
+              \\"\\"\\"\\"\\"\\"
               title: String!
             }
 
@@ -2829,10 +2853,12 @@ describe("Directive-preserve", () => {
               mutation: Mutation
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Blog {
               posts(directed: Boolean = true, options: PostOptions, where: PostWhere): [Post!]!
               postsAggregate(directed: Boolean = true, where: PostWhere): BlogPostPostsAggregationSelection
               postsConnection(after: String, directed: Boolean = true, first: Int, sort: [BlogPostsConnectionSort!], where: BlogPostsConnectionWhere): BlogPostsConnection!
+              \\"\\"\\"\\"\\"\\"
               title: String
             }
 
@@ -3122,7 +3148,9 @@ describe("Directive-preserve", () => {
               startCursor: String
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Post {
+              \\"\\"\\"\\"\\"\\"
               content: String @deprecated(reason: \\"Do not use post.content\\")
             }
 
@@ -3241,9 +3269,11 @@ describe("Directive-preserve", () => {
               users: [User!]!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type User {
               content(directed: Boolean = true, options: QueryOptions, where: ContentWhere): [Content!]! @deprecated(reason: \\"Do not use user.content\\")
               contentConnection(after: String, directed: Boolean = true, first: Int, where: UserContentConnectionWhere): UserContentConnection! @deprecated(reason: \\"Do not use user.content\\")
+              \\"\\"\\"\\"\\"\\"
               name: String
             }
 

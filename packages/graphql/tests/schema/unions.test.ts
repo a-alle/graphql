@@ -70,7 +70,9 @@ describe("Unions", () => {
               relationshipsDeleted: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Genre {
+              \\"\\"\\"\\"\\"\\"
               id: ID
             }
 
@@ -139,10 +141,13 @@ describe("Unions", () => {
               shortest: ID
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               id: ID
               search(directed: Boolean = true, options: QueryOptions, where: SearchWhere): [Search!]!
               searchConnection(after: String, directed: Boolean = true, first: Int, where: MovieSearchConnectionWhere): MovieSearchConnection!
+              \\"\\"\\"\\"\\"\\"
               searchNoDirective: Search
             }
 

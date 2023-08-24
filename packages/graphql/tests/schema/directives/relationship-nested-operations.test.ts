@@ -79,10 +79,12 @@ describe("Relationship nested operations", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   actors(directed: Boolean = true, options: PersonOptions, where: PersonWhere): [Person!]!
                   actorsAggregate(directed: Boolean = true, where: PersonWhere): MoviePersonActorsAggregationSelection
                   actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                 }
 
@@ -279,7 +281,9 @@ describe("Relationship nested operations", () => {
                   totalCount: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Person {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
                 }
 
@@ -425,10 +429,12 @@ describe("Relationship nested operations", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   actors(directed: Boolean = true, options: PersonOptions, where: PersonWhere): [Person!]!
                   actorsAggregate(directed: Boolean = true, where: PersonWhere): MoviePersonActorsAggregationSelection
                   actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                 }
 
@@ -644,7 +650,9 @@ describe("Relationship nested operations", () => {
                   totalCount: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Person {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
                 }
 
@@ -790,10 +798,12 @@ describe("Relationship nested operations", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   actors(directed: Boolean = true, options: PersonOptions, where: PersonWhere): [Person!]!
                   actorsAggregate(directed: Boolean = true, where: PersonWhere): MoviePersonActorsAggregationSelection
                   actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                 }
 
@@ -1013,7 +1023,9 @@ describe("Relationship nested operations", () => {
                   totalCount: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Person {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
                 }
 
@@ -1163,10 +1175,12 @@ describe("Relationship nested operations", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   actors(directed: Boolean = true, options: PersonOptions, where: PersonWhere): [Person!]!
                   actorsAggregate(directed: Boolean = true, where: PersonWhere): MoviePersonActorsAggregationSelection
                   actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                 }
 
@@ -1373,7 +1387,9 @@ describe("Relationship nested operations", () => {
                   totalCount: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Person {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
                 }
 
@@ -1519,10 +1535,12 @@ describe("Relationship nested operations", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   actors(directed: Boolean = true, options: PersonOptions, where: PersonWhere): [Person!]!
                   actorsAggregate(directed: Boolean = true, where: PersonWhere): MoviePersonActorsAggregationSelection
                   actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                 }
 
@@ -1733,7 +1751,9 @@ describe("Relationship nested operations", () => {
                   totalCount: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Person {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
                 }
 
@@ -1879,10 +1899,12 @@ describe("Relationship nested operations", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   actors(directed: Boolean = true, options: PersonOptions, where: PersonWhere): [Person!]!
                   actorsAggregate(directed: Boolean = true, where: PersonWhere): MoviePersonActorsAggregationSelection
                   actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                 }
 
@@ -2093,7 +2115,9 @@ describe("Relationship nested operations", () => {
                   totalCount: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Person {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
                 }
 
@@ -2240,10 +2264,12 @@ describe("Relationship nested operations", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   actors(directed: Boolean = true, options: PersonOptions, where: PersonWhere): [Person!]!
                   actorsAggregate(directed: Boolean = true, where: PersonWhere): MoviePersonActorsAggregationSelection
                   actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                 }
 
@@ -2440,7 +2466,9 @@ describe("Relationship nested operations", () => {
                   totalCount: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Person {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
                 }
 
@@ -2593,10 +2621,12 @@ describe("Relationship nested operations", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   actors(directed: Boolean = true, options: PersonOptions, where: PersonWhere): [Person!]!
                   actorsAggregate(directed: Boolean = true, where: PersonWhere): MoviePersonActorsAggregationSelection
                   actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                 }
 
@@ -2819,8 +2849,11 @@ describe("Relationship nested operations", () => {
                   totalCount: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Person {
+                  \\"\\"\\"\\"\\"\\"
                   id: ID!
+                  \\"\\"\\"\\"\\"\\"
                   name: String
                 }
 
@@ -2991,10 +3024,12 @@ describe("Relationship nested operations", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   actors(directed: Boolean = true, options: PersonOptions, where: PersonWhere): [Person!]!
                   actorsAggregate(directed: Boolean = true, where: PersonWhere): MoviePersonActorsAggregationSelection
                   actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                   producers(directed: Boolean = true, options: PersonOptions, where: PersonWhere): [Person!]!
                   producersAggregate(directed: Boolean = true, where: PersonWhere): MoviePersonProducersAggregationSelection
@@ -3375,7 +3410,9 @@ describe("Relationship nested operations", () => {
                   totalCount: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Person {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
                 }
 
@@ -3526,10 +3563,12 @@ describe("Relationship nested operations", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   actors(directed: Boolean = true, options: PersonOptions, where: PersonWhere): [Person!]!
                   actorsAggregate(directed: Boolean = true, where: PersonWhere): MoviePersonActorsAggregationSelection
                   actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                   producers(directed: Boolean = true, options: PersonOptions, where: PersonWhere): [Person!]!
                   producersAggregate(directed: Boolean = true, where: PersonWhere): MoviePersonProducersAggregationSelection
@@ -3876,7 +3915,9 @@ describe("Relationship nested operations", () => {
                   totalCount: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Person {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
                 }
 
@@ -4040,9 +4081,11 @@ describe("Relationship nested operations", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   actors(directed: Boolean = true, options: QueryOptions, where: PersonWhere): [Person!]!
                   actorsConnection(after: String, directed: Boolean = true, first: Int, where: MovieActorsConnectionWhere): MovieActorsConnection!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                 }
 
@@ -4174,7 +4217,9 @@ describe("Relationship nested operations", () => {
 
                 union Person = PersonOne | PersonTwo
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonOne {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
                 }
 
@@ -4234,7 +4279,9 @@ describe("Relationship nested operations", () => {
                   totalCount: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonTwo {
+                  \\"\\"\\"\\"\\"\\"
                   nameTwo: String
                 }
 
@@ -4416,9 +4463,11 @@ describe("Relationship nested operations", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   actors(directed: Boolean = true, options: QueryOptions, where: PersonWhere): [Person!]!
                   actorsConnection(after: String, directed: Boolean = true, first: Int, where: MovieActorsConnectionWhere): MovieActorsConnection!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                 }
 
@@ -4597,7 +4646,9 @@ describe("Relationship nested operations", () => {
 
                 union Person = PersonOne | PersonTwo
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonOne {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
                 }
 
@@ -4657,7 +4708,9 @@ describe("Relationship nested operations", () => {
                   totalCount: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonTwo {
+                  \\"\\"\\"\\"\\"\\"
                   nameTwo: String
                 }
 
@@ -4839,9 +4892,11 @@ describe("Relationship nested operations", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   actors(directed: Boolean = true, options: QueryOptions, where: PersonWhere): [Person!]!
                   actorsConnection(after: String, directed: Boolean = true, first: Int, where: MovieActorsConnectionWhere): MovieActorsConnection!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                 }
 
@@ -5020,7 +5075,9 @@ describe("Relationship nested operations", () => {
 
                 union Person = PersonOne | PersonTwo
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonOne {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
                 }
 
@@ -5084,7 +5141,9 @@ describe("Relationship nested operations", () => {
                   totalCount: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonTwo {
+                  \\"\\"\\"\\"\\"\\"
                   nameTwo: String
                 }
 
@@ -5270,9 +5329,11 @@ describe("Relationship nested operations", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   actors(directed: Boolean = true, options: QueryOptions, where: PersonWhere): [Person!]!
                   actorsConnection(after: String, directed: Boolean = true, first: Int, where: MovieActorsConnectionWhere): MovieActorsConnection!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                 }
 
@@ -5428,7 +5489,9 @@ describe("Relationship nested operations", () => {
 
                 union Person = PersonOne | PersonTwo
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonOne {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
                 }
 
@@ -5488,7 +5551,9 @@ describe("Relationship nested operations", () => {
                   totalCount: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonTwo {
+                  \\"\\"\\"\\"\\"\\"
                   nameTwo: String
                 }
 
@@ -5670,9 +5735,11 @@ describe("Relationship nested operations", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   actors(directed: Boolean = true, options: QueryOptions, where: PersonWhere): [Person!]!
                   actorsConnection(after: String, directed: Boolean = true, first: Int, where: MovieActorsConnectionWhere): MovieActorsConnection!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                 }
 
@@ -5837,7 +5904,9 @@ describe("Relationship nested operations", () => {
 
                 union Person = PersonOne | PersonTwo
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonOne {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
                 }
 
@@ -5897,7 +5966,9 @@ describe("Relationship nested operations", () => {
                   totalCount: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonTwo {
+                  \\"\\"\\"\\"\\"\\"
                   nameTwo: String
                 }
 
@@ -6079,9 +6150,11 @@ describe("Relationship nested operations", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   actors(directed: Boolean = true, options: QueryOptions, where: PersonWhere): [Person!]!
                   actorsConnection(after: String, directed: Boolean = true, first: Int, where: MovieActorsConnectionWhere): MovieActorsConnection!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                 }
 
@@ -6246,7 +6319,9 @@ describe("Relationship nested operations", () => {
 
                 union Person = PersonOne | PersonTwo
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonOne {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
                 }
 
@@ -6306,7 +6381,9 @@ describe("Relationship nested operations", () => {
                   totalCount: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonTwo {
+                  \\"\\"\\"\\"\\"\\"
                   nameTwo: String
                 }
 
@@ -6489,9 +6566,11 @@ describe("Relationship nested operations", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   actors(directed: Boolean = true, options: QueryOptions, where: PersonWhere): [Person!]!
                   actorsConnection(after: String, directed: Boolean = true, first: Int, where: MovieActorsConnectionWhere): MovieActorsConnection!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                 }
 
@@ -6623,7 +6702,9 @@ describe("Relationship nested operations", () => {
 
                 union Person = PersonOne | PersonTwo
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonOne {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
                 }
 
@@ -6683,7 +6764,9 @@ describe("Relationship nested operations", () => {
                   totalCount: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonTwo {
+                  \\"\\"\\"\\"\\"\\"
                   nameTwo: String
                 }
 
@@ -6873,9 +6956,11 @@ describe("Relationship nested operations", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   actors(directed: Boolean = true, options: QueryOptions, where: PersonWhere): [Person!]!
                   actorsConnection(after: String, directed: Boolean = true, first: Int, where: MovieActorsConnectionWhere): MovieActorsConnection!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                 }
 
@@ -7064,8 +7149,11 @@ describe("Relationship nested operations", () => {
 
                 union Person = PersonOne | PersonTwo
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonOne {
+                  \\"\\"\\"\\"\\"\\"
                   id: ID!
+                  \\"\\"\\"\\"\\"\\"
                   name: String
                 }
 
@@ -7149,8 +7237,11 @@ describe("Relationship nested operations", () => {
                   totalCount: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonTwo {
+                  \\"\\"\\"\\"\\"\\"
                   id: ID!
+                  \\"\\"\\"\\"\\"\\"
                   nameTwo: String
                 }
 
@@ -7357,9 +7448,11 @@ describe("Relationship nested operations", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   actors(directed: Boolean = true, options: QueryOptions, where: PersonWhere): [Person!]!
                   actorsConnection(after: String, directed: Boolean = true, first: Int, where: MovieActorsConnectionWhere): MovieActorsConnection!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                   producers(directed: Boolean = true, options: QueryOptions, where: PersonWhere): [Person!]!
                   producersConnection(after: String, directed: Boolean = true, first: Int, where: MovieProducersConnectionWhere): MovieProducersConnection!
@@ -7689,7 +7782,9 @@ describe("Relationship nested operations", () => {
 
                 union Person = PersonOne | PersonTwo
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonOne {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
                 }
 
@@ -7753,7 +7848,9 @@ describe("Relationship nested operations", () => {
                   totalCount: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonTwo {
+                  \\"\\"\\"\\"\\"\\"
                   nameTwo: String
                 }
 
@@ -7940,9 +8037,11 @@ describe("Relationship nested operations", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   actors(directed: Boolean = true, options: QueryOptions, where: PersonWhere): [Person!]!
                   actorsConnection(after: String, directed: Boolean = true, first: Int, where: MovieActorsConnectionWhere): MovieActorsConnection!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                   producers(directed: Boolean = true, options: QueryOptions, where: PersonWhere): [Person!]!
                   producersConnection(after: String, directed: Boolean = true, first: Int, where: MovieProducersConnectionWhere): MovieProducersConnection!
@@ -8206,7 +8305,9 @@ describe("Relationship nested operations", () => {
 
                 union Person = PersonOne | PersonTwo
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonOne {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
                 }
 
@@ -8266,7 +8367,9 @@ describe("Relationship nested operations", () => {
                   totalCount: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonTwo {
+                  \\"\\"\\"\\"\\"\\"
                   nameTwo: String
                 }
 
@@ -8458,9 +8561,11 @@ describe("Relationship nested operations", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   actors(directed: Boolean = true, options: PersonOptions, where: PersonWhere): [Person!]!
                   actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                 }
 
@@ -8590,8 +8695,11 @@ describe("Relationship nested operations", () => {
                   PersonTwo: PersonTwoWhere
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonOne implements Person {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
+                  \\"\\"\\"\\"\\"\\"
                   someExtraProp: [Int!]!
                 }
 
@@ -8675,7 +8783,9 @@ describe("Relationship nested operations", () => {
                   name: SortDirection
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonTwo implements Person {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
                 }
 
@@ -8863,9 +8973,11 @@ describe("Relationship nested operations", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   actors(directed: Boolean = true, options: PersonOptions, where: PersonWhere): [Person!]!
                   actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                 }
 
@@ -9019,8 +9131,11 @@ describe("Relationship nested operations", () => {
                   PersonTwo: PersonTwoWhere
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonOne implements Person {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
+                  \\"\\"\\"\\"\\"\\"
                   someExtraProp: [Int!]!
                 }
 
@@ -9104,7 +9219,9 @@ describe("Relationship nested operations", () => {
                   name: SortDirection
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonTwo implements Person {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
                 }
 
@@ -9292,9 +9409,11 @@ describe("Relationship nested operations", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   actors(directed: Boolean = true, options: PersonOptions, where: PersonWhere): [Person!]!
                   actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                 }
 
@@ -9447,8 +9566,11 @@ describe("Relationship nested operations", () => {
                   PersonTwo: PersonTwoWhere
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonOne implements Person {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
+                  \\"\\"\\"\\"\\"\\"
                   someExtraProp: [Int!]!
                 }
 
@@ -9532,7 +9654,9 @@ describe("Relationship nested operations", () => {
                   name: SortDirection
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonTwo implements Person {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
                 }
 
@@ -9720,9 +9844,11 @@ describe("Relationship nested operations", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   actors(directed: Boolean = true, options: PersonOptions, where: PersonWhere): [Person!]!
                   actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                 }
 
@@ -9867,8 +9993,11 @@ describe("Relationship nested operations", () => {
                   PersonTwo: PersonTwoWhere
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonOne implements Person {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
+                  \\"\\"\\"\\"\\"\\"
                   someExtraProp: [Int!]!
                 }
 
@@ -9952,7 +10081,9 @@ describe("Relationship nested operations", () => {
                   name: SortDirection
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonTwo implements Person {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
                 }
 
@@ -10145,9 +10276,11 @@ describe("Relationship nested operations", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   actors(directed: Boolean = true, options: PersonOptions, where: PersonWhere): [Person!]!
                   actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                 }
 
@@ -10291,8 +10424,11 @@ describe("Relationship nested operations", () => {
                   PersonTwo: PersonTwoWhere
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonOne implements Person {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
+                  \\"\\"\\"\\"\\"\\"
                   someExtraProp: [Int!]!
                 }
 
@@ -10376,7 +10512,9 @@ describe("Relationship nested operations", () => {
                   name: SortDirection
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonTwo implements Person {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
                 }
 
@@ -10564,9 +10702,11 @@ describe("Relationship nested operations", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   actors(directed: Boolean = true, options: PersonOptions, where: PersonWhere): [Person!]!
                   actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                 }
 
@@ -10710,8 +10850,11 @@ describe("Relationship nested operations", () => {
                   PersonTwo: PersonTwoWhere
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonOne implements Person {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
+                  \\"\\"\\"\\"\\"\\"
                   someExtraProp: [Int!]!
                 }
 
@@ -10795,7 +10938,9 @@ describe("Relationship nested operations", () => {
                   name: SortDirection
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonTwo implements Person {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
                 }
 
@@ -10984,9 +11129,11 @@ describe("Relationship nested operations", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   actors(directed: Boolean = true, options: PersonOptions, where: PersonWhere): [Person!]!
                   actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                   producers(directed: Boolean = true, options: PersonOptions, where: PersonWhere): [Person!]!
                   producersConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieProducersConnectionSort!], where: MovieProducersConnectionWhere): MovieProducersConnection!
@@ -11236,8 +11383,11 @@ describe("Relationship nested operations", () => {
                   PersonTwo: PersonTwoWhere
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonOne implements Person {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
+                  \\"\\"\\"\\"\\"\\"
                   someExtraProp: [Int!]!
                 }
 
@@ -11321,7 +11471,9 @@ describe("Relationship nested operations", () => {
                   name: SortDirection
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonTwo implements Person {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
                 }
 
@@ -11516,9 +11668,11 @@ describe("Relationship nested operations", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   actors(directed: Boolean = true, options: PersonOptions, where: PersonWhere): [Person!]!
                   actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                   producers(directed: Boolean = true, options: PersonOptions, where: PersonWhere): [Person!]!
                   producersConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieProducersConnectionSort!], where: MovieProducersConnectionWhere): MovieProducersConnection!
@@ -11738,8 +11892,11 @@ describe("Relationship nested operations", () => {
                   PersonTwo: PersonTwoWhere
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonOne implements Person {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
+                  \\"\\"\\"\\"\\"\\"
                   someExtraProp: [Int!]!
                 }
 
@@ -11823,7 +11980,9 @@ describe("Relationship nested operations", () => {
                   name: SortDirection
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type PersonTwo implements Person {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
                 }
 

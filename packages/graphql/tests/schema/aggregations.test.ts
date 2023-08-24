@@ -132,17 +132,29 @@ describe("Aggregations", () => {
               min: LocalTime
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               createdAt: DateTime
+              \\"\\"\\"\\"\\"\\"
               id: ID
+              \\"\\"\\"\\"\\"\\"
               imdbRating: Float
+              \\"\\"\\"\\"\\"\\"
               isbn: String!
+              \\"\\"\\"\\"\\"\\"
               screenTime: Duration
+              \\"\\"\\"\\"\\"\\"
               someBigInt: BigInt
+              \\"\\"\\"\\"\\"\\"
               someInt: Int
+              \\"\\"\\"\\"\\"\\"
               someLocalDateTime: LocalDateTime
+              \\"\\"\\"\\"\\"\\"
               someLocalTime: LocalTime
+              \\"\\"\\"\\"\\"\\"
               someTime: Time
+              \\"\\"\\"\\"\\"\\"
               title: String
             }
 
@@ -694,10 +706,12 @@ describe("Aggregations", () => {
               startCursor: String
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Post {
               likes(directed: Boolean = true, options: UserOptions, where: UserWhere): [User!]!
               likesAggregate(directed: Boolean = true, where: UserWhere): PostUserLikesAggregationSelection
               likesConnection(after: String, directed: Boolean = true, first: Int, sort: [PostLikesConnectionSort!], where: PostLikesConnectionWhere): PostLikesConnection!
+              \\"\\"\\"\\"\\"\\"
               title: String
             }
 
@@ -1369,16 +1383,27 @@ describe("Aggregations", () => {
               users: [User!]!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type User {
+              \\"\\"\\"\\"\\"\\"
               someBigInt: BigInt
+              \\"\\"\\"\\"\\"\\"
               someDateTime: DateTime
+              \\"\\"\\"\\"\\"\\"
               someDuration: Duration
+              \\"\\"\\"\\"\\"\\"
               someFloat: Float
+              \\"\\"\\"\\"\\"\\"
               someId: ID
+              \\"\\"\\"\\"\\"\\"
               someInt: Int
+              \\"\\"\\"\\"\\"\\"
               someLocalDateTime: LocalDateTime
+              \\"\\"\\"\\"\\"\\"
               someLocalTime: LocalTime
+              \\"\\"\\"\\"\\"\\"
               someString: String
+              \\"\\"\\"\\"\\"\\"
               someTime: Time
             }
 

@@ -105,7 +105,9 @@ describe("@writeonly directive", () => {
               users: [User!]!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type User {
+              \\"\\"\\"\\"\\"\\"
               username: String!
             }
 
@@ -268,7 +270,9 @@ describe("@writeonly directive", () => {
               users: [User!]!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type User implements UserInterface {
+              \\"\\"\\"\\"\\"\\"
               username: String!
             }
 
@@ -368,7 +372,9 @@ describe("@writeonly directive", () => {
               mutation: Mutation
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Actor {
+              \\"\\"\\"\\"\\"\\"
               name: String
             }
 
@@ -461,7 +467,9 @@ describe("@writeonly directive", () => {
               shortest: ID
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               id: ID
             }
 

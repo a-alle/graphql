@@ -71,9 +71,13 @@ describe("Arrays", () => {
               shortest: ID!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               averageRating: Float!
+              \\"\\"\\"\\"\\"\\"
               id: ID!
+              \\"\\"\\"\\"\\"\\"
               ratings: [Float!]!
             }
 

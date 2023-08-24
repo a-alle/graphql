@@ -138,10 +138,15 @@ describe("@populatedBy tests", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
+                  \\"\\"\\"\\"\\"\\"
                   callback1: String!
+                  \\"\\"\\"\\"\\"\\"
                   callback2: String!
+                  \\"\\"\\"\\"\\"\\"
                   callback3: String!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                 }
 
@@ -352,10 +357,15 @@ describe("@populatedBy tests", () => {
                   sum: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
+                  \\"\\"\\"\\"\\"\\"
                   callback1: Int!
+                  \\"\\"\\"\\"\\"\\"
                   callback2: Int!
+                  \\"\\"\\"\\"\\"\\"
                   callback3: Int!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                 }
 
@@ -639,7 +649,9 @@ describe("@populatedBy tests", () => {
                   relationshipsDeleted: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Genre {
+                  \\"\\"\\"\\"\\"\\"
                   id: ID!
                 }
 
@@ -713,10 +725,12 @@ describe("@populatedBy tests", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   genres(directed: Boolean = true, options: GenreOptions, where: GenreWhere): [Genre!]!
                   genresAggregate(directed: Boolean = true, where: GenreWhere): MovieGenreGenresAggregationSelection
                   genresConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieGenresConnectionSort!], where: MovieGenresConnectionWhere): MovieGenresConnection!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                 }
 
@@ -1239,7 +1253,9 @@ describe("@populatedBy tests", () => {
                   relationshipsDeleted: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Genre {
+                  \\"\\"\\"\\"\\"\\"
                   id: ID!
                 }
 
@@ -1320,10 +1336,12 @@ describe("@populatedBy tests", () => {
                   sum: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   genres(directed: Boolean = true, options: GenreOptions, where: GenreWhere): [Genre!]!
                   genresAggregate(directed: Boolean = true, where: GenreWhere): MovieGenreGenresAggregationSelection
                   genresConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieGenresConnectionSort!], where: MovieGenresConnectionWhere): MovieGenresConnection!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                 }
 

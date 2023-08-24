@@ -227,8 +227,11 @@ describe("@relationship directive, aggregate argument", () => {
                   mutation: Mutation
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Actor {
+                  \\"\\"\\"\\"\\"\\"
                   password: String!
+                  \\"\\"\\"\\"\\"\\"
                   username: String!
                 }
 
@@ -330,9 +333,11 @@ describe("@relationship directive, aggregate argument", () => {
                   relationshipsDeleted: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   actors(directed: Boolean = true, options: ActorOptions, where: ActorWhere): [Actor!]!
                   actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                  \\"\\"\\"\\"\\"\\"
                   title: String
                 }
 
@@ -675,8 +680,11 @@ describe("@relationship directive, aggregate argument", () => {
                   mutation: Mutation
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Actor {
+                  \\"\\"\\"\\"\\"\\"
                   password: String!
+                  \\"\\"\\"\\"\\"\\"
                   username: String!
                 }
 
@@ -778,10 +786,12 @@ describe("@relationship directive, aggregate argument", () => {
                   relationshipsDeleted: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   actors(directed: Boolean = true, options: ActorOptions, where: ActorWhere): [Actor!]!
                   actorsAggregate(directed: Boolean = true, where: ActorWhere): MovieActorActorsAggregationSelection
                   actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                  \\"\\"\\"\\"\\"\\"
                   title: String
                 }
 
@@ -1140,8 +1150,11 @@ describe("@relationship directive, aggregate argument", () => {
                       mutation: Mutation
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Actor implements Person {
+                      \\"\\"\\"\\"\\"\\"
                       password: String!
+                      \\"\\"\\"\\"\\"\\"
                       username: String!
                     }
 
@@ -1239,9 +1252,11 @@ describe("@relationship directive, aggregate argument", () => {
                       relationshipsDeleted: Int!
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Movie {
                       actors(directed: Boolean = true, options: PersonOptions, where: PersonWhere): [Person!]!
                       actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                      \\"\\"\\"\\"\\"\\"
                       title: String
                     }
 
@@ -1553,8 +1568,11 @@ describe("@relationship directive, aggregate argument", () => {
                       mutation: Mutation
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Actor implements Person {
+                      \\"\\"\\"\\"\\"\\"
                       password: String!
+                      \\"\\"\\"\\"\\"\\"
                       username: String!
                     }
 
@@ -1652,9 +1670,11 @@ describe("@relationship directive, aggregate argument", () => {
                       relationshipsDeleted: Int!
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Movie {
                       actors(directed: Boolean = true, options: PersonOptions, where: PersonWhere): [Person!]!
                       actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                      \\"\\"\\"\\"\\"\\"
                       title: String
                     }
 
@@ -1970,8 +1990,11 @@ describe("@relationship directive, aggregate argument", () => {
                       mutation: Mutation
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Actor {
+                      \\"\\"\\"\\"\\"\\"
                       password: String!
+                      \\"\\"\\"\\"\\"\\"
                       username: String!
                     }
 
@@ -2085,9 +2108,11 @@ describe("@relationship directive, aggregate argument", () => {
                       relationshipsDeleted: Int!
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Movie {
                       actors(directed: Boolean = true, options: QueryOptions, where: CastMemberWhere): [CastMember!]!
                       actorsConnection(after: String, directed: Boolean = true, first: Int, where: MovieActorsConnectionWhere): MovieActorsConnection!
+                      \\"\\"\\"\\"\\"\\"
                       title: String
                     }
 
@@ -2339,7 +2364,9 @@ describe("@relationship directive, aggregate argument", () => {
                       totalCount: Int!
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Person {
+                      \\"\\"\\"\\"\\"\\"
                       name: String!
                     }
 
@@ -2486,8 +2513,11 @@ describe("@relationship directive, aggregate argument", () => {
                       mutation: Mutation
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Actor {
+                      \\"\\"\\"\\"\\"\\"
                       password: String!
+                      \\"\\"\\"\\"\\"\\"
                       username: String!
                     }
 
@@ -2601,9 +2631,11 @@ describe("@relationship directive, aggregate argument", () => {
                       relationshipsDeleted: Int!
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Movie {
                       actors(directed: Boolean = true, options: QueryOptions, where: CastMemberWhere): [CastMember!]!
                       actorsConnection(after: String, directed: Boolean = true, first: Int, where: MovieActorsConnectionWhere): MovieActorsConnection!
+                      \\"\\"\\"\\"\\"\\"
                       title: String
                     }
 
@@ -2855,7 +2887,9 @@ describe("@relationship directive, aggregate argument", () => {
                       totalCount: Int!
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Person {
+                      \\"\\"\\"\\"\\"\\"
                       name: String!
                     }
 

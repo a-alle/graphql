@@ -69,8 +69,11 @@ describe("Extending the schema in when using getSubgraphSchema", () => {
 
             directive @shareable on FIELD_DEFINITION | OBJECT
 
+            \\"\\"\\"\\"\\"\\"
             type Actor {
+              \\"\\"\\"\\"\\"\\"
               password: String!
+              \\"\\"\\"\\"\\"\\"
               username: String!
             }
 
@@ -162,7 +165,9 @@ describe("Extending the schema in when using getSubgraphSchema", () => {
               relationshipsDeleted: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               title: String
             }
 
@@ -336,8 +341,11 @@ describe("Extending the schema in when using getSubgraphSchema", () => {
 
             directive @shareable on FIELD_DEFINITION | OBJECT
 
+            \\"\\"\\"\\"\\"\\"
             type Actor {
+              \\"\\"\\"\\"\\"\\"
               password: String!
+              \\"\\"\\"\\"\\"\\"
               username: String!
             }
 
@@ -401,7 +409,9 @@ describe("Extending the schema in when using getSubgraphSchema", () => {
               totalCount: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               title: String
             }
 
@@ -559,8 +569,11 @@ describe("Extending the schema in when using getSubgraphSchema", () => {
 
             directive @shareable on FIELD_DEFINITION | OBJECT
 
+            \\"\\"\\"\\"\\"\\"
             type Actor {
+              \\"\\"\\"\\"\\"\\"
               password: String!
+              \\"\\"\\"\\"\\"\\"
               username: String!
             }
 
@@ -704,7 +717,9 @@ describe("Extending the schema in when using getSubgraphSchema", () => {
               UPDATE
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               title: String
             }
 

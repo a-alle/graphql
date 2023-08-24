@@ -44,8 +44,11 @@ describe("https://github.com/neo4j/graphql/issues/1038", () => {
               mutation: Mutation
             }
 
+            \\"\\"\\"\\"\\"\\"
             type AWSAccount {
+              \\"\\"\\"\\"\\"\\"
               accountName: String
+              \\"\\"\\"\\"\\"\\"
               code: String
             }
 
@@ -136,8 +139,11 @@ describe("https://github.com/neo4j/graphql/issues/1038", () => {
               relationshipsCreated: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type DNSZone {
+              \\"\\"\\"\\"\\"\\"
               awsId: String
+              \\"\\"\\"\\"\\"\\"
               zoneType: String
             }
 

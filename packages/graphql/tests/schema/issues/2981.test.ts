@@ -52,8 +52,11 @@ describe("https://github.com/neo4j/graphql/issues/2981", () => {
               mutation: Mutation
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Book {
+              \\"\\"\\"\\"\\"\\"
               isbn: String!
+              \\"\\"\\"\\"\\"\\"
               originalTitle: String!
               translatedTitle(directed: Boolean = true, options: QueryOptions, where: BookTitleWhere): BookTitle
               translatedTitleConnection(after: String, directed: Boolean = true, first: Int, where: BookTranslatedTitleConnectionWhere): BookTranslatedTitleConnection!
@@ -132,10 +135,12 @@ describe("https://github.com/neo4j/graphql/issues/2981", () => {
               BookTitle_SV: BookTitle_SVWhere
             }
 
+            \\"\\"\\"\\"\\"\\"
             type BookTitle_EN {
               book(directed: Boolean = true, options: BookOptions, where: BookWhere): Book!
               bookAggregate(directed: Boolean = true, where: BookWhere): BookTitle_ENBookBookAggregationSelection
               bookConnection(after: String, directed: Boolean = true, first: Int, sort: [BookTitle_ENBookConnectionSort!], where: BookTitle_ENBookConnectionWhere): BookTitle_ENBookConnection!
+              \\"\\"\\"\\"\\"\\"
               value: String!
             }
 
@@ -378,10 +383,12 @@ describe("https://github.com/neo4j/graphql/issues/2981", () => {
               value_STARTS_WITH: String
             }
 
+            \\"\\"\\"\\"\\"\\"
             type BookTitle_SV {
               book(directed: Boolean = true, options: BookOptions, where: BookWhere): Book!
               bookAggregate(directed: Boolean = true, where: BookWhere): BookTitle_SVBookBookAggregationSelection
               bookConnection(after: String, directed: Boolean = true, first: Int, sort: [BookTitle_SVBookConnectionSort!], where: BookTitle_SVBookConnectionWhere): BookTitle_SVBookConnection!
+              \\"\\"\\"\\"\\"\\"
               value: String!
             }
 

@@ -70,8 +70,11 @@ describe("Bigint", () => {
               relationshipsDeleted: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type File {
+              \\"\\"\\"\\"\\"\\"
               name: String!
+              \\"\\"\\"\\"\\"\\"
               size: BigInt!
             }
 

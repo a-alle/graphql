@@ -79,10 +79,15 @@ describe("Simple", () => {
               sum: Int
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               actorCount: Int
+              \\"\\"\\"\\"\\"\\"
               averageRating: Float
+              \\"\\"\\"\\"\\"\\"
               id: ID
+              \\"\\"\\"\\"\\"\\"
               isActive: Boolean
             }
 

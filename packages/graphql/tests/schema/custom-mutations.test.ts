@@ -86,7 +86,9 @@ describe("Custom-mutations", () => {
               shortest: ID
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               id: ID
             }
 

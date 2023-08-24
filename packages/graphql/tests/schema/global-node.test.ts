@@ -57,8 +57,10 @@ describe("Node Interface Types", () => {
               relationshipsDeleted: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie implements Node {
               id: ID!
+              \\"\\"\\"\\"\\"\\"
               title: String!
             }
 

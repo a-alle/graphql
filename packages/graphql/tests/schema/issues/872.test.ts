@@ -49,17 +49,21 @@ describe("https://github.com/neo4j/graphql/issues/872", () => {
               mutation: Mutation
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Actor {
               movies(directed: Boolean = true, options: MovieOptions, where: MovieWhere): [Movie!]!
               moviesAggregate(directed: Boolean = true, where: MovieWhere): ActorMovieMoviesAggregationSelection
               moviesConnection(after: String, directed: Boolean = true, first: Int, sort: [ActorMoviesConnectionSort!], where: ActorMoviesConnectionWhere): ActorMoviesConnection!
+              \\"\\"\\"\\"\\"\\"
               name: String!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Actor2 {
               movies(directed: Boolean = true, options: MovieOptions, where: MovieWhere): [Movie!]!
               moviesAggregate(directed: Boolean = true, where: MovieWhere): Actor2MovieMoviesAggregationSelection
               moviesConnection(after: String, directed: Boolean = true, first: Int, sort: [Actor2MoviesConnectionSort!], where: Actor2MoviesConnectionWhere): Actor2MoviesConnection!
+              \\"\\"\\"\\"\\"\\"
               name: String!
             }
 
@@ -583,8 +587,11 @@ describe("https://github.com/neo4j/graphql/issues/872", () => {
               shortest: ID!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               id: ID!
+              \\"\\"\\"\\"\\"\\"
               title: String!
             }
 

@@ -94,8 +94,11 @@ describe("Plural option", () => {
               shortest: String
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Tech {
+              \\"\\"\\"\\"\\"\\"
               name: String
+              \\"\\"\\"\\"\\"\\"
               value: String
             }
 
@@ -256,8 +259,11 @@ describe("Plural option", () => {
               shortest: String
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Tech {
+              \\"\\"\\"\\"\\"\\"
               name: String
+              \\"\\"\\"\\"\\"\\"
               value: String
             }
 
@@ -418,8 +424,11 @@ describe("Plural option", () => {
               shortest: String
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Tech {
+              \\"\\"\\"\\"\\"\\"
               name: String
+              \\"\\"\\"\\"\\"\\"
               value: String
             }
 
@@ -580,7 +589,9 @@ describe("Plural option", () => {
               shortest: String
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Techs {
+              \\"\\"\\"\\"\\"\\"
               value: String
             }
 
@@ -747,7 +758,9 @@ describe("Plural option", () => {
               techs: [User!]!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type User {
+              \\"\\"\\"\\"\\"\\"
               value: String
             }
 
@@ -888,7 +901,9 @@ describe("Plural option", () => {
               users: [User!]!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type User {
+              \\"\\"\\"\\"\\"\\"
               value: String
             }
 
@@ -1035,7 +1050,9 @@ describe("Plural option", () => {
               users: [Users!]!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Users {
+              \\"\\"\\"\\"\\"\\"
               value: String
             }
 

@@ -137,7 +137,9 @@ describe("Pluralize consistency", () => {
               superUsers: [super_user!]!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type super_friend {
+              \\"\\"\\"\\"\\"\\"
               name: String!
             }
 
@@ -195,10 +197,12 @@ describe("Pluralize consistency", () => {
               name_STARTS_WITH: String
             }
 
+            \\"\\"\\"\\"\\"\\"
             type super_user {
               my_friend(directed: Boolean = true, options: super_friendOptions, where: super_friendWhere): [super_friend!]!
               my_friendAggregate(directed: Boolean = true, where: super_friendWhere): super_usersuper_friendMy_friendAggregationSelection
               my_friendConnection(after: String, directed: Boolean = true, first: Int, sort: [super_userMy_friendConnectionSort!], where: super_userMy_friendConnectionWhere): super_userMy_friendConnection!
+              \\"\\"\\"\\"\\"\\"
               name: String!
             }
 

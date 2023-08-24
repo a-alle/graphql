@@ -63,7 +63,9 @@ describe("Enum", () => {
               relationshipsDeleted: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               status: Status
             }
 

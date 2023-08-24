@@ -76,7 +76,9 @@ describe("Sort", () => {
               updateNode2s(connect: Node2ConnectInput, create: Node2RelationInput, delete: Node2DeleteInput, disconnect: Node2DisconnectInput, update: Node2UpdateInput, where: Node2Where): UpdateNode2sMutationResponse!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Node1 {
+              \\"\\"\\"\\"\\"\\"
               property: String!
               relatedTo(directed: Boolean = true, options: Node2Options, where: Node2Where): [Node2!]!
               relatedToAggregate(directed: Boolean = true, where: Node2Where): Node1Node2RelatedToAggregationSelection
@@ -265,6 +267,7 @@ describe("Sort", () => {
               totalCount: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Node2 {
               relatedTo(directed: Boolean = true, options: Node1Options, where: Node1Where): [Node1!]!
               relatedToAggregate(directed: Boolean = true, where: Node1Where): Node2Node1RelatedToAggregationSelection

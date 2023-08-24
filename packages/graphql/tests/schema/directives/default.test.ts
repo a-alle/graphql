@@ -156,15 +156,25 @@ describe("@default directive", () => {
               users: [User!]!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type User implements UserInterface {
+              \\"\\"\\"\\"\\"\\"
               fromInterface: String!
+              \\"\\"\\"\\"\\"\\"
               id: ID!
+              \\"\\"\\"\\"\\"\\"
               location: Location!
+              \\"\\"\\"\\"\\"\\"
               name: String!
+              \\"\\"\\"\\"\\"\\"
               numberOfFriends: Int!
+              \\"\\"\\"\\"\\"\\"
               rating: Float!
+              \\"\\"\\"\\"\\"\\"
               toBeOverridden: String!
+              \\"\\"\\"\\"\\"\\"
               verified: Boolean!
+              \\"\\"\\"\\"\\"\\"
               verifiedDate: DateTime!
             }
 

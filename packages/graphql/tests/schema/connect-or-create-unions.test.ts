@@ -87,9 +87,11 @@ describe("Connect Or Create", () => {
               screenTime_NOT_IN: [Int!] @deprecated(reason: \\"Negation filters will be deprecated, use the NOT operator to achieve the same behavior\\")
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Actor {
               actedIn(directed: Boolean = true, options: QueryOptions, where: ProductionWhere): [Production!]!
               actedInConnection(after: String, directed: Boolean = true, first: Int, sort: [ActorActedInConnectionSort!], where: ActorActedInConnectionWhere): ActorActedInConnection!
+              \\"\\"\\"\\"\\"\\"
               name: String!
             }
 
@@ -392,8 +394,11 @@ describe("Connect Or Create", () => {
               relationshipsDeleted: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               isan: String!
+              \\"\\"\\"\\"\\"\\"
               title: String!
             }
 
@@ -529,8 +534,11 @@ describe("Connect Or Create", () => {
               offset: Int
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Series {
+              \\"\\"\\"\\"\\"\\"
               isan: String!
+              \\"\\"\\"\\"\\"\\"
               title: String!
             }
 

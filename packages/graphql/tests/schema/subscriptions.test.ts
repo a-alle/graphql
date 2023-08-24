@@ -59,7 +59,9 @@ describe("Subscriptions", () => {
               subscription: Subscription
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Actor {
+              \\"\\"\\"\\"\\"\\"
               name: String!
             }
 
@@ -213,13 +215,18 @@ describe("Subscriptions", () => {
               sum: Int
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               actorCount: Int
               actors(directed: Boolean = true, options: ActorOptions, where: ActorWhere): [Actor!]!
               actorsAggregate(directed: Boolean = true, where: ActorWhere): MovieActorActorsAggregationSelection
               actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+              \\"\\"\\"\\"\\"\\"
               averageRating: Float
+              \\"\\"\\"\\"\\"\\"
               id: ID
+              \\"\\"\\"\\"\\"\\"
               isActive: Boolean
             }
 
@@ -694,6 +701,7 @@ describe("Subscriptions", () => {
               subscription: Subscription
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Actor {
               movies(directed: Boolean = true, options: MovieOptions, where: MovieWhere): [Movie!]!
               moviesAggregate(directed: Boolean = true, where: MovieWhere): ActorMovieMoviesAggregationSelection
@@ -1035,13 +1043,18 @@ describe("Subscriptions", () => {
               sum: Int
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               actorCount: Int
               actors(directed: Boolean = true, options: ActorOptions, where: ActorWhere): [Actor!]!
               actorsAggregate(directed: Boolean = true, where: ActorWhere): MovieActorActorsAggregationSelection
               actorsConnection(after: String, directed: Boolean = true, first: Int, where: MovieActorsConnectionWhere): MovieActorsConnection!
+              \\"\\"\\"\\"\\"\\"
               averageRating: Float
+              \\"\\"\\"\\"\\"\\"
               id: ID
+              \\"\\"\\"\\"\\"\\"
               isActive: Boolean
             }
 
@@ -1517,12 +1530,17 @@ describe("Subscriptions", () => {
               sum: Int
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               actorCount: Int
               actors(directed: Boolean = true, options: QueryOptions, where: ActorWhere): [Actor!]!
               actorsConnection(after: String, directed: Boolean = true, first: Int, where: MovieActorsConnectionWhere): MovieActorsConnection!
+              \\"\\"\\"\\"\\"\\"
               averageRating: Float
+              \\"\\"\\"\\"\\"\\"
               id: ID
+              \\"\\"\\"\\"\\"\\"
               isActive: Boolean
             }
 
@@ -1907,6 +1925,7 @@ describe("Subscriptions", () => {
               totalCount: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Person {
               movies(directed: Boolean = true, options: MovieOptions, where: MovieWhere): [Movie!]!
               moviesAggregate(directed: Boolean = true, where: MovieWhere): PersonMovieMoviesAggregationSelection
@@ -2217,6 +2236,7 @@ describe("Subscriptions", () => {
               DESC
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Star {
               movies(directed: Boolean = true, options: MovieOptions, where: MovieWhere): [Movie!]!
               moviesAggregate(directed: Boolean = true, where: MovieWhere): StarMovieMoviesAggregationSelection
@@ -2632,6 +2652,7 @@ describe("Subscriptions", () => {
               screenTime_NOT_IN: [Int!] @deprecated(reason: \\"Negation filters will be deprecated, use the NOT operator to achieve the same behavior\\")
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Actor {
               movies(directed: Boolean = true, options: MovieOptions, where: MovieWhere): [Movie!]!
               moviesAggregate(directed: Boolean = true, where: MovieWhere): ActorMovieMoviesAggregationSelection
@@ -2980,13 +3001,18 @@ describe("Subscriptions", () => {
               sum: Int
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               actorCount: Int
               actors(directed: Boolean = true, options: ActorOptions, where: ActorWhere): [Actor!]!
               actorsAggregate(directed: Boolean = true, where: ActorWhere): MovieActorActorsAggregationSelection
               actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+              \\"\\"\\"\\"\\"\\"
               averageRating: Float
+              \\"\\"\\"\\"\\"\\"
               id: ID
+              \\"\\"\\"\\"\\"\\"
               isActive: Boolean
             }
 
@@ -3459,7 +3485,9 @@ describe("Subscriptions", () => {
               subscription: Subscription
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Actor {
+              \\"\\"\\"\\"\\"\\"
               name: String!
             }
 
@@ -3613,13 +3641,18 @@ describe("Subscriptions", () => {
               sum: Int
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               actorCount: Int
               actors(directed: Boolean = true, options: ActorOptions, where: ActorWhere): [Actor!]!
               actorsAggregate(directed: Boolean = true, where: ActorWhere): MovieActorActorsAggregationSelection
               actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+              \\"\\"\\"\\"\\"\\"
               averageRating: Float
+              \\"\\"\\"\\"\\"\\"
               id: ID
+              \\"\\"\\"\\"\\"\\"
               isActive: Boolean
             }
 
@@ -3977,8 +4010,11 @@ describe("Subscriptions", () => {
               subscription: Subscription
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Agreement {
+              \\"\\"\\"\\"\\"\\"
               id: Int!
+              \\"\\"\\"\\"\\"\\"
               name: String
               owner(directed: Boolean = true, options: UserOptions, where: UserWhere): User
               ownerAggregate(directed: Boolean = true, where: UserWhere): AgreementUserOwnerAggregationSelection
@@ -4410,8 +4446,11 @@ describe("Subscriptions", () => {
               relationshipsDeleted: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type User {
+              \\"\\"\\"\\"\\"\\"
               name: String
+              \\"\\"\\"\\"\\"\\"
               username: String!
             }
 
@@ -4590,12 +4629,17 @@ describe("Subscriptions", () => {
               sum: Int
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               actorCount: Int
               actors(directed: Boolean = true, options: QueryOptions, where: ActorWhere): [Actor!]!
               actorsConnection(after: String, directed: Boolean = true, first: Int, where: MovieActorsConnectionWhere): MovieActorsConnection!
+              \\"\\"\\"\\"\\"\\"
               averageRating: Float
+              \\"\\"\\"\\"\\"\\"
               id: ID
+              \\"\\"\\"\\"\\"\\"
               isActive: Boolean
             }
 
@@ -4980,6 +5024,7 @@ describe("Subscriptions", () => {
               totalCount: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Person {
               movies(directed: Boolean = true, options: MovieOptions, where: MovieWhere): [Movie!]!
               moviesAggregate(directed: Boolean = true, where: MovieWhere): PersonMovieMoviesAggregationSelection
@@ -5290,6 +5335,7 @@ describe("Subscriptions", () => {
               DESC
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Star {
               movies(directed: Boolean = true, options: MovieOptions, where: MovieWhere): [Movie!]!
               moviesAggregate(directed: Boolean = true, where: MovieWhere): StarMovieMoviesAggregationSelection
@@ -5785,10 +5831,13 @@ describe("Subscriptions", () => {
               sum: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie implements Production {
               director(directed: Boolean = true, options: CreatureOptions, where: CreatureWhere): Creature!
               directorConnection(after: String, directed: Boolean = true, first: Int, where: ProductionDirectorConnectionWhere): ProductionDirectorConnection!
+              \\"\\"\\"\\"\\"\\"
               id: ID
+              \\"\\"\\"\\"\\"\\"
               title: String!
             }
 
@@ -5940,6 +5989,7 @@ describe("Subscriptions", () => {
               totalCount: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Person implements Creature {
               movies(directed: Boolean = true, options: ProductionOptions, where: ProductionWhere): Production!
               moviesConnection(after: String, directed: Boolean = true, first: Int, sort: [CreatureMoviesConnectionSort!], where: CreatureMoviesConnectionWhere): CreatureMoviesConnection!
@@ -6263,11 +6313,15 @@ describe("Subscriptions", () => {
               seriesConnection(after: String, first: Int, sort: [SeriesSort], where: SeriesWhere): SeriesConnection!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Series implements Production {
               director(directed: Boolean = true, options: CreatureOptions, where: CreatureWhere): Creature!
               directorConnection(after: String, directed: Boolean = true, first: Int, where: ProductionDirectorConnectionWhere): ProductionDirectorConnection!
+              \\"\\"\\"\\"\\"\\"
               episode: Int!
+              \\"\\"\\"\\"\\"\\"
               id: ID
+              \\"\\"\\"\\"\\"\\"
               title: String!
             }
 

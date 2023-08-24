@@ -57,7 +57,9 @@ describe("Point", () => {
               relationshipsDeleted: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               filmedAt: Point!
             }
 
@@ -238,7 +240,9 @@ describe("Point", () => {
               relationshipsDeleted: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Machine {
+              \\"\\"\\"\\"\\"\\"
               partLocation: CartesianPoint!
             }
 
@@ -374,7 +378,9 @@ describe("Point", () => {
               relationshipsDeleted: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               filmedAt: [Point!]!
             }
 
@@ -520,7 +526,9 @@ describe("Point", () => {
               relationshipsDeleted: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Machine {
+              \\"\\"\\"\\"\\"\\"
               partLocations: [CartesianPoint!]!
             }
 

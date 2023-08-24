@@ -65,7 +65,9 @@ describe("Extending the schema in when using getSubgraphSchema", () => {
 
             directive @shareable on FIELD_DEFINITION | OBJECT
 
+            \\"\\"\\"\\"\\"\\"
             type Actor {
+              \\"\\"\\"\\"\\"\\"
               name: String!
             }
 
@@ -117,10 +119,12 @@ describe("Extending the schema in when using getSubgraphSchema", () => {
               totalCount: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie @key(fields: \\"title\\") @shareable {
               actors(directed: Boolean = true, options: ActorOptions, where: ActorWhere): [Actor!]!
               actorsAggregate(directed: Boolean = true, where: ActorWhere): MovieActorActorsAggregationSelection
               actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+              \\"\\"\\"\\"\\"\\"
               title: String!
             }
 
@@ -387,7 +391,9 @@ describe("Extending the schema in when using getSubgraphSchema", () => {
 
             directive @shareable on FIELD_DEFINITION | OBJECT
 
+            \\"\\"\\"\\"\\"\\"
             type Actor {
+              \\"\\"\\"\\"\\"\\"
               name: String!
             }
 
@@ -475,11 +481,14 @@ describe("Extending the schema in when using getSubgraphSchema", () => {
               relationshipsDeleted: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie @key(fields: \\"title\\") @key(fields: \\"id\\") @shareable {
               actors(directed: Boolean = true, options: ActorOptions, where: ActorWhere): [Actor!]!
               actorsAggregate(directed: Boolean = true, where: ActorWhere): MovieActorActorsAggregationSelection
               actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+              \\"\\"\\"\\"\\"\\"
               id: ID!
+              \\"\\"\\"\\"\\"\\"
               title: String!
             }
 

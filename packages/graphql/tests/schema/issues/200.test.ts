@@ -47,10 +47,15 @@ describe("200", () => {
               totalCount: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Category {
+              \\"\\"\\"\\"\\"\\"
               categoryId: ID!
+              \\"\\"\\"\\"\\"\\"
               description: String!
+              \\"\\"\\"\\"\\"\\"
               exampleImageLocations: [String!]
+              \\"\\"\\"\\"\\"\\"
               name: String!
             }
 

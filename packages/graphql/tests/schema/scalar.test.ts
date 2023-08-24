@@ -69,10 +69,15 @@ describe("Scalar", () => {
               shortest: ID
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               id: ID
+              \\"\\"\\"\\"\\"\\"
               myCustomArrayScalar: [CustomScalar!]
+              \\"\\"\\"\\"\\"\\"
               myCustomScalar: CustomScalar
+              \\"\\"\\"\\"\\"\\"
               myRequiredCustomArrayScalar: [CustomScalar!]!
             }
 

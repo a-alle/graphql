@@ -119,8 +119,11 @@ describe("Comments", () => {
               actorCount: Int
               \\"\\"\\"The average rating for the movie.\\"\\"\\"
               averageRating: Float
+              \\"\\"\\"\\"\\"\\"
               customScalar: CustomScalar
+              \\"\\"\\"\\"\\"\\"
               genre: Genre
+              \\"\\"\\"\\"\\"\\"
               id: ID
               \\"\\"\\"
               Is the movie active?
@@ -301,7 +304,9 @@ describe("Comments", () => {
                   mutation: Mutation
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Actor {
+                  \\"\\"\\"\\"\\"\\"
                   name: String
                 }
 
@@ -394,11 +399,13 @@ describe("Comments", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
                   \\"\\"\\"Actors in Movie\\"\\"\\"
                   actors(directed: Boolean = true, options: ActorOptions, where: ActorWhere): [Actor!]!
                   actorsAggregate(directed: Boolean = true, where: ActorWhere): MovieActorActorsAggregationSelection
                   actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                 }
 
@@ -755,10 +762,12 @@ describe("Comments", () => {
                   screenTime_NOT_IN: [Int!] @deprecated(reason: \\"Negation filters will be deprecated, use the NOT operator to achieve the same behavior\\")
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Actor {
                   \\"\\"\\"Acted in Production\\"\\"\\"
                   actedIn(directed: Boolean = true, options: ProductionOptions, where: ProductionWhere): [Production!]!
                   actedInConnection(after: String, directed: Boolean = true, first: Int, sort: [ActorActedInConnectionSort!], where: ActorActedInConnectionWhere): ActorActedInConnection!
+                  \\"\\"\\"\\"\\"\\"
                   name: String!
                 }
 
@@ -954,8 +963,11 @@ describe("Comments", () => {
                   sum: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie implements Production {
+                  \\"\\"\\"\\"\\"\\"
                   runtime: Int!
+                  \\"\\"\\"\\"\\"\\"
                   title: String!
                 }
 
@@ -1119,8 +1131,11 @@ describe("Comments", () => {
                   seriesConnection(after: String, first: Int, sort: [SeriesSort], where: SeriesWhere): SeriesConnection!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Series implements Production {
+                  \\"\\"\\"\\"\\"\\"
                   episodes: Int!
+                  \\"\\"\\"\\"\\"\\"
                   title: String!
                 }
 
@@ -1280,7 +1295,9 @@ describe("Comments", () => {
                   relationshipsDeleted: Int!
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Genre {
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                 }
 
@@ -1349,10 +1366,13 @@ describe("Comments", () => {
                   shortest: ID
                 }
 
+                \\"\\"\\"\\"\\"\\"
                 type Movie {
+                  \\"\\"\\"\\"\\"\\"
                   id: ID
                   search(directed: Boolean = true, options: QueryOptions, where: SearchWhere): [Search!]!
                   searchConnection(after: String, directed: Boolean = true, first: Int, where: MovieSearchConnectionWhere): MovieSearchConnection!
+                  \\"\\"\\"\\"\\"\\"
                   searchNoDirective: Search
                 }
 

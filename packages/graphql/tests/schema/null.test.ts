@@ -96,19 +96,33 @@ describe("Null", () => {
               sum: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               actorCount: Int!
+              \\"\\"\\"\\"\\"\\"
               actorCounts: [Int!]!
+              \\"\\"\\"\\"\\"\\"
               averageRating: Float!
+              \\"\\"\\"\\"\\"\\"
               averageRatings: [Float!]!
+              \\"\\"\\"\\"\\"\\"
               createdAt: DateTime!
+              \\"\\"\\"\\"\\"\\"
               createdAts: [DateTime!]!
+              \\"\\"\\"\\"\\"\\"
               filmedAt: Point!
+              \\"\\"\\"\\"\\"\\"
               filmedAts: [Point!]!
+              \\"\\"\\"\\"\\"\\"
               id: ID!
+              \\"\\"\\"\\"\\"\\"
               ids: [ID!]!
+              \\"\\"\\"\\"\\"\\"
               isActives: [Boolean!]!
+              \\"\\"\\"\\"\\"\\"
               name: String!
+              \\"\\"\\"\\"\\"\\"
               names: [String!]!
             }
 

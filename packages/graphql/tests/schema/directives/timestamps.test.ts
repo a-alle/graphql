@@ -72,9 +72,13 @@ describe("Timestamps", () => {
               shortest: ID
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               createdAt: DateTime!
+              \\"\\"\\"\\"\\"\\"
               id: ID
+              \\"\\"\\"\\"\\"\\"
               updatedAt: DateTime!
             }
 

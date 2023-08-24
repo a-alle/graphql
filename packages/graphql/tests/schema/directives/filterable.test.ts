@@ -957,11 +957,14 @@ describe("@filterable directive", () => {
                       subscription: Subscription
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Actor {
                       movies(directed: Boolean = true, options: MovieOptions, where: MovieWhere): [Movie!]!
                       moviesAggregate(directed: Boolean = true, where: MovieWhere): ActorMovieMoviesAggregationSelection
                       moviesConnection(after: String, directed: Boolean = true, first: Int, sort: [ActorMoviesConnectionSort!], where: ActorMoviesConnectionWhere): ActorMoviesConnection!
+                      \\"\\"\\"\\"\\"\\"
                       password: String!
+                      \\"\\"\\"\\"\\"\\"
                       username: String!
                     }
 
@@ -1307,10 +1310,12 @@ describe("@filterable directive", () => {
                       UPDATE
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Movie {
                       actors(directed: Boolean = true, options: ActorOptions, where: ActorWhere): [Actor!]!
                       actorsAggregate(directed: Boolean = true, where: ActorWhere): MovieActorActorsAggregationSelection
                       actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                      \\"\\"\\"\\"\\"\\"
                       title: String
                     }
 
@@ -1776,11 +1781,14 @@ describe("@filterable directive", () => {
                       subscription: Subscription
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Actor {
                       movies(directed: Boolean = true, options: MovieOptions, where: MovieWhere): [Movie!]!
                       moviesAggregate(directed: Boolean = true, where: MovieWhere): ActorMovieMoviesAggregationSelection
                       moviesConnection(after: String, directed: Boolean = true, first: Int, sort: [ActorMoviesConnectionSort!], where: ActorMoviesConnectionWhere): ActorMoviesConnection!
+                      \\"\\"\\"\\"\\"\\"
                       password: String!
+                      \\"\\"\\"\\"\\"\\"
                       username: String!
                     }
 
@@ -2161,10 +2169,12 @@ describe("@filterable directive", () => {
                       UPDATE
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Movie {
                       actors(directed: Boolean = true, options: ActorOptions, where: ActorWhere): [Actor!]!
                       actorsAggregate(directed: Boolean = true, where: ActorWhere): MovieActorActorsAggregationSelection
                       actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                      \\"\\"\\"\\"\\"\\"
                       title: String
                     }
 
@@ -2630,11 +2640,14 @@ describe("@filterable directive", () => {
                       subscription: Subscription
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Actor {
                       movies(directed: Boolean = true, options: MovieOptions, where: MovieWhere): [Movie!]!
                       moviesAggregate(directed: Boolean = true, where: MovieWhere): ActorMovieMoviesAggregationSelection
                       moviesConnection(after: String, directed: Boolean = true, first: Int, sort: [ActorMoviesConnectionSort!], where: ActorMoviesConnectionWhere): ActorMoviesConnection!
+                      \\"\\"\\"\\"\\"\\"
                       password: String!
+                      \\"\\"\\"\\"\\"\\"
                       username: String!
                     }
 
@@ -3005,10 +3018,12 @@ describe("@filterable directive", () => {
                       UPDATE
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Movie {
                       actors(directed: Boolean = true, options: ActorOptions, where: ActorWhere): [Actor!]!
                       actorsAggregate(directed: Boolean = true, where: ActorWhere): MovieActorActorsAggregationSelection
                       actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                      \\"\\"\\"\\"\\"\\"
                       title: String
                     }
 
@@ -3449,11 +3464,14 @@ describe("@filterable directive", () => {
                       subscription: Subscription
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Actor {
                       movies(directed: Boolean = true, options: MovieOptions, where: MovieWhere): [Movie!]!
                       moviesAggregate(directed: Boolean = true, where: MovieWhere): ActorMovieMoviesAggregationSelection
                       moviesConnection(after: String, directed: Boolean = true, first: Int, sort: [ActorMoviesConnectionSort!], where: ActorMoviesConnectionWhere): ActorMoviesConnection!
+                      \\"\\"\\"\\"\\"\\"
                       password: String!
+                      \\"\\"\\"\\"\\"\\"
                       username: String!
                     }
 
@@ -3834,10 +3852,12 @@ describe("@filterable directive", () => {
                       UPDATE
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Movie {
                       actors(directed: Boolean = true, options: ActorOptions, where: ActorWhere): [Actor!]!
                       actorsAggregate(directed: Boolean = true, where: ActorWhere): MovieActorActorsAggregationSelection
                       actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                      \\"\\"\\"\\"\\"\\"
                       title: String
                     }
 
@@ -4216,11 +4236,14 @@ describe("@filterable directive", () => {
                       subscription: Subscription
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Actor {
                       movies(directed: Boolean = true, options: MovieOptions, where: MovieWhere): [Movie!]!
                       moviesAggregate(directed: Boolean = true, where: MovieWhere): ActorMovieMoviesAggregationSelection
                       moviesConnection(after: String, directed: Boolean = true, first: Int, sort: [ActorMoviesConnectionSort!], where: ActorMoviesConnectionWhere): ActorMoviesConnection!
+                      \\"\\"\\"\\"\\"\\"
                       password: String!
+                      \\"\\"\\"\\"\\"\\"
                       username: String!
                     }
 
@@ -4601,10 +4624,12 @@ describe("@filterable directive", () => {
                       UPDATE
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Movie {
                       actors(directed: Boolean = true, options: ActorOptions, where: ActorWhere): [Actor!]!
                       actorsAggregate(directed: Boolean = true, where: ActorWhere): MovieActorActorsAggregationSelection
                       actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                      \\"\\"\\"\\"\\"\\"
                       title: String
                     }
 
@@ -5072,11 +5097,14 @@ describe("@filterable directive", () => {
                       subscription: Subscription
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Actor {
                       movies(directed: Boolean = true, options: MovieOptions, where: MovieWhere): [Movie!]!
                       moviesAggregate(directed: Boolean = true, where: MovieWhere): ActorMovieMoviesAggregationSelection
                       moviesConnection(after: String, directed: Boolean = true, first: Int, sort: [ActorMoviesConnectionSort!], where: ActorMoviesConnectionWhere): ActorMoviesConnection!
+                      \\"\\"\\"\\"\\"\\"
                       password: String!
+                      \\"\\"\\"\\"\\"\\"
                       username: String!
                     }
 
@@ -5457,10 +5485,12 @@ describe("@filterable directive", () => {
                       UPDATE
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Movie {
                       actors(directed: Boolean = true, options: ActorOptions, where: ActorWhere): [Actor!]!
                       actorsAggregate(directed: Boolean = true, where: ActorWhere): MovieActorActorsAggregationSelection
                       actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                      \\"\\"\\"\\"\\"\\"
                       title: String
                     }
 
@@ -5900,11 +5930,14 @@ describe("@filterable directive", () => {
                       subscription: Subscription
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Actor {
                       movies(directed: Boolean = true, options: MovieOptions, where: MovieWhere): [Movie!]!
                       moviesAggregate(directed: Boolean = true, where: MovieWhere): ActorMovieMoviesAggregationSelection
                       moviesConnection(after: String, directed: Boolean = true, first: Int, sort: [ActorMoviesConnectionSort!], where: ActorMoviesConnectionWhere): ActorMoviesConnection!
+                      \\"\\"\\"\\"\\"\\"
                       password: String!
+                      \\"\\"\\"\\"\\"\\"
                       username: String!
                     }
 
@@ -6285,10 +6318,12 @@ describe("@filterable directive", () => {
                       UPDATE
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Movie {
                       actors(directed: Boolean = true, options: ActorOptions, where: ActorWhere): [Actor!]!
                       actorsAggregate(directed: Boolean = true, where: ActorWhere): MovieActorActorsAggregationSelection
                       actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                      \\"\\"\\"\\"\\"\\"
                       title: String
                     }
 
@@ -6672,11 +6707,14 @@ describe("@filterable directive", () => {
                       subscription: Subscription
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Actor implements Person {
                       movies(directed: Boolean = true, options: MovieOptions, where: MovieWhere): [Movie!]!
                       moviesAggregate(directed: Boolean = true, where: MovieWhere): ActorMovieMoviesAggregationSelection
                       moviesConnection(after: String, directed: Boolean = true, first: Int, sort: [ActorMoviesConnectionSort!], where: ActorMoviesConnectionWhere): ActorMoviesConnection!
+                      \\"\\"\\"\\"\\"\\"
                       password: String!
+                      \\"\\"\\"\\"\\"\\"
                       username: String!
                     }
 
@@ -7053,9 +7091,11 @@ describe("@filterable directive", () => {
                       UPDATE
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Movie {
                       actors(directed: Boolean = true, options: PersonOptions, where: PersonWhere): [Person!]!
                       actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                      \\"\\"\\"\\"\\"\\"
                       title: String
                     }
 
@@ -7519,11 +7559,14 @@ describe("@filterable directive", () => {
                       subscription: Subscription
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Actor implements Person {
                       movies(directed: Boolean = true, options: MovieOptions, where: MovieWhere): [Movie!]!
                       moviesAggregate(directed: Boolean = true, where: MovieWhere): ActorMovieMoviesAggregationSelection
                       moviesConnection(after: String, directed: Boolean = true, first: Int, sort: [ActorMoviesConnectionSort!], where: ActorMoviesConnectionWhere): ActorMoviesConnection!
+                      \\"\\"\\"\\"\\"\\"
                       password: String!
+                      \\"\\"\\"\\"\\"\\"
                       username: String!
                     }
 
@@ -7900,9 +7943,11 @@ describe("@filterable directive", () => {
                       UPDATE
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Movie {
                       actors(directed: Boolean = true, options: PersonOptions, where: PersonWhere): [Person!]!
                       actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                      \\"\\"\\"\\"\\"\\"
                       title: String
                     }
 
@@ -8366,11 +8411,14 @@ describe("@filterable directive", () => {
                       subscription: Subscription
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Actor implements Person {
                       movies(directed: Boolean = true, options: MovieOptions, where: MovieWhere): [Movie!]!
                       moviesAggregate(directed: Boolean = true, where: MovieWhere): ActorMovieMoviesAggregationSelection
                       moviesConnection(after: String, directed: Boolean = true, first: Int, sort: [ActorMoviesConnectionSort!], where: ActorMoviesConnectionWhere): ActorMoviesConnection!
+                      \\"\\"\\"\\"\\"\\"
                       password: String!
+                      \\"\\"\\"\\"\\"\\"
                       username: String!
                     }
 
@@ -8747,9 +8795,11 @@ describe("@filterable directive", () => {
                       UPDATE
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Movie {
                       actors(directed: Boolean = true, options: PersonOptions, where: PersonWhere): [Person!]!
                       actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+                      \\"\\"\\"\\"\\"\\"
                       title: String
                     }
 
@@ -9217,11 +9267,14 @@ describe("@filterable directive", () => {
                       subscription: Subscription
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Actor {
                       movies(directed: Boolean = true, options: MovieOptions, where: MovieWhere): [Movie!]!
                       moviesAggregate(directed: Boolean = true, where: MovieWhere): ActorMovieMoviesAggregationSelection
                       moviesConnection(after: String, directed: Boolean = true, first: Int, sort: [ActorMoviesConnectionSort!], where: ActorMoviesConnectionWhere): ActorMoviesConnection!
+                      \\"\\"\\"\\"\\"\\"
                       password: String!
+                      \\"\\"\\"\\"\\"\\"
                       username: String!
                     }
 
@@ -9570,11 +9623,14 @@ describe("@filterable directive", () => {
                       totalCount: Int!
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Appearance {
                       movies(directed: Boolean = true, options: MovieOptions, where: MovieWhere): [Movie!]!
                       moviesAggregate(directed: Boolean = true, where: MovieWhere): AppearanceMovieMoviesAggregationSelection
                       moviesConnection(after: String, directed: Boolean = true, first: Int, sort: [AppearanceMoviesConnectionSort!], where: AppearanceMoviesConnectionWhere): AppearanceMoviesConnection!
+                      \\"\\"\\"\\"\\"\\"
                       password: String!
+                      \\"\\"\\"\\"\\"\\"
                       username: String!
                     }
 
@@ -9960,9 +10016,11 @@ describe("@filterable directive", () => {
                       UPDATE
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Movie {
                       actors(directed: Boolean = true, options: QueryOptions, where: PersonWhere): [Person!]!
                       actorsConnection(after: String, directed: Boolean = true, first: Int, where: MovieActorsConnectionWhere): MovieActorsConnection!
+                      \\"\\"\\"\\"\\"\\"
                       title: String
                     }
 
@@ -10442,11 +10500,14 @@ describe("@filterable directive", () => {
                       subscription: Subscription
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Actor {
                       movies(directed: Boolean = true, options: MovieOptions, where: MovieWhere): [Movie!]!
                       moviesAggregate(directed: Boolean = true, where: MovieWhere): ActorMovieMoviesAggregationSelection
                       moviesConnection(after: String, directed: Boolean = true, first: Int, sort: [ActorMoviesConnectionSort!], where: ActorMoviesConnectionWhere): ActorMoviesConnection!
+                      \\"\\"\\"\\"\\"\\"
                       password: String!
+                      \\"\\"\\"\\"\\"\\"
                       username: String!
                     }
 
@@ -10795,11 +10856,14 @@ describe("@filterable directive", () => {
                       totalCount: Int!
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Appearance {
                       movies(directed: Boolean = true, options: MovieOptions, where: MovieWhere): [Movie!]!
                       moviesAggregate(directed: Boolean = true, where: MovieWhere): AppearanceMovieMoviesAggregationSelection
                       moviesConnection(after: String, directed: Boolean = true, first: Int, sort: [AppearanceMoviesConnectionSort!], where: AppearanceMoviesConnectionWhere): AppearanceMoviesConnection!
+                      \\"\\"\\"\\"\\"\\"
                       password: String!
+                      \\"\\"\\"\\"\\"\\"
                       username: String!
                     }
 
@@ -11185,9 +11249,11 @@ describe("@filterable directive", () => {
                       UPDATE
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Movie {
                       actors(directed: Boolean = true, options: QueryOptions, where: PersonWhere): [Person!]!
                       actorsConnection(after: String, directed: Boolean = true, first: Int, where: MovieActorsConnectionWhere): MovieActorsConnection!
+                      \\"\\"\\"\\"\\"\\"
                       title: String
                     }
 
@@ -11667,11 +11733,14 @@ describe("@filterable directive", () => {
                       subscription: Subscription
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Actor {
                       movies(directed: Boolean = true, options: MovieOptions, where: MovieWhere): [Movie!]!
                       moviesAggregate(directed: Boolean = true, where: MovieWhere): ActorMovieMoviesAggregationSelection
                       moviesConnection(after: String, directed: Boolean = true, first: Int, sort: [ActorMoviesConnectionSort!], where: ActorMoviesConnectionWhere): ActorMoviesConnection!
+                      \\"\\"\\"\\"\\"\\"
                       password: String!
+                      \\"\\"\\"\\"\\"\\"
                       username: String!
                     }
 
@@ -12020,11 +12089,14 @@ describe("@filterable directive", () => {
                       totalCount: Int!
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Appearance {
                       movies(directed: Boolean = true, options: MovieOptions, where: MovieWhere): [Movie!]!
                       moviesAggregate(directed: Boolean = true, where: MovieWhere): AppearanceMovieMoviesAggregationSelection
                       moviesConnection(after: String, directed: Boolean = true, first: Int, sort: [AppearanceMoviesConnectionSort!], where: AppearanceMoviesConnectionWhere): AppearanceMoviesConnection!
+                      \\"\\"\\"\\"\\"\\"
                       password: String!
+                      \\"\\"\\"\\"\\"\\"
                       username: String!
                     }
 
@@ -12410,9 +12482,11 @@ describe("@filterable directive", () => {
                       UPDATE
                     }
 
+                    \\"\\"\\"\\"\\"\\"
                     type Movie {
                       actors(directed: Boolean = true, options: QueryOptions, where: PersonWhere): [Person!]!
                       actorsConnection(after: String, directed: Boolean = true, first: Int, where: MovieActorsConnectionWhere): MovieActorsConnection!
+                      \\"\\"\\"\\"\\"\\"
                       title: String
                     }
 

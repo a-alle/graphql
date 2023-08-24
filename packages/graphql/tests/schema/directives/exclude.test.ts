@@ -42,7 +42,9 @@ describe("@exclude directive", () => {
               mutation: Mutation
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Actor {
+              \\"\\"\\"\\"\\"\\"
               name: String
             }
 
@@ -94,7 +96,9 @@ describe("@exclude directive", () => {
               relationshipsDeleted: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               title: String
             }
 
@@ -226,7 +230,9 @@ describe("@exclude directive", () => {
               mutation: Mutation
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Actor {
+              \\"\\"\\"\\"\\"\\"
               name: String
             }
 
@@ -375,7 +381,9 @@ describe("@exclude directive", () => {
               relationshipsDeleted: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               title: String
             }
 
@@ -507,7 +515,9 @@ describe("@exclude directive", () => {
               mutation: Mutation
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Actor {
+              \\"\\"\\"\\"\\"\\"
               name: String
             }
 
@@ -530,7 +540,9 @@ describe("@exclude directive", () => {
               relationshipsDeleted: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               title: String
             }
 
@@ -660,7 +672,9 @@ describe("@exclude directive", () => {
               mutation: Mutation
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Actor {
+              \\"\\"\\"\\"\\"\\"
               name: String
             }
 
@@ -727,10 +741,12 @@ describe("@exclude directive", () => {
               relationshipsDeleted: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
               actors(directed: Boolean = true, options: ActorOptions, where: ActorWhere): [Actor!]!
               actorsAggregate(directed: Boolean = true, where: ActorWhere): MovieActorActorsAggregationSelection
               actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+              \\"\\"\\"\\"\\"\\"
               title: String
             }
 
@@ -1024,7 +1040,9 @@ describe("@exclude directive", () => {
               mutation: Mutation
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Actor {
+              \\"\\"\\"\\"\\"\\"
               name: String
             }
 
@@ -1194,7 +1212,9 @@ describe("@exclude directive", () => {
               relationshipsDeleted: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie implements Production {
+              \\"\\"\\"\\"\\"\\"
               title: String
             }
 
@@ -1278,7 +1298,9 @@ describe("@exclude directive", () => {
               seriesConnection(after: String, first: Int, sort: [SeriesSort], where: SeriesWhere): SeriesConnection!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Series implements Production {
+              \\"\\"\\"\\"\\"\\"
               title: String
             }
 

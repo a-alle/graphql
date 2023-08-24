@@ -142,6 +142,7 @@ describe("https://github.com/neo4j/graphql/issues/2377", () => {
               resourcesConnection(after: String, first: Int, sort: [ResourceSort], where: ResourceWhere): ResourcesConnection!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Resource implements ResourceEntity {
               \\"\\"\\"
               Resources encapsulating the given resource (e.g., a github org contains a repo)
@@ -149,14 +150,21 @@ describe("https://github.com/neo4j/graphql/issues/2377", () => {
               containedBy(directed: Boolean = true, options: ResourceOptions, where: ResourceWhere): [Resource!]!
               containedByAggregate(directed: Boolean = true, where: ResourceWhere): ResourceResourceContainedByAggregationSelection
               containedByConnection(after: String, directed: Boolean = true, first: Int, sort: [ResourceContainedByConnectionSort!], where: ResourceContainedByConnectionWhere): ResourceContainedByConnection!
+              \\"\\"\\"\\"\\"\\"
               createdAt: DateTime!
+              \\"\\"\\"\\"\\"\\"
               externalIds: [ID!]
+              \\"\\"\\"\\"\\"\\"
               id: ID!
+              \\"\\"\\"\\"\\"\\"
               name: String
+              \\"\\"\\"\\"\\"\\"
               properties: [Property!]
               \\"\\"\\"Globally tracked tags for this resource\\"\\"\\"
               tags: [Tag!]
+              \\"\\"\\"\\"\\"\\"
               type: ResourceType!
+              \\"\\"\\"\\"\\"\\"
               updatedAt: DateTime!
             }
 

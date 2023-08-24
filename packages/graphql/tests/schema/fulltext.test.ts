@@ -71,8 +71,11 @@ describe("@fulltext schema", () => {
               min: Float
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               description: String
+              \\"\\"\\"\\"\\"\\"
               title: String
             }
 

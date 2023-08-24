@@ -73,8 +73,11 @@ describe("Localtime", () => {
               min: LocalTime
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               id: ID
+              \\"\\"\\"\\"\\"\\"
               time: LocalTime
             }
 

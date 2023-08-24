@@ -47,10 +47,15 @@ describe("https://github.com/neo4j/graphql/issues/1182", () => {
               mutation: Mutation
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Actor {
+              \\"\\"\\"\\"\\"\\"
               dob: DateTime!
+              \\"\\"\\"\\"\\"\\"
               homeAddress: Point!
+              \\"\\"\\"\\"\\"\\"
               id: ID!
+              \\"\\"\\"\\"\\"\\"
               name: String!
             }
 
@@ -201,11 +206,14 @@ describe("https://github.com/neo4j/graphql/issues/1182", () => {
               shortest: ID!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
               actors(directed: Boolean = true, options: ActorOptions, where: ActorWhere): [Actor!]!
               actorsAggregate(directed: Boolean = true, where: ActorWhere): MovieActorActorsAggregationSelection
               actorsConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieActorsConnectionSort!], where: MovieActorsConnectionWhere): MovieActorsConnection!
+              \\"\\"\\"\\"\\"\\"
               id: ID!
+              \\"\\"\\"\\"\\"\\"
               title: String!
             }
 

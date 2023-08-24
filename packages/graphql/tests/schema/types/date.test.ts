@@ -66,8 +66,11 @@ describe("Date", () => {
               shortest: ID
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               date: Date
+              \\"\\"\\"\\"\\"\\"
               id: ID
             }
 

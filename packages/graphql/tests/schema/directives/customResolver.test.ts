@@ -125,11 +125,17 @@ describe("@customResolver directive", () => {
               users: [User!]!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type User implements UserInterface {
+              \\"\\"\\"\\"\\"\\"
               customResolver: String
+              \\"\\"\\"\\"\\"\\"
               id: ID!
+              \\"\\"\\"\\"\\"\\"
               nickname: String!
+              \\"\\"\\"\\"\\"\\"
               password: String!
+              \\"\\"\\"\\"\\"\\"
               username: String!
             }
 

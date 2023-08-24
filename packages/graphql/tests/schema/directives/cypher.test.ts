@@ -51,7 +51,9 @@ describe("Cypher", () => {
               mutation: Mutation
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Actor {
+              \\"\\"\\"\\"\\"\\"
               name: String
             }
 
@@ -140,8 +142,11 @@ describe("Cypher", () => {
               shortest: ID
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               actors(title: String): [Actor]
+              \\"\\"\\"\\"\\"\\"
               id: ID
             }
 
@@ -297,8 +302,11 @@ describe("Cypher", () => {
               mutation: Mutation
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Actor {
+              \\"\\"\\"\\"\\"\\"
               name: String
+              \\"\\"\\"\\"\\"\\"
               totalScreenTime: Int!
             }
 
@@ -388,8 +396,11 @@ describe("Cypher", () => {
               shortest: ID
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie {
+              \\"\\"\\"\\"\\"\\"
               actors(title: String): [Actor]
+              \\"\\"\\"\\"\\"\\"
               id: ID
             }
 

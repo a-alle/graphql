@@ -93,11 +93,14 @@ describe("Authorization", () => {
               startCursor: String
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Post {
               author(directed: Boolean = true, options: UserOptions, where: UserWhere): User!
               authorAggregate(directed: Boolean = true, where: UserWhere): PostUserAuthorAggregationSelection
               authorConnection(after: String, directed: Boolean = true, first: Int, sort: [PostAuthorConnectionSort!], where: PostAuthorConnectionWhere): PostAuthorConnection!
+              \\"\\"\\"\\"\\"\\"
               id: ID!
+              \\"\\"\\"\\"\\"\\"
               name: String!
             }
 
@@ -363,8 +366,11 @@ describe("Authorization", () => {
               users: [User!]!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type User {
+              \\"\\"\\"\\"\\"\\"
               id: ID!
+              \\"\\"\\"\\"\\"\\"
               name: String!
               posts(directed: Boolean = true, options: UserOptions, where: UserWhere): [User!]!
               postsAggregate(directed: Boolean = true, where: UserWhere): UserUserPostsAggregationSelection

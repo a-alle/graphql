@@ -129,7 +129,9 @@ describe("162", () => {
               DESC
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Tiger {
+              \\"\\"\\"\\"\\"\\"
               x: Int
             }
 
@@ -151,7 +153,9 @@ describe("162", () => {
               node: Tiger!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type TigerJawLevel2 {
+              \\"\\"\\"\\"\\"\\"
               id: ID
               part1(directed: Boolean = true, options: TigerJawLevel2Part1Options, where: TigerJawLevel2Part1Where): TigerJawLevel2Part1!
               part1Aggregate(directed: Boolean = true, where: TigerJawLevel2Part1Where): TigerJawLevel2TigerJawLevel2Part1Part1AggregationSelection
@@ -194,7 +198,9 @@ describe("162", () => {
               sort: [TigerJawLevel2Sort!]
             }
 
+            \\"\\"\\"\\"\\"\\"
             type TigerJawLevel2Part1 {
+              \\"\\"\\"\\"\\"\\"
               id: ID
               tiger(directed: Boolean = true, options: TigerOptions, where: TigerWhere): Tiger!
               tigerAggregate(directed: Boolean = true, where: TigerWhere): TigerJawLevel2Part1TigerTigerAggregationSelection

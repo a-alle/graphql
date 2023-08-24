@@ -111,7 +111,9 @@ describe("https://github.com/neo4j/graphql/issues/3439", () => {
               UPDATE
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Genre {
+              \\"\\"\\"\\"\\"\\"
               name: String!
               product(directed: Boolean = true, options: IProductOptions, where: IProductWhere): [IProduct!]!
               productConnection(after: String, directed: Boolean = true, first: Int, sort: [GenreProductConnectionSort!], where: GenreProductConnectionWhere): GenreProductConnection!
@@ -512,11 +514,14 @@ describe("https://github.com/neo4j/graphql/issues/3439", () => {
               name_STARTS_WITH: String
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie implements INode & IProduct {
               genre(directed: Boolean = true, options: GenreOptions, where: GenreWhere): Genre!
               genreAggregate(directed: Boolean = true, where: GenreWhere): MovieGenreGenreAggregationSelection
               genreConnection(after: String, directed: Boolean = true, first: Int, sort: [MovieGenreConnectionSort!], where: MovieGenreConnectionWhere): MovieGenreConnection!
+              \\"\\"\\"\\"\\"\\"
               id: String!
+              \\"\\"\\"\\"\\"\\"
               name: String!
             }
 
@@ -884,11 +889,14 @@ describe("https://github.com/neo4j/graphql/issues/3439", () => {
               seriesConnection(after: String, first: Int, sort: [SeriesSort], where: SeriesWhere): SeriesConnection!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Series implements INode & IProduct {
               genre(directed: Boolean = true, options: GenreOptions, where: GenreWhere): Genre!
               genreAggregate(directed: Boolean = true, where: GenreWhere): SeriesGenreGenreAggregationSelection
               genreConnection(after: String, directed: Boolean = true, first: Int, sort: [SeriesGenreConnectionSort!], where: SeriesGenreConnectionWhere): SeriesGenreConnection!
+              \\"\\"\\"\\"\\"\\"
               id: String!
+              \\"\\"\\"\\"\\"\\"
               name: String!
             }
 
@@ -1363,7 +1371,9 @@ describe("https://github.com/neo4j/graphql/issues/3439", () => {
               UPDATE
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Genre {
+              \\"\\"\\"\\"\\"\\"
               name: String!
               product(directed: Boolean = true, options: IProductOptions, where: IProductWhere): [IProduct!]!
               productConnection(after: String, directed: Boolean = true, first: Int, sort: [GenreProductConnectionSort!], where: GenreProductConnectionWhere): GenreProductConnection!
@@ -1835,11 +1845,14 @@ describe("https://github.com/neo4j/graphql/issues/3439", () => {
               name_STARTS_WITH: String
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie implements IProduct {
               genre(directed: Boolean = true, options: GenreOptions, where: GenreWhere): Genre!
               genreAggregate(directed: Boolean = true, where: GenreWhere): MovieGenreGenreAggregationSelection
               genreConnection(after: String, directed: Boolean = true, first: Int, sort: [IProductGenreConnectionSort!], where: IProductGenreConnectionWhere): IProductGenreConnection!
+              \\"\\"\\"\\"\\"\\"
               id: String!
+              \\"\\"\\"\\"\\"\\"
               name: String!
             }
 
@@ -2132,11 +2145,14 @@ describe("https://github.com/neo4j/graphql/issues/3439", () => {
               seriesConnection(after: String, first: Int, sort: [SeriesSort], where: SeriesWhere): SeriesConnection!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Series implements IProduct {
               genre(directed: Boolean = true, options: GenreOptions, where: GenreWhere): Genre!
               genreAggregate(directed: Boolean = true, where: GenreWhere): SeriesGenreGenreAggregationSelection
               genreConnection(after: String, directed: Boolean = true, first: Int, sort: [IProductGenreConnectionSort!], where: IProductGenreConnectionWhere): IProductGenreConnection!
+              \\"\\"\\"\\"\\"\\"
               id: String!
+              \\"\\"\\"\\"\\"\\"
               name: String!
             }
 
@@ -2536,7 +2552,9 @@ describe("https://github.com/neo4j/graphql/issues/3439", () => {
               UPDATE
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Genre {
+              \\"\\"\\"\\"\\"\\"
               name: String!
               product(directed: Boolean = true, options: IProductOptions, where: IProductWhere): [IProduct!]!
               productConnection(after: String, directed: Boolean = true, first: Int, sort: [GenreProductConnectionSort!], where: GenreProductConnectionWhere): GenreProductConnection!
@@ -2887,9 +2905,13 @@ describe("https://github.com/neo4j/graphql/issues/3439", () => {
               name_STARTS_WITH: String
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Movie implements IProduct {
+              \\"\\"\\"\\"\\"\\"
               genre: Genre!
+              \\"\\"\\"\\"\\"\\"
               id: String!
+              \\"\\"\\"\\"\\"\\"
               name: String!
             }
 
@@ -3045,9 +3067,13 @@ describe("https://github.com/neo4j/graphql/issues/3439", () => {
               seriesConnection(after: String, first: Int, sort: [SeriesSort], where: SeriesWhere): SeriesConnection!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Series implements IProduct {
+              \\"\\"\\"\\"\\"\\"
               genre: Genre!
+              \\"\\"\\"\\"\\"\\"
               id: String!
+              \\"\\"\\"\\"\\"\\"
               name: String!
             }
 

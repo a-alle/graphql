@@ -57,7 +57,9 @@ describe("609", () => {
               relationshipsDeleted: Int!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Deprecated {
+              \\"\\"\\"\\"\\"\\"
               deprecatedField: String @deprecated
             }
 

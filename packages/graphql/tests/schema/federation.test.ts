@@ -110,10 +110,12 @@ describe("Apollo Federation", () => {
               startCursor: String
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Post {
               author: User!
               authorAggregate(directed: Boolean = true, where: UserWhere): PostUserAuthorAggregationSelection
               authorConnection(after: String, directed: Boolean = true, first: Int, sort: [PostAuthorConnectionSort!], where: PostAuthorConnectionWhere): PostAuthorConnection!
+              \\"\\"\\"\\"\\"\\"
               content: String!
             }
 
@@ -368,7 +370,9 @@ describe("Apollo Federation", () => {
               users: [User!]!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type User @shareable {
+              \\"\\"\\"\\"\\"\\"
               name: String!
               posts(directed: Boolean = true, options: PostOptions, where: PostWhere): [Post!]!
               postsAggregate(directed: Boolean = true, where: PostWhere): UserPostPostsAggregationSelection
@@ -717,10 +721,12 @@ describe("Apollo Federation", () => {
               startCursor: String
             }
 
+            \\"\\"\\"\\"\\"\\"
             type Post {
               author: User!
               authorAggregate(directed: Boolean = true, where: UserWhere): PostUserAuthorAggregationSelection
               authorConnection(after: String, directed: Boolean = true, first: Int, sort: [PostAuthorConnectionSort!], where: PostAuthorConnectionWhere): PostAuthorConnection!
+              \\"\\"\\"\\"\\"\\"
               content: String!
             }
 
@@ -969,7 +975,9 @@ describe("Apollo Federation", () => {
               users: [User!]!
             }
 
+            \\"\\"\\"\\"\\"\\"
             type User @key(fields: \\"name\\", resolvable: false) {
+              \\"\\"\\"\\"\\"\\"
               name: String!
             }
 
