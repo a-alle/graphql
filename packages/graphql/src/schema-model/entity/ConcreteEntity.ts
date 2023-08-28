@@ -31,21 +31,25 @@ export class ConcreteEntity implements Entity {
     public readonly attributes: Map<string, Attribute> = new Map();
     public readonly relationships: Map<string, Relationship> = new Map();
     public readonly annotations: Partial<Annotations> = {};
+    public readonly description: string;
 
     constructor({
         name,
         labels,
+        description,
         attributes = [],
         annotations = [],
         relationships = [],
     }: {
         name: string;
         labels: string[];
+        description?: string;
         attributes?: Attribute[];
         annotations?: Annotation[];
         relationships?: Relationship[];
     }) {
         this.name = name;
+        this.description = description || "";
         this.labels = new Set(labels);
         for (const attribute of attributes) {
             this.addAttribute(attribute);
