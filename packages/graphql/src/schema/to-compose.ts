@@ -189,7 +189,9 @@ export function concreteEntityToCreateInputFields(
 
         const userDefinedDirectivesOnField = userDefinedFieldDirectives.get(field.name);
         if (userDefinedDirectivesOnField) {
-            newInputField.directives = graphqlDirectivesToCompose(userDefinedDirectivesOnField);
+            newInputField.directives = graphqlDirectivesToCompose(
+                userDefinedDirectivesOnField.filter((directive) => directive.name.value === "deprecated")
+            );
         }
 
         createInputFields[field.name] = newInputField;
