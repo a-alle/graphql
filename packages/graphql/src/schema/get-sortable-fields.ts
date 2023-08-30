@@ -17,8 +17,8 @@
  * limitations under the License.
  */
 
-import type { ObjectFields } from "./get-obj-field-meta";
 import type { SortableField } from "../types";
+import type { ObjectFields } from "./get-obj-field-meta";
 
 export default function getSortableFields(obj: ObjectFields): SortableField[] {
     return [

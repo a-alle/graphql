@@ -111,7 +111,27 @@ export class ConcreteEntityAdapter {
     }
 
     public get sortableFields(): AttributeAdapter[] {
-        return Array.from(this.attributes.values()).filter((attribute) => attribute.isSortable());
+        return Array.from(this.attributes.values()).filter((attribute) => attribute.isSortableField());
+    }
+
+    public get whereFields(): AttributeAdapter[] {
+        return Array.from(this.attributes.values()).filter((attribute) => attribute.isWhereField());
+    }
+
+    public get primitiveFields(): AttributeAdapter[] {
+        return Array.from(this.attributes.values()).filter((attribute) => attribute.isPrimitiveField());
+    }
+
+    // public get scalarFields(): AttributeAdapter[] {
+    //     return Array.from(this.attributes.values()).filter((attribute) => attribute.isScalarField());
+    // }
+
+    // public get enumFields(): AttributeAdapter[] {
+    //     return Array.from(this.attributes.values()).filter((attribute) => attribute.isEnumField());
+    // }
+
+    public get temporalFields(): AttributeAdapter[] {
+        return Array.from(this.attributes.values()).filter((attribute) => attribute.isTemporalField());
     }
 
     // TODO: identify usage of old Node.[getLabels | getLabelsString] and migrate them if needed

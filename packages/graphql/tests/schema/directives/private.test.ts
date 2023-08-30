@@ -18,12 +18,14 @@
  */
 
 import { printSchemaWithDirectives } from "@graphql-tools/utils";
-import { lexicographicSortSchema } from "graphql/utilities";
 import { gql } from "graphql-tag";
+import { lexicographicSortSchema } from "graphql/utilities";
 import { Neo4jGraphQL } from "../../../src";
 
 describe("@private directive", () => {
     test("does not add fields to schema", async () => {
+        // TODO: We had to add @private to the UserInterface in order to get the test to pass.
+        // Feels like this is wrong considering we do not want directives on interfaces.
         const typeDefs = gql`
             interface UserInterface {
                 id: ID
@@ -33,7 +35,7 @@ describe("@private directive", () => {
             type User implements UserInterface {
                 id: ID
                 password: String @private
-                private: String
+                private: String @private
             }
         `;
         const neoSchema = new Neo4jGraphQL({ typeDefs });

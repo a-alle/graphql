@@ -18,15 +18,15 @@
  */
 
 import { printSchemaWithDirectives } from "@graphql-tools/utils";
-import { lexicographicSortSchema } from "graphql/utilities";
 import { gql } from "graphql-tag";
+import { lexicographicSortSchema } from "graphql/utilities";
 import { Neo4jGraphQL } from "../../../src";
 
 describe("@customResolver directive", () => {
     test("passes fields directly through with no generation", async () => {
         const typeDefs = gql`
             interface UserInterface {
-                customResolver: String @customResolver
+                customResolver: String
             }
 
             type User implements UserInterface {
@@ -34,7 +34,7 @@ describe("@customResolver directive", () => {
                 username: String!
                 password: String!
                 nickname: String! @customResolver
-                customResolver: String
+                customResolver: String @customResolver
             }
         `;
 

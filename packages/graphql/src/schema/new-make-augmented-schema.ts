@@ -60,8 +60,7 @@ import { getDefinitionNodes } from "./get-definition-nodes";
 import type { ObjectFields } from "./get-obj-field-meta";
 import getObjFieldMeta from "./get-obj-field-meta";
 import getSortableFields from "./get-sortable-fields";
-import getUniqueFields from "./get-unique-fields";
-import getWhereFields from "./get-where-fields";
+import getWhereFields, { getWhereFieldsFromConcreteEntity } from "./get-where-fields";
 import {
     concreteEntityToComposeFields,
     graphqlDirectivesToCompose,
@@ -1043,35 +1042,39 @@ function makeAugmentedSchema(
             composeNode.addInterface("Node");
         }
 
-        const sortFields = getSortableFields(node).reduce(
-            (res: InputTypeComposerFieldConfigMapDefinition, f) => ({
-                ...res,
-                [f.fieldName]: {
-                    type: "SortDirection",
-                    directives: graphqlDirectivesToCompose(
-                        f.otherDirectives.filter((directive) => directive.name.value === "deprecated")
-                    ),
-                },
-            }),
+        const sortFields = concreteEntityAdapter.sortableFields.reduce(
+            (res: InputTypeComposerFieldConfigMapDefinition, attributeAdapter) => {
+                // TODO: make a nicer way of getting these user defined field directives
+                const userDefinedDirectivesOnField = userDefinedFieldDirectives.get(attributeAdapter.name) || [];
+                return {
+                    ...res,
+                    [attributeAdapter.name]: {
+                        type: "SortDirection",
+                        directives: graphqlDirectivesToCompose(
+                            userDefinedDirectivesOnField.filter((directive) => directive.name.value === "deprecated")
+                        ),
+                    },
+                };
+            },
             {}
         );
 
-        const nodeSortTypeName = `${node.name}Sort`;
+        const nodeSortTypeName = `${concreteEntityAdapter.name}Sort`;
         if (Object.keys(sortFields).length) {
             const sortInput = composer.createInputTC({
                 name: nodeSortTypeName,
                 fields: sortFields,
                 description: `Fields to sort ${upperFirst(
-                    node.plural
+                    concreteEntityAdapter.plural
                 )} by. The order in which sorts are applied is not guaranteed when specifying many fields in one ${nodeSortTypeName} object.`,
             });
 
             composer.createInputTC({
-                name: `${node.name}Options`,
+                name: `${concreteEntityAdapter.name}Options`,
                 fields: {
                     sort: {
                         description: `Specify one or more ${nodeSortTypeName} objects to sort ${upperFirst(
-                            node.plural
+                            concreteEntityAdapter.plural
                         )} by. The sorts will be applied in the order in which they are arranged in the array.`,
                         type: sortInput.NonNull.List,
                     },
@@ -1081,69 +1084,76 @@ function makeAugmentedSchema(
             });
         } else {
             composer.createInputTC({
-                name: `${node.name}Options`,
+                name: `${concreteEntityAdapter.name}Options`,
                 fields: { limit: "Int", offset: "Int" },
             });
         }
 
-        const queryFields = getWhereFields({
-            typeName: node.name,
-            fields: {
-                temporalFields: node.temporalFields,
-                enumFields: node.enumFields,
-                pointFields: node.pointFields,
-                primitiveFields: node.primitiveFields,
-                scalarFields: node.scalarFields,
-            },
-            features,
-        });
-
-        const countField = {
-            type: "Int!",
-            resolve: numericalResolver,
-            args: {},
-        };
-
         composer.createObjectTC({
             name: node.aggregateTypeNames.selection,
             fields: {
-                count: countField,
-                ...[...node.primitiveFields, ...node.temporalFields].reduce((res, field) => {
-                    if (field.typeMeta.array) {
+                count: {
+                    type: "Int!",
+                    resolve: numericalResolver,
+                    args: {},
+                },
+                ...[...concreteEntityAdapter.primitiveFields, ...concreteEntityAdapter.temporalFields].reduce(
+                    (res, field) => {
+                        if (field.isList()) {
+                            return res;
+                        }
+
+                        if (!field.isAggregable()) {
+                            return res;
+                        }
+
+                        const objectTypeComposer = aggregationTypesMapper.getAggregationType({
+                            fieldName: field.getTypeName(),
+                            nullable: !field.isRequired(), // Double check
+                        });
+
+                        if (objectTypeComposer) {
+                            res[field.name] = objectTypeComposer.NonNull;
+                        }
+
                         return res;
-                    }
-                    if (!field.selectableOptions.onAggregate) {
-                        return res;
-                    }
-                    const objectTypeComposer = aggregationTypesMapper.getAggregationType({
-                        fieldName: field.typeMeta.name,
-                        nullable: !field.typeMeta.required,
-                    });
-
-                    if (!objectTypeComposer) return res;
-
-                    res[field.fieldName] = objectTypeComposer.NonNull;
-
-                    return res;
-                }, {}),
+                    },
+                    {}
+                ),
             },
-            directives: graphqlDirectivesToCompose(node.propagatedDirectives),
+            directives: graphqlDirectivesToCompose(propagatedDirectives),
         });
 
-        const nodeWhereTypeName = `${node.name}Where`;
+        // START WHERE FIELD -------------------
+
+        const queryFields = getWhereFieldsFromConcreteEntity({
+            concreteEntityAdapter,
+            userDefinedFieldDirectives,
+            features,
+        });
+
+        const nodeWhereTypeName = `${concreteEntityAdapter.name}Where`;
         composer.createInputTC({
             name: nodeWhereTypeName,
-            fields: node.isGlobalNode ? { id: "ID", ...queryFields } : queryFields,
+            fields: concreteEntityAdapter.isGlobalNode() ? { id: "ID", ...queryFields } : queryFields,
         });
 
         augmentFulltextSchema(node, composer, nodeWhereTypeName, nodeSortTypeName);
 
-        const uniqueFields = getUniqueFields(node);
+        console.log(node.uniqueFields);
+        console.log(concreteEntityAdapter.uniqueFields);
 
         composer.createInputTC({
-            name: `${node.name}UniqueWhere`,
-            fields: uniqueFields,
+            name: `${concreteEntityAdapter.name}UniqueWhere`,
+            fields: concreteEntityAdapter.uniqueFields.reduce((res, field) => {
+                return {
+                    [field.name]: field.getFieldTypeName(),
+                    ...res,
+                };
+            }, {}),
         });
+
+        // END WHERE FIELD -------------------
 
         composer.createInputTC({
             name: `${node.name}CreateInput`,

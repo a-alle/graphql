@@ -111,7 +111,7 @@ export function concreteEntityToComposeFields(
 } {
     const composeFields = {};
     for (const field of objectFields) {
-        if (field.annotations.selectable?.onRead === false) {
+        if (field.isReadable() === false) {
             continue;
         }
 

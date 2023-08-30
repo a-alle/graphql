@@ -176,17 +176,87 @@ export class AttributeAdapter {
         ),
     ].filter((field) => !field.typeMeta.array);
     */
-    isSortable(): boolean {
+    isSortableField(): boolean {
         return (
             !this.isList() &&
+            !this.isCustomResolvable() &&
             (this.isGraphQLBuiltInScalar() ||
                 this.isUserScalar() ||
                 this.isEnum() ||
                 this.isTemporal() ||
                 this.isPoint() ||
                 this.isCartesianPoint() ||
-                this.isCypher()) // TODO: Double check if this is a weird thingy
+                this.isBigInt() ||
+                this.isCypher())
         );
+    }
+
+    /**
+    * 
+        fields: {
+            temporalFields: node.temporalFields,
+            enumFields: node.enumFields,
+            pointFields: node.pointFields,
+            primitiveFields: node.primitiveFields,
+            scalarFields: node.scalarFields,
+        },
+    */
+    isWhereField(): boolean {
+        return (
+            this.isGraphQLBuiltInScalar() ||
+            this.isTemporal() ||
+            this.isEnum() ||
+            this.isPoint() ||
+            this.isCartesianPoint() ||
+            this.isUserScalar() ||
+            this.isBigInt()
+        );
+    }
+
+    /**
+     * 
+        if (
+            [
+                "Float",
+                "Int",
+                "BigInt",
+                "DateTime",
+                "Date",
+                "LocalDateTime",
+                "Time",
+                "LocalTime",
+                "Duration",
+            ].includes(f.typeMeta.name)
+        ),
+    */
+    isNumericalOrTemporal(): boolean {
+        return (
+            this.isFloat() ||
+            this.isInt() ||
+            this.isBigInt() ||
+            this.isDateTime() ||
+            this.isDate() ||
+            this.isLocalDateTime() ||
+            this.isTime() ||
+            this.isLocalTime() ||
+            this.isDuration()
+        );
+    }
+
+    isTemporalField(): boolean {
+        return (
+            this.isTemporal() ||
+            this.isDateTime() ||
+            this.isDate() ||
+            this.isLocalDateTime() ||
+            this.isTime() ||
+            this.isLocalTime() ||
+            this.isDuration()
+        );
+    }
+
+    isPrimitiveField(): boolean {
+        return this.isGraphQLBuiltInScalar() || this.isUserScalar() || this.isEnum() || this.isBigInt();
     }
 
     /**
@@ -399,20 +469,33 @@ export class AttributeAdapter {
         return this.isList() ? this.type.ofType.name : this.type.name;
     }
 
-    getInputTypeNames(): InputTypeNames {
-        let typeName = this.getTypeName();
-        let pretty = this.getTypePrettyName();
+    getFieldTypeName(): string {
+        return this.isList() ? `[${this.getTypeName()}]` : this.getTypeName();
+    }
+
+    getInputTypeName(): string {
         if (this.isSpatial()) {
             if (this.getTypeName() === "Point") {
-                typeName = "PointInput";
-                pretty = pretty.replace("Point", "PointInput");
+                return "PointInput";
             } else {
-                typeName = "CartesianPointInput";
-                pretty = pretty.replace("CartesianPoint", "CartesianPointInput");
+                return "CartesianPointInput";
             }
         }
+        return this.getTypeName();
+    }
+
+    // TODO: We should probably have this live in a different, more specific adapter
+    getFilterableInputTypeName(): string {
+        return `[${this.getInputTypeName()}${this.isRequired() ? "!" : ""}]`;
+    }
+
+    getInputTypeNames(): InputTypeNames {
+        const pretty = this.isList()
+            ? `[${this.getInputTypeName()}${this.isListElementRequired() ? "!" : ""}]`
+            : this.getInputTypeName();
+
         return {
-            where: { type: typeName, pretty },
+            where: { type: this.getInputTypeName(), pretty },
             create: {
                 type: this.getTypeName(),
                 pretty,
@@ -426,6 +509,22 @@ export class AttributeAdapter {
 
     isReadable(): boolean {
         return this.annotations.selectable?.onRead !== false;
+    }
+
+    isAggregable(): boolean {
+        return (
+            this.annotations.selectable?.onAggregate !== false &&
+            this.isCustomResolvable() === false &&
+            this.isCypher() === false
+        );
+    }
+
+    isFilterable(): boolean {
+        return this.annotations.filterable?.byValue !== false;
+    }
+
+    isCustomResolvable(): boolean {
+        return !!this.annotations.customResolver;
     }
 
     getPropagatedAnnotations(): Partial<Annotations> {

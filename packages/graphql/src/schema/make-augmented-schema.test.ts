@@ -19,22 +19,21 @@
 
 import camelCase from "camelcase";
 import {
-    type ObjectTypeDefinitionNode,
-    type NamedTypeNode,
-    type ListTypeNode,
-    type NonNullTypeNode,
-    type InputObjectTypeDefinitionNode,
     Kind,
+    type InputObjectTypeDefinitionNode,
+    type ListTypeNode,
+    type NamedTypeNode,
+    type NonNullTypeNode,
+    type ObjectTypeDefinitionNode,
 } from "graphql";
 import { pluralize } from "graphql-compose";
 import { gql } from "graphql-tag";
 // import makeAugmentedSchema from "./make-augmented-schema";
-import makeAugmentedSchema from "./new-make-augmented-schema";
+import { mergeTypeDefs } from "@graphql-tools/merge";
 import { Node } from "../classes";
 import * as constants from "../constants";
-import { Neo4jGraphQLSchemaModel } from "../schema-model/Neo4jGraphQLSchemaModel";
 import { generateModel } from "../schema-model/generate-model";
-import { mergeTypeDefs } from "@graphql-tools/merge";
+import makeAugmentedSchema from "./new-make-augmented-schema";
 
 describe("makeAugmentedSchema", () => {
     test("should be a function", () => {

@@ -150,4 +150,4 @@ export const OBJECT_DIRECTIVES = [
     "jwt",
 ] as const;
 
-export const PROPAGATED_DIRECTIVES = ["shared", "deprecated"] as const;
+export const PROPAGATED_DIRECTIVES = ["shareable", "deprecated"] as const;
