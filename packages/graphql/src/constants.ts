@@ -131,6 +131,7 @@ export const FIELD_DIRECTIVES = [
     "settable",
     "subscriptionsAuthorization",
     "filterable",
+    "relayId",
 ] as const;
 
 export const OBJECT_DIRECTIVES = [

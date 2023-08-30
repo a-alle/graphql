@@ -93,11 +93,11 @@ export class AttributeAdapter {
     }
 
     isUnique(): boolean {
-        return this.annotations.unique ? true : false;
+        return !!this.annotations.unique || this.isGlobalIDAttribute() === true;
     }
 
     isCypher(): boolean {
-        return this.annotations.cypher ? true : false;
+        return !!this.annotations.cypher;
     }
 
     /**
@@ -449,7 +449,7 @@ export class AttributeAdapter {
      */
 
     isGlobalIDAttribute(): boolean {
-        return !!this.annotations.id?.global;
+        return !!this.annotations.relayId;
     }
 
     /**

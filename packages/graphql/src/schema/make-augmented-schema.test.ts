@@ -588,7 +588,8 @@ describe("makeAugmentedSchema", () => {
                     name: ID! @id @unique @relayId
                 }
             `;
-            expect(() => makeAugmentedSchema(typeDefs)).toThrow(
+            const schemaModel = generateModel(mergeTypeDefs(typeDefs));
+            expect(() => makeAugmentedSchema(typeDefs, {}, schemaModel)).toThrow(
                 "Only one field may be decorated with the `@relayId` directive"
             );
         });
@@ -601,7 +602,8 @@ describe("makeAugmentedSchema", () => {
                 }
             `;
 
-            expect(() => makeAugmentedSchema(typeDefs)).toThrow(
+            const schemaModel = generateModel(mergeTypeDefs(typeDefs));
+            expect(() => makeAugmentedSchema(typeDefs, {}, schemaModel)).toThrow(
                 `Type User already has a field 'id', which is reserved for Relay global node identification.\nEither remove it, or if you need access to this property, consider using the '@alias' directive to access it via another field`
             );
         });
@@ -611,6 +613,7 @@ describe("makeAugmentedSchema", () => {
                     dbId: ID! @id @unique @relayId @alias(property: "id")
                 }
             `;
+
             const schemaModel = generateModel(mergeTypeDefs(typeDefs));
             expect(() => makeAugmentedSchema(typeDefs, {}, schemaModel)).not.toThrow();
         });

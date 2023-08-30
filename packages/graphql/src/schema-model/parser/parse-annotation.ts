@@ -22,6 +22,7 @@ import { filterTruthy } from "../../utils/utils";
 import type { Annotation } from "../annotation/Annotation";
 import { AnnotationsKey } from "../annotation/Annotation";
 import { IDAnnotation } from "../annotation/IDAnnotation";
+import { RelayIDAnnotation } from "../annotation/RelayIDAnnotation";
 import { parseAuthenticationAnnotation } from "./annotations-parser/authentication-annotation";
 import { parseAuthorizationAnnotation } from "./annotations-parser/authorization-annotation";
 import { parseCoalesceAnnotation } from "./annotations-parser/coalesce-annotation";
@@ -95,6 +96,8 @@ export function parseAnnotations(directives: readonly DirectiveNode[]): Annotati
                     return parseTimestampAnnotation(directive);
                 case AnnotationsKey.unique:
                     return parseUniqueAnnotation(directive);
+                case AnnotationsKey.relayId:
+                    return new RelayIDAnnotation();
                 default:
                     return undefined;
             }
