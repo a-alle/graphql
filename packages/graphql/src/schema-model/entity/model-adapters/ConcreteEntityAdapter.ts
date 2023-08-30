@@ -122,6 +122,14 @@ export class ConcreteEntityAdapter {
         return Array.from(this.attributes.values()).filter((attribute) => attribute.isPrimitiveField());
     }
 
+    public get aggregableFields(): AttributeAdapter[] {
+        return Array.from(this.attributes.values()).filter((attribute) => attribute.isAggregableField());
+    }
+
+    public get createInputFields(): AttributeAdapter[] {
+        return Array.from(this.attributes.values()).filter((attribute) => attribute.isCreateInputField());
+    }
+
     // public get scalarFields(): AttributeAdapter[] {
     //     return Array.from(this.attributes.values()).filter((attribute) => attribute.isScalarField());
     // }

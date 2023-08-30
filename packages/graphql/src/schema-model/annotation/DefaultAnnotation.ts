@@ -20,7 +20,7 @@
 export type DefaultAnnotationValue = string | number | boolean;
 
 export class DefaultAnnotation {
-    public readonly value: DefaultAnnotationValue;
+    public readonly value: string | number | boolean;
 
     constructor({ value }: { value: DefaultAnnotationValue }) {
         this.value = value;

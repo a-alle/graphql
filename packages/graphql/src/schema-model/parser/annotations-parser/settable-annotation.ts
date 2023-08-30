@@ -17,9 +17,9 @@
  * limitations under the License.
  */
 import type { DirectiveNode } from "graphql";
+import { settableDirective } from "../../../graphql/directives";
 import { SettableAnnotation } from "../../annotation/SettableAnnotation";
 import { parseArguments } from "../parse-arguments";
-import { settableDirective } from "../../../graphql/directives";
 
 export function parseSettableAnnotation(directive: DirectiveNode): SettableAnnotation {
     const { onCreate, onUpdate } = parseArguments<{

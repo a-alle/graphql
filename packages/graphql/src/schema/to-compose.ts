@@ -105,11 +105,9 @@ export function objectFieldsToComposeFields(fields: BaseField[]): {
 
 export function concreteEntityToComposeFields(
     objectFields: AttributeAdapter[],
-    userDefinedDirectives: Map<string, DirectiveNode[]>
-): {
-    [k: string]: ObjectTypeComposerFieldConfigAsObjectDefinition<any, any>;
-} {
-    const composeFields = {};
+    userDefinedFieldDirectives: Map<string, DirectiveNode[]>
+) {
+    const composeFields: Record<string, ObjectTypeComposerFieldConfigAsObjectDefinition<any, any>> = {};
     for (const field of objectFields) {
         if (field.isReadable() === false) {
             continue;
@@ -121,7 +119,7 @@ export function concreteEntityToComposeFields(
             description: field.description,
         };
 
-        const userDefinedDirectivesOnField = userDefinedDirectives.get(field.name);
+        const userDefinedDirectivesOnField = userDefinedFieldDirectives.get(field.name);
         if (userDefinedDirectivesOnField) {
             newField.directives = graphqlDirectivesToCompose(userDefinedDirectivesOnField);
         }
@@ -175,6 +173,29 @@ export function objectFieldsToCreateInputFields(fields: BaseField[]): Record<str
 
             return res;
         }, {});
+}
+
+export function concreteEntityToCreateInputFields(
+    objectFields: AttributeAdapter[],
+    userDefinedFieldDirectives: Map<string, DirectiveNode[]>
+) {
+    const createInputFields: Record<string, InputField> = {};
+    for (const field of objectFields) {
+        const newInputField: InputField = {
+            type: field.getInputTypeNames().create.pretty,
+            defaultValue: field.getDefaultValue(),
+            directives: [],
+        };
+
+        const userDefinedDirectivesOnField = userDefinedFieldDirectives.get(field.name);
+        if (userDefinedDirectivesOnField) {
+            newInputField.directives = graphqlDirectivesToCompose(userDefinedDirectivesOnField);
+        }
+
+        createInputFields[field.name] = newInputField;
+    }
+
+    return createInputFields;
 }
 
 export function objectFieldsToSubscriptionsWhereInputFields(

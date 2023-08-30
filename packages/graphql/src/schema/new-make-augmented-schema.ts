@@ -63,6 +63,7 @@ import getSortableFields from "./get-sortable-fields";
 import getWhereFields, { getWhereFieldsFromConcreteEntity } from "./get-where-fields";
 import {
     concreteEntityToComposeFields,
+    concreteEntityToCreateInputFields,
     graphqlDirectivesToCompose,
     objectFieldsToComposeFields,
     objectFieldsToCreateInputFields,
@@ -90,6 +91,7 @@ import type { CompositeEntity } from "../schema-model/entity/CompositeEntity";
 import { ConcreteEntity } from "../schema-model/entity/ConcreteEntity";
 import { CompositeEntityAdapter } from "../schema-model/entity/model-adapters/CompositeEntityAdapter";
 import { ConcreteEntityAdapter } from "../schema-model/entity/model-adapters/ConcreteEntityAdapter";
+import { ConcreteEntityOperations } from "../schema-model/entity/model-adapters/ConcreteEntityOperations";
 import type { BaseField, Neo4jFeaturesSettings } from "../types";
 import { tupleIncludes } from "../utils/utils";
 import { addArrayMethodsToITC } from "./array-methods";
@@ -1089,37 +1091,28 @@ function makeAugmentedSchema(
             });
         }
 
+        // This is a little weird!
+        const concreteEntityOperations = new ConcreteEntityOperations(concreteEntityAdapter);
         composer.createObjectTC({
-            name: node.aggregateTypeNames.selection,
+            name: concreteEntityOperations.aggregateTypeNames.selection,
             fields: {
                 count: {
                     type: "Int!",
                     resolve: numericalResolver,
                     args: {},
                 },
-                ...[...concreteEntityAdapter.primitiveFields, ...concreteEntityAdapter.temporalFields].reduce(
-                    (res, field) => {
-                        if (field.isList()) {
-                            return res;
-                        }
+                ...concreteEntityAdapter.aggregableFields.reduce((res, field) => {
+                    const objectTypeComposer = aggregationTypesMapper.getAggregationType({
+                        fieldName: field.getTypeName(),
+                        nullable: !field.isRequired(), // Double check
+                    });
 
-                        if (!field.isAggregable()) {
-                            return res;
-                        }
+                    if (objectTypeComposer) {
+                        res[field.name] = objectTypeComposer.NonNull;
+                    }
 
-                        const objectTypeComposer = aggregationTypesMapper.getAggregationType({
-                            fieldName: field.getTypeName(),
-                            nullable: !field.isRequired(), // Double check
-                        });
-
-                        if (objectTypeComposer) {
-                            res[field.name] = objectTypeComposer.NonNull;
-                        }
-
-                        return res;
-                    },
-                    {}
-                ),
+                    return res;
+                }, {}),
             },
             directives: graphqlDirectivesToCompose(propagatedDirectives),
         });
@@ -1140,9 +1133,6 @@ function makeAugmentedSchema(
 
         augmentFulltextSchema(node, composer, nodeWhereTypeName, nodeSortTypeName);
 
-        console.log(node.uniqueFields);
-        console.log(concreteEntityAdapter.uniqueFields);
-
         composer.createInputTC({
             name: `${concreteEntityAdapter.name}UniqueWhere`,
             fields: concreteEntityAdapter.uniqueFields.reduce((res, field) => {
@@ -1157,13 +1147,17 @@ function makeAugmentedSchema(
 
         composer.createInputTC({
             name: `${node.name}CreateInput`,
-            fields: objectFieldsToCreateInputFields([
-                ...node.primitiveFields.filter((field) => !field.callback),
-                ...node.scalarFields,
-                ...node.enumFields,
-                ...node.temporalFields,
-                ...node.pointFields,
-            ]),
+            fields: concreteEntityToCreateInputFields(
+                concreteEntityAdapter.createInputFields,
+                userDefinedFieldDirectives
+            ),
+            // fields: objectFieldsToCreateInputFields([
+            //     ...node.primitiveFields.filter((field) => !field.callback),
+            //     ...node.scalarFields,
+            //     ...node.enumFields,
+            //     ...node.temporalFields,
+            //     ...node.pointFields,
+            // ]),
         });
 
         const nodeUpdateITC = composer.createInputTC({

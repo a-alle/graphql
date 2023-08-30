@@ -259,6 +259,22 @@ export class AttributeAdapter {
         return this.isGraphQLBuiltInScalar() || this.isUserScalar() || this.isEnum() || this.isBigInt();
     }
 
+    isAggregableField(): boolean {
+        return !this.isList() && (this.isPrimitiveField() || this.isTemporalField()) && this.isAggregable();
+    }
+
+    isCreateInputField(): boolean {
+        return (
+            this.isCypher() === false &&
+            this.isCustomResolvable() === false &&
+            (this.isPrimitiveField() || this.isScalar() || this.isEnum() || this.isTemporal() || this.isSpatial()) &&
+            !this.annotations.id &&
+            !this.annotations.populatedBy &&
+            !this.annotations.timestamp &&
+            this.annotations.settable?.onCreate !== false
+        );
+    }
+
     /**
      * @throws {Error} if the attribute is not a list
      */
@@ -498,13 +514,17 @@ export class AttributeAdapter {
             where: { type: this.getInputTypeName(), pretty },
             create: {
                 type: this.getTypeName(),
-                pretty,
+                pretty: `${pretty}${this.isRequired() ? "!" : ""}`,
             },
             update: {
                 type: this.getTypeName(),
                 pretty,
             },
         };
+    }
+
+    getDefaultValue() {
+        return this.annotations.default?.value;
     }
 
     isReadable(): boolean {
