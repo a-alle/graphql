@@ -18,32 +18,32 @@
  */
 
 import type { DirectiveNode } from "graphql";
+import { filterTruthy } from "../../utils/utils";
+import type { Annotation } from "../annotation/Annotation";
+import { AnnotationsKey } from "../annotation/Annotation";
+import { IDAnnotation } from "../annotation/IDAnnotation";
+import { parseAuthenticationAnnotation } from "./annotations-parser/authentication-annotation";
+import { parseAuthorizationAnnotation } from "./annotations-parser/authorization-annotation";
 import { parseCoalesceAnnotation } from "./annotations-parser/coalesce-annotation";
+import { parseCustomResolverAnnotation } from "./annotations-parser/custom-resolver-annotation";
 import { parseCypherAnnotation } from "./annotations-parser/cypher-annotation";
 import { parseDefaultAnnotation } from "./annotations-parser/default-annotation";
-import { parseIDAnnotation } from "./annotations-parser/id-annotation";
 import { parseFilterableAnnotation } from "./annotations-parser/filterable-annotation";
+import { parseFullTextAnnotation } from "./annotations-parser/full-text-annotation";
+import { parseJWTClaimAnnotation } from "./annotations-parser/jwt-claim-annotation";
+import { parseJWTPayloadAnnotation } from "./annotations-parser/jwt-payload-annotation";
+import { parseLimitAnnotation } from "./annotations-parser/limit-annotation";
 import { parseMutationAnnotation } from "./annotations-parser/mutation-annotation";
 import { parsePluralAnnotation } from "./annotations-parser/plural-annotation";
 import { parsePopulatedByAnnotation } from "./annotations-parser/populated-by-annotation";
 import { parsePrivateAnnotation } from "./annotations-parser/private-annotation";
 import { parseQueryAnnotation } from "./annotations-parser/query-annotation";
-import { parseQueryOptionsAnnotation } from "./annotations-parser/query-options-annotation";
 import { parseSelectableAnnotation } from "./annotations-parser/selectable-annotation";
 import { parseSettableAnnotation } from "./annotations-parser/settable-annotation";
 import { parseSubscriptionAnnotation } from "./annotations-parser/subscription-annotation";
+import { parseSubscriptionsAuthorizationAnnotation } from "./annotations-parser/subscriptions-authorization-annotation";
 import { parseTimestampAnnotation } from "./annotations-parser/timestamp-annotation";
 import { parseUniqueAnnotation } from "./annotations-parser/unique-annotation";
-import { parseFullTextAnnotation } from "./annotations-parser/full-text-annotation";
-import { parseJWTClaimAnnotation } from "./annotations-parser/jwt-claim-annotation";
-import { parseJWTPayloadAnnotation } from "./annotations-parser/jwt-payload-annotation";
-import { filterTruthy } from "../../utils/utils";
-import type { Annotation } from "../annotation/Annotation";
-import { AnnotationsKey } from "../annotation/Annotation";
-import { parseAuthenticationAnnotation } from "./annotations-parser/authentication-annotation";
-import { parseAuthorizationAnnotation } from "./annotations-parser/authorization-annotation";
-import { parseCustomResolverAnnotation } from "./annotations-parser/custom-resolver-annotation";
-import { parseSubscriptionsAuthorizationAnnotation } from "./annotations-parser/subscriptions-authorization-annotation";
 
 export function parseAnnotations(directives: readonly DirectiveNode[]): Annotation[] {
     return filterTruthy(
@@ -66,7 +66,7 @@ export function parseAnnotations(directives: readonly DirectiveNode[]): Annotati
                 case AnnotationsKey.fulltext:
                     return parseFullTextAnnotation(directive);
                 case AnnotationsKey.id:
-                    return parseIDAnnotation(directive);
+                    return new IDAnnotation();
                 case AnnotationsKey.jwtClaim:
                     return parseJWTClaimAnnotation(directive);
                 case AnnotationsKey.jwtPayload:
@@ -81,8 +81,8 @@ export function parseAnnotations(directives: readonly DirectiveNode[]): Annotati
                     return parsePrivateAnnotation(directive);
                 case AnnotationsKey.query:
                     return parseQueryAnnotation(directive);
-                case AnnotationsKey.queryOptions:
-                    return parseQueryOptionsAnnotation(directive);
+                case AnnotationsKey.limit:
+                    return parseLimitAnnotation(directive);
                 case AnnotationsKey.selectable:
                     return parseSelectableAnnotation(directive);
                 case AnnotationsKey.settable:

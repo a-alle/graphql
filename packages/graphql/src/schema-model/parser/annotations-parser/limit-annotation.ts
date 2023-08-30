@@ -19,27 +19,26 @@
 
 import type { DirectiveNode } from "graphql";
 import { Neo4jGraphQLSchemaValidationError } from "../../../classes";
-import { QueryOptionsAnnotation } from "../../annotation/QueryOptionsAnnotation";
+import { limitDirective } from "../../../graphql/directives";
+import { LimitAnnotation } from "../../annotation/LimitAnnotation";
 import { parseArguments } from "../parse-arguments";
-import { queryOptionsDirective } from "../../../graphql/directives";
 
-export function parseQueryOptionsAnnotation(directive: DirectiveNode): QueryOptionsAnnotation {
-    const { limit } = parseArguments<{
-        limit: {
-            default?: number;
-            max?: number;
-        };
+export function parseLimitAnnotation(directive: DirectiveNode): LimitAnnotation {
+    const { default: _default, max } = parseArguments<{
+        default?: number;
+        max?: number;
         resolvable: boolean;
-    }>(queryOptionsDirective, directive);
-    if (limit.default && typeof limit.default !== "number") {
-        throw new Neo4jGraphQLSchemaValidationError(`@queryOptions limit.default must be a number`);
+    }>(limitDirective, directive);
+    if (_default && typeof _default !== "number") {
+        throw new Neo4jGraphQLSchemaValidationError(`@limit default must be a number`);
     }
 
-    if (limit.max && typeof limit.max !== "number") {
-        throw new Neo4jGraphQLSchemaValidationError(`@queryOptions limit.max must be a number`);
+    if (max && typeof max !== "number") {
+        throw new Neo4jGraphQLSchemaValidationError(`@limit max must be a number`);
     }
 
-    return new QueryOptionsAnnotation({
-        limit,
+    return new LimitAnnotation({
+        default: _default,
+        max,
     });
 }

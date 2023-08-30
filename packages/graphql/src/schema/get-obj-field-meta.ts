@@ -146,6 +146,7 @@ function getObjFieldMeta({
             });
             const typeMeta = getFieldTypeMeta(field.type);
             const idDirective = directives.find((x) => x.name.value === "id");
+            const relayIdDirective = directives.find((x) => x.name.value === "relayId");
             const defaultDirective = directives.find((x) => x.name.value === "default");
             const coalesceDirective = directives.find((x) => x.name.value === "coalesce");
             const timestampDirective = directives.find((x) => x.name.value === "timestamp");
@@ -199,6 +200,7 @@ function getObjFieldMeta({
                             "settable",
                             "subscriptionsAuthorization",
                             "filterable",
+                            "relayId",
                         ].includes(x.name.value)
                 ),
                 arguments: [...(field.arguments || [])],
@@ -547,10 +549,10 @@ function getObjFieldMeta({
 
                             primitiveField.autogenerate = true;
                         }
-                        const global = idDirective.arguments?.find((a) => a.name.value === "global");
-                        if (global) {
-                            primitiveField.isGlobalIdField = true;
-                        }
+                    }
+
+                    if (relayIdDirective) {
+                        primitiveField.isGlobalIdField = true;
                     }
 
                     if (defaultDirective) {

@@ -82,9 +82,9 @@ export interface TypeMeta {
     originalType?: TypeNode;
 }
 
-export interface Unique {
+export type Unique = {
     constraintName: string;
-}
+};
 
 export interface Callback {
     operations: CallbackOperations[];
@@ -435,7 +435,6 @@ export interface Neo4jAuthorizationSettings {
     key: Key | ((context: Neo4jGraphQLContext) => Key);
     verify?: boolean;
     verifyOptions?: JWTVerifyOptions;
-    globalAuthentication?: boolean;
 }
 export interface RemoteJWKS {
     url: string | URL;
