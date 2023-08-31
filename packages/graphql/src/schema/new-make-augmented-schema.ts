@@ -977,9 +977,11 @@ function makeAugmentedSchema(
         const concreteEntityAdapter = new ConcreteEntityAdapter(concreteEntity);
 
         // We wanted to get the userDefinedDirectives
-        const definitionNode = definitionNodes.objectTypes.find((type) => type.name.value === node.name);
+        const definitionNode = definitionNodes.objectTypes.find(
+            (type) => type.name.value === concreteEntityAdapter.name
+        );
         if (!definitionNode) {
-            console.error(`Definition node not found for ${node.name}`);
+            console.error(`Definition node not found for ${concreteEntityAdapter.name}`);
             return;
         }
 
@@ -1198,7 +1200,7 @@ function makeAugmentedSchema(
                 connectionFields: node.connectionFields,
                 schemaComposer: composer,
                 composeNode,
-                sourceName: node.name,
+                sourceName: concreteEntityAdapter.name,
                 nodes,
                 relationshipPropertyFields: relationshipFields,
             }),
