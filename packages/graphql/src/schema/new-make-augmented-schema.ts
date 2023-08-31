@@ -64,6 +64,7 @@ import getWhereFields, { getWhereFieldsFromConcreteEntity } from "./get-where-fi
 import {
     concreteEntityToComposeFields,
     concreteEntityToCreateInputFields,
+    concreteEntityToUpdateInputFields,
     graphqlDirectivesToCompose,
     objectFieldsToComposeFields,
     objectFieldsToCreateInputFields,
@@ -91,10 +92,9 @@ import type { CompositeEntity } from "../schema-model/entity/CompositeEntity";
 import { ConcreteEntity } from "../schema-model/entity/ConcreteEntity";
 import { CompositeEntityAdapter } from "../schema-model/entity/model-adapters/CompositeEntityAdapter";
 import { ConcreteEntityAdapter } from "../schema-model/entity/model-adapters/ConcreteEntityAdapter";
-import { ConcreteEntityOperations } from "../schema-model/entity/model-adapters/ConcreteEntityOperations";
 import type { BaseField, Neo4jFeaturesSettings } from "../types";
 import { tupleIncludes } from "../utils/utils";
-import { addArrayMethodsToITC } from "./array-methods";
+import { addArrayMethodsToITC, addArrayMethodsToITC2 } from "./array-methods";
 import { addGlobalNodeFields } from "./create-global-nodes";
 import createRelationshipFields from "./create-relationship-fields/create-relationship-fields";
 import getNodes from "./get-nodes";
@@ -1091,10 +1091,8 @@ function makeAugmentedSchema(
             });
         }
 
-        // This is a little weird!
-        const concreteEntityOperations = new ConcreteEntityOperations(concreteEntityAdapter);
         composer.createObjectTC({
-            name: concreteEntityOperations.aggregateTypeNames.selection,
+            name: concreteEntityAdapter.operations.aggregateTypeNames.selection,
             fields: {
                 count: {
                     type: "Int!",
@@ -1104,7 +1102,7 @@ function makeAugmentedSchema(
                 ...concreteEntityAdapter.aggregableFields.reduce((res, field) => {
                     const objectTypeComposer = aggregationTypesMapper.getAggregationType({
                         fieldName: field.getTypeName(),
-                        nullable: !field.isRequired(), // Double check
+                        nullable: !field.isRequired(),
                     });
 
                     if (objectTypeComposer) {
@@ -1131,6 +1129,7 @@ function makeAugmentedSchema(
             fields: concreteEntityAdapter.isGlobalNode() ? { id: "ID", ...queryFields } : queryFields,
         });
 
+        // TODO: Need to migrate resolvers, which themselves rely on the translation layer being migrated to the new schema model
         augmentFulltextSchema(node, composer, nodeWhereTypeName, nodeSortTypeName);
 
         composer.createInputTC({
@@ -1146,60 +1145,48 @@ function makeAugmentedSchema(
         // END WHERE FIELD -------------------
 
         composer.createInputTC({
-            name: `${node.name}CreateInput`,
+            name: `${concreteEntityAdapter.name}CreateInput`,
             fields: concreteEntityToCreateInputFields(
                 concreteEntityAdapter.createInputFields,
                 userDefinedFieldDirectives
             ),
-            // fields: objectFieldsToCreateInputFields([
-            //     ...node.primitiveFields.filter((field) => !field.callback),
-            //     ...node.scalarFields,
-            //     ...node.enumFields,
-            //     ...node.temporalFields,
-            //     ...node.pointFields,
-            // ]),
         });
 
         const nodeUpdateITC = composer.createInputTC({
-            name: `${node.name}UpdateInput`,
-            fields: objectFieldsToUpdateInputFields([
-                ...node.primitiveFields.filter((field) => !field.callback),
-                ...node.scalarFields,
-                ...node.enumFields,
-                ...node.temporalFields.filter((field) => !field.timestamps),
-                ...node.pointFields,
-            ]),
+            name: `${concreteEntityAdapter.name}UpdateInput`,
+            fields: concreteEntityToUpdateInputFields(
+                concreteEntityAdapter.updateInputFields,
+                userDefinedFieldDirectives
+            ),
         });
 
         addMathOperatorsToITC(nodeUpdateITC);
 
-        addArrayMethodsToITC(nodeUpdateITC, node.mutableFields);
-
-        const mutationResponseTypeNames = node.mutationResponseTypeNames;
+        addArrayMethodsToITC2(nodeUpdateITC, concreteEntityAdapter.arrayMethodFields);
 
         composer.createObjectTC({
-            name: mutationResponseTypeNames.create,
+            name: concreteEntityAdapter.operations.mutationResponseTypeNames.create,
             fields: {
                 info: `CreateInfo!`,
-                [node.plural]: `[${node.name}!]!`,
+                [concreteEntityAdapter.plural]: `[${concreteEntityAdapter.name}!]!`,
             },
-            directives: graphqlDirectivesToCompose(node.propagatedDirectives),
+            directives: graphqlDirectivesToCompose(propagatedDirectives),
         });
 
         composer.createObjectTC({
-            name: mutationResponseTypeNames.update,
+            name: concreteEntityAdapter.operations.mutationResponseTypeNames.update,
             fields: {
                 info: `UpdateInfo!`,
-                [node.plural]: `[${node.name}!]!`,
+                [concreteEntityAdapter.plural]: `[${concreteEntityAdapter.name}!]!`,
             },
-            directives: graphqlDirectivesToCompose(node.propagatedDirectives),
+            directives: graphqlDirectivesToCompose(propagatedDirectives),
         });
 
         createRelationshipFields({
             relationshipFields: node.relationFields,
             schemaComposer: composer,
             composeNode,
-            sourceName: node.name,
+            sourceName: concreteEntityAdapter.name,
             nodes,
             relationshipPropertyFields: relationshipFields,
             subgraph,
@@ -1217,10 +1204,8 @@ function makeAugmentedSchema(
             }),
         ];
 
-        ensureNonEmptyInput(composer, `${node.name}UpdateInput`);
-        ensureNonEmptyInput(composer, `${node.name}CreateInput`);
-
-        const rootTypeFieldNames = node.rootTypeFieldNames;
+        ensureNonEmptyInput(composer, `${concreteEntityAdapter.name}UpdateInput`);
+        ensureNonEmptyInput(composer, `${concreteEntityAdapter.name}CreateInput`);
 
         const schemaConfigurationFlags = getSchemaConfigurationFlags({
             globalSchemaConfiguration,
@@ -1230,60 +1215,60 @@ function makeAugmentedSchema(
 
         if (schemaConfigurationFlags.read) {
             composer.Query.addFields({
-                [rootTypeFieldNames.read]: findResolver({ node }),
+                [concreteEntityAdapter.operations.rootTypeFieldNames.read]: findResolver({ node }),
             });
             composer.Query.setFieldDirectives(
-                rootTypeFieldNames.read,
-                graphqlDirectivesToCompose(node.propagatedDirectives)
+                concreteEntityAdapter.operations.rootTypeFieldNames.read,
+                graphqlDirectivesToCompose(propagatedDirectives)
             );
             composer.Query.addFields({
-                [`${node.plural}Connection`]: rootConnectionResolver({ node, composer }),
+                [`${concreteEntityAdapter.plural}Connection`]: rootConnectionResolver({ node, composer }),
             });
             composer.Query.setFieldDirectives(
-                `${node.plural}Connection`,
-                graphqlDirectivesToCompose(node.propagatedDirectives)
+                `${concreteEntityAdapter.plural}Connection`,
+                graphqlDirectivesToCompose(propagatedDirectives)
             );
         }
         if (schemaConfigurationFlags.aggregate) {
             composer.Query.addFields({
-                [rootTypeFieldNames.aggregate]: aggregateResolver({ node }),
+                [concreteEntityAdapter.operations.rootTypeFieldNames.aggregate]: aggregateResolver({ node }),
             });
             composer.Query.setFieldDirectives(
-                rootTypeFieldNames.aggregate,
-                graphqlDirectivesToCompose(node.propagatedDirectives)
+                concreteEntityAdapter.operations.rootTypeFieldNames.aggregate,
+                graphqlDirectivesToCompose(propagatedDirectives)
             );
         }
 
         if (schemaConfigurationFlags.create) {
             composer.Mutation.addFields({
-                [rootTypeFieldNames.create]: createResolver({ node }),
+                [concreteEntityAdapter.operations.rootTypeFieldNames.create]: createResolver({ node }),
             });
             composer.Mutation.setFieldDirectives(
-                rootTypeFieldNames.create,
-                graphqlDirectivesToCompose(node.propagatedDirectives)
+                concreteEntityAdapter.operations.rootTypeFieldNames.create,
+                graphqlDirectivesToCompose(propagatedDirectives)
             );
         }
 
         if (schemaConfigurationFlags.delete) {
             composer.Mutation.addFields({
-                [rootTypeFieldNames.delete]: deleteResolver({ node, composer }),
+                [concreteEntityAdapter.operations.rootTypeFieldNames.delete]: deleteResolver({ node, composer }),
             });
             composer.Mutation.setFieldDirectives(
-                rootTypeFieldNames.delete,
-                graphqlDirectivesToCompose(node.propagatedDirectives)
+                concreteEntityAdapter.operations.rootTypeFieldNames.delete,
+                graphqlDirectivesToCompose(propagatedDirectives)
             );
         }
 
         if (schemaConfigurationFlags.update) {
             composer.Mutation.addFields({
-                [rootTypeFieldNames.update]: updateResolver({
+                [concreteEntityAdapter.operations.rootTypeFieldNames.update]: updateResolver({
                     node,
                     composer,
                 }),
             });
             composer.Mutation.setFieldDirectives(
-                rootTypeFieldNames.update,
-                graphqlDirectivesToCompose(node.propagatedDirectives)
+                concreteEntityAdapter.operations.rootTypeFieldNames.update,
+                graphqlDirectivesToCompose(propagatedDirectives)
             );
         }
     });

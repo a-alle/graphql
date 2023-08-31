@@ -130,6 +130,14 @@ export class ConcreteEntityAdapter {
         return Array.from(this.attributes.values()).filter((attribute) => attribute.isCreateInputField());
     }
 
+    public get updateInputFields(): AttributeAdapter[] {
+        return Array.from(this.attributes.values()).filter((attribute) => attribute.isUpdateInputField());
+    }
+
+    public get arrayMethodFields(): AttributeAdapter[] {
+        return Array.from(this.attributes.values()).filter((attribute) => attribute.isArrayMethodField());
+    }
+
     // public get scalarFields(): AttributeAdapter[] {
     //     return Array.from(this.attributes.values()).filter((attribute) => attribute.isScalarField());
     // }

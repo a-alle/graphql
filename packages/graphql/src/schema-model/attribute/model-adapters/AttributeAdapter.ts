@@ -18,6 +18,7 @@
  */
 
 import type { Annotations } from "../../annotation/Annotation";
+import type { FullTextField } from "../../annotation/FullTextAnnotation";
 import type { Attribute } from "../Attribute";
 import type { AttributeType } from "../AttributeType";
 import {
@@ -267,12 +268,28 @@ export class AttributeAdapter {
         return (
             this.isCypher() === false &&
             this.isCustomResolvable() === false &&
-            (this.isPrimitiveField() || this.isScalar() || this.isEnum() || this.isTemporal() || this.isSpatial()) &&
+            (this.isPrimitiveField() || this.isScalar() || this.isSpatial()) &&
             !this.annotations.id &&
             !this.annotations.populatedBy &&
             !this.annotations.timestamp &&
             this.annotations.settable?.onCreate !== false
         );
+    }
+
+    isUpdateInputField(): boolean {
+        return (
+            this.isCypher() === false &&
+            this.isCustomResolvable() === false &&
+            (this.isPrimitiveField() || this.isScalar() || this.isSpatial()) &&
+            !this.annotations.id &&
+            !this.annotations.populatedBy &&
+            !this.annotations.timestamp &&
+            this.annotations.settable?.onUpdate !== false
+        );
+    }
+
+    isArrayMethodField(): boolean {
+        return this.isList() && !this.isUserScalar() && (this.isScalar() || this.isSpatial());
     }
 
     /**
@@ -545,6 +562,16 @@ export class AttributeAdapter {
 
     isCustomResolvable(): boolean {
         return !!this.annotations.customResolver;
+    }
+
+    // TODO: Check if this is the right place for this
+    isFulltext(): boolean {
+        return !!this.annotations.fulltext;
+    }
+
+    // TODO: Check if this is the right place for this
+    getFulltextIndexes(): FullTextField[] | undefined {
+        return this.annotations.fulltext?.indexes;
     }
 
     getPropagatedAnnotations(): Partial<Annotations> {

@@ -293,3 +293,27 @@ export function objectFieldsToUpdateInputFields(fields: BaseField[]): Record<str
         return res;
     }, {});
 }
+
+export function concreteEntityToUpdateInputFields(
+    objectFields: AttributeAdapter[],
+    userDefinedFieldDirectives: Map<string, DirectiveNode[]>
+) {
+    const updateInputFields: Record<string, InputField> = {};
+    for (const field of objectFields) {
+        const newInputField: InputField = {
+            type: field.getInputTypeNames().update.pretty,
+            directives: [],
+        };
+
+        const userDefinedDirectivesOnField = userDefinedFieldDirectives.get(field.name);
+        if (userDefinedDirectivesOnField) {
+            newInputField.directives = graphqlDirectivesToCompose(
+                userDefinedDirectivesOnField.filter((directive) => directive.name.value === "deprecated")
+            );
+        }
+
+        updateInputFields[field.name] = newInputField;
+    }
+
+    return updateInputFields;
+}
