@@ -25,6 +25,7 @@ import { Subgraph } from "../../classes/Subgraph";
 import makeAugmentedSchema from "../make-augmented-schema";
 import { validateUserDefinition } from "./schema-validation";
 import { getError, NoErrorThrownError } from "../../../tests/utils/get-error";
+import { generateModel } from "../../schema-model/generate-model";
 
 describe("schema validation", () => {
     describe("JWT", () => {
@@ -45,7 +46,8 @@ describe("schema validation", () => {
                 `;
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
                 expect(executeValidate).not.toThrow();
             });
@@ -66,7 +68,8 @@ describe("schema validation", () => {
                 `;
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
                 expect(executeValidate).not.toThrow();
             });
@@ -86,7 +89,8 @@ describe("schema validation", () => {
                 `;
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
 
                 const errors = getError(executeValidate);
@@ -114,7 +118,8 @@ describe("schema validation", () => {
                 `;
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
                 expect(executeValidate).not.toThrow();
             });
@@ -134,7 +139,8 @@ describe("schema validation", () => {
                 `;
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
 
                 const errors = getError(executeValidate);
@@ -164,7 +170,8 @@ describe("schema validation", () => {
             `;
             const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
 
-            const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+            const schemaModel = generateModel(userDocument);
+            const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
             const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
             expect(executeValidate).not.toThrow();
         });
@@ -185,7 +192,8 @@ describe("schema validation", () => {
                 `;
 
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
                 expect(executeValidate).not.toThrow();
             });
@@ -199,7 +207,8 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 expect(executeValidate).not.toThrow();
             });
@@ -219,7 +228,8 @@ describe("schema validation", () => {
                 `;
 
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
                 expect(executeValidate).not.toThrow();
             });
@@ -239,7 +249,8 @@ describe("schema validation", () => {
                 `;
 
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
                 expect(executeValidate).not.toThrow();
             });
@@ -253,7 +264,8 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 const errors = getError(executeValidate);
                 expect(errors).toHaveLength(1);
@@ -288,7 +300,8 @@ describe("schema validation", () => {
                 `;
 
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
                 const errors = getError(executeValidate);
                 expect(errors).toHaveLength(1);
@@ -323,7 +336,8 @@ describe("schema validation", () => {
                 `;
 
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
                 const errors = getError(executeValidate);
                 expect(errors).toHaveLength(1);
@@ -358,7 +372,8 @@ describe("schema validation", () => {
                 `;
 
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
 
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
 
@@ -396,7 +411,8 @@ describe("schema validation", () => {
                 `;
 
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
 
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
 
@@ -434,7 +450,8 @@ describe("schema validation", () => {
                 `;
 
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
 
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
 
@@ -472,7 +489,8 @@ describe("schema validation", () => {
                 `;
 
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
 
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
 
@@ -510,7 +528,8 @@ describe("schema validation", () => {
                 `;
 
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
 
                 const errors = getError(executeValidate);
@@ -546,7 +565,8 @@ describe("schema validation", () => {
                 `;
 
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
 
                 const errors = getError(executeValidate);
@@ -579,9 +599,14 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {
-                    generateSubscriptions: true,
-                });
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(
+                    userDocument,
+                    {
+                        generateSubscriptions: true,
+                    },
+                    schemaModel
+                );
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 expect(executeValidate).not.toThrow();
             });
@@ -594,9 +619,14 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {
-                    generateSubscriptions: true,
-                });
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(
+                    userDocument,
+                    {
+                        generateSubscriptions: true,
+                    },
+                    schemaModel
+                );
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 expect(executeValidate).not.toThrow();
             });
@@ -614,9 +644,14 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {
-                    generateSubscriptions: true,
-                });
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(
+                    userDocument,
+                    {
+                        generateSubscriptions: true,
+                    },
+                    schemaModel
+                );
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 expect(executeValidate).not.toThrow();
             });
@@ -629,10 +664,15 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {
-                    generateSubscriptions: true,
-                });
-                const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
+                const schemaModel = generateModel(userDocument); //
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(
+                    userDocument,
+                    {
+                        generateSubscriptions: true,
+                    },
+                    schemaModel
+                );
+                const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument }); //
 
                 const errors = getError(executeValidate);
                 expect(errors).toHaveLength(1);
@@ -653,9 +693,14 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {
-                    generateSubscriptions: true,
-                });
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(
+                    userDocument,
+                    {
+                        generateSubscriptions: true,
+                    },
+                    schemaModel
+                );
 
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 expect(executeValidate).not.toThrow();
@@ -671,9 +716,14 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {
-                    generateSubscriptions: true,
-                });
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(
+                    userDocument,
+                    {
+                        generateSubscriptions: true,
+                    },
+                    schemaModel
+                );
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
 
                 const errors = getError(executeValidate);
@@ -695,9 +745,14 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {
-                    generateSubscriptions: true,
-                });
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(
+                    userDocument,
+                    {
+                        generateSubscriptions: true,
+                    },
+                    schemaModel
+                );
 
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 expect(executeValidate).not.toThrow();
@@ -711,10 +766,14 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {
-                    generateSubscriptions: true,
-                });
-
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(
+                    userDocument,
+                    {
+                        generateSubscriptions: true,
+                    },
+                    schemaModel
+                );
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
 
                 const errors = getError(executeValidate);
@@ -741,10 +800,14 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {
-                    generateSubscriptions: true,
-                });
-
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(
+                    userDocument,
+                    {
+                        generateSubscriptions: true,
+                    },
+                    schemaModel
+                );
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 expect(executeValidate).not.toThrow();
             });
@@ -764,10 +827,14 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {
-                    generateSubscriptions: true,
-                });
-
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(
+                    userDocument,
+                    {
+                        generateSubscriptions: true,
+                    },
+                    schemaModel
+                );
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
 
                 const errors = getError(executeValidate);
@@ -797,9 +864,14 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {
-                    generateSubscriptions: true,
-                });
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(
+                    userDocument,
+                    {
+                        generateSubscriptions: true,
+                    },
+                    schemaModel
+                );
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 expect(executeValidate).toThrow(
                     'Directive "@subscriptionsAuthorization" may not be used on INTERFACE.'
@@ -817,9 +889,14 @@ describe("schema validation", () => {
                     extend type User @subscriptionsAuthorization(filter: [{ where: { node: { id: "$jwt.sub" } } }])
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {
-                    generateSubscriptions: true,
-                });
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(
+                    userDocument,
+                    {
+                        generateSubscriptions: true,
+                    },
+                    schemaModel
+                );
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 expect(executeValidate).not.toThrow();
             });
@@ -838,9 +915,14 @@ describe("schema validation", () => {
                     extend type User @subscriptionsAuthorization(filter: [{ where: { node: { id: "$jwt.sub" } } }])
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {
-                    generateSubscriptions: true,
-                });
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(
+                    userDocument,
+                    {
+                        generateSubscriptions: true,
+                    },
+                    schemaModel
+                );
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
 
                 const errors = getError(executeValidate);
@@ -868,9 +950,14 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {
-                    generateSubscriptions: true,
-                });
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(
+                    userDocument,
+                    {
+                        generateSubscriptions: true,
+                    },
+                    schemaModel
+                );
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
 
                 const errors = getError(executeValidate);
@@ -898,9 +985,14 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {
-                    generateSubscriptions: true,
-                });
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(
+                    userDocument,
+                    {
+                        generateSubscriptions: true,
+                    },
+                    schemaModel
+                );
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 expect(executeValidate).not.toThrow();
             });
@@ -922,9 +1014,14 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {
-                    generateSubscriptions: true,
-                });
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(
+                    userDocument,
+                    {
+                        generateSubscriptions: true,
+                    },
+                    schemaModel
+                );
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 expect(executeValidate).not.toThrow();
             });
@@ -950,9 +1047,14 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {
-                    generateSubscriptions: true,
-                });
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(
+                    userDocument,
+                    {
+                        generateSubscriptions: true,
+                    },
+                    schemaModel
+                );
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 expect(executeValidate).not.toThrow();
             });
@@ -973,9 +1075,14 @@ describe("schema validation", () => {
                     extend type User @subscriptionsAuthorization(filter: [{ where: { node: { id: "$jwt.sub" } } }])
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {
-                    generateSubscriptions: true,
-                });
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(
+                    userDocument,
+                    {
+                        generateSubscriptions: true,
+                    },
+                    schemaModel
+                );
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
 
                 const errors = getError(executeValidate);
@@ -996,9 +1103,14 @@ describe("schema validation", () => {
                     extend type User @subscriptionsAuthorization(wrongFilter: [{ where: { node: { id: "$jwt.sub" } } }])
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {
-                    generateSubscriptions: true,
-                });
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(
+                    userDocument,
+                    {
+                        generateSubscriptions: true,
+                    },
+                    schemaModel
+                );
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
 
                 const errors = getError(executeValidate);
@@ -1021,10 +1133,14 @@ describe("schema validation", () => {
                         @subscriptionsAuthorization(filter: [{ where: { node: { id: "$jwt.sub" } } }])
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {
-                    generateSubscriptions: true,
-                });
-
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(
+                    userDocument,
+                    {
+                        generateSubscriptions: true,
+                    },
+                    schemaModel
+                );
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 expect(executeValidate).not.toThrow();
             });
@@ -1040,9 +1156,14 @@ describe("schema validation", () => {
                         @subscriptionsAuthorization(wrongFilter: [{ where: { node: { id: "$jwt.sub" } } }])
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {
-                    generateSubscriptions: true,
-                });
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(
+                    userDocument,
+                    {
+                        generateSubscriptions: true,
+                    },
+                    schemaModel
+                );
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
 
                 const errors = getError(executeValidate);
@@ -1074,9 +1195,14 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {
-                    generateSubscriptions: true,
-                });
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(
+                    userDocument,
+                    {
+                        generateSubscriptions: true,
+                    },
+                    schemaModel
+                );
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 expect(executeValidate).toThrow(
                     'Directive "@subscriptionsAuthorization" may not be used on INTERFACE.'
@@ -1113,9 +1239,14 @@ describe("schema validation", () => {
                         @subscriptionsAuthorization(filter: [{ where: { node: { name: "$jwt.sub" } } }])
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {
-                    generateSubscriptions: true,
-                });
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(
+                    userDocument,
+                    {
+                        generateSubscriptions: true,
+                    },
+                    schemaModel
+                );
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 expect(executeValidate).not.toThrow();
             });
@@ -1148,9 +1279,14 @@ describe("schema validation", () => {
                         @subscriptionsAuthorization(filter: [{ where: { node: { name: "$jwt.sub" } } }])
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {
-                    generateSubscriptions: true,
-                });
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(
+                    userDocument,
+                    {
+                        generateSubscriptions: true,
+                    },
+                    schemaModel
+                );
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
 
                 const errors = getError(executeValidate);
@@ -1182,10 +1318,14 @@ describe("schema validation", () => {
                 `;
                 const subgraph = new Subgraph(userDocument);
                 const { directives, types } = subgraph.getValidationDefinitions();
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {
-                    generateSubscriptions: true,
-                });
-
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(
+                    userDocument,
+                    {
+                        generateSubscriptions: true,
+                    },
+                    schemaModel
+                );
                 const executeValidate = () =>
                     validateUserDefinition({
                         userDocument,
@@ -1214,10 +1354,14 @@ describe("schema validation", () => {
                 `;
                 const subgraph = new Subgraph(userDocument);
                 const { directives, types } = subgraph.getValidationDefinitions();
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {
-                    generateSubscriptions: true,
-                });
-
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(
+                    userDocument,
+                    {
+                        generateSubscriptions: true,
+                    },
+                    schemaModel
+                );
                 const executeValidate = () =>
                     validateUserDefinition({
                         userDocument,
@@ -1246,10 +1390,14 @@ describe("schema validation", () => {
                 `;
                 const subgraph = new Subgraph(userDocument);
                 const { directives, types } = subgraph.getValidationDefinitions();
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {
-                    generateSubscriptions: true,
-                });
-
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(
+                    userDocument,
+                    {
+                        generateSubscriptions: true,
+                    },
+                    schemaModel
+                );
                 const executeValidate = () =>
                     validateUserDefinition({
                         userDocument,
@@ -1278,10 +1426,14 @@ describe("schema validation", () => {
                 `;
                 const subgraph = new Subgraph(userDocument);
                 const { directives, types } = subgraph.getValidationDefinitions();
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {
-                    generateSubscriptions: true,
-                });
-
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(
+                    userDocument,
+                    {
+                        generateSubscriptions: true,
+                    },
+                    schemaModel
+                );
                 const executeValidate = () =>
                     validateUserDefinition({
                         userDocument,
@@ -1318,10 +1470,14 @@ describe("schema validation", () => {
                 `;
                 const subgraph = new Subgraph(userDocument);
                 const { directives, types } = subgraph.getValidationDefinitions();
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {
-                    generateSubscriptions: true,
-                });
-
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(
+                    userDocument,
+                    {
+                        generateSubscriptions: true,
+                    },
+                    schemaModel
+                );
                 const executeValidate = () =>
                     validateUserDefinition({
                         userDocument,
@@ -1351,10 +1507,14 @@ describe("schema validation", () => {
                 `;
                 const subgraph = new Subgraph(userDocument);
                 const { directives, types } = subgraph.getValidationDefinitions();
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {
-                    generateSubscriptions: true,
-                });
-
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(
+                    userDocument,
+                    {
+                        generateSubscriptions: true,
+                    },
+                    schemaModel
+                );
                 const executeValidate = () =>
                     validateUserDefinition({
                         userDocument,
@@ -1384,7 +1544,8 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 expect(executeValidate).not.toThrow();
             });
@@ -1397,7 +1558,8 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 expect(executeValidate).not.toThrow();
             });
@@ -1415,7 +1577,8 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 expect(executeValidate).not.toThrow();
             });
@@ -1428,7 +1591,8 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
 
                 const errors = getError(executeValidate);
@@ -1448,7 +1612,8 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
 
                 const errors = getError(executeValidate);
@@ -1471,7 +1636,8 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
 
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 expect(executeValidate).not.toThrow();
@@ -1487,7 +1653,8 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
 
                 const errors = getError(executeValidate);
@@ -1509,7 +1676,8 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
 
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 expect(executeValidate).not.toThrow();
@@ -1523,7 +1691,8 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
 
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
 
@@ -1544,7 +1713,8 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
 
                 const errors = getError(executeValidate);
@@ -1570,7 +1740,8 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
 
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 expect(executeValidate).not.toThrow();
@@ -1591,7 +1762,8 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
 
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
 
@@ -1622,7 +1794,8 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
 
                 const errors = getError(executeValidate);
@@ -1642,7 +1815,8 @@ describe("schema validation", () => {
                     extend type User @authorization(filter: [{ where: { node: { id: "$jwt.sub" } } }])
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 expect(executeValidate).not.toThrow();
             });
@@ -1661,7 +1835,8 @@ describe("schema validation", () => {
                     extend type User @authorization(filter: [{ where: { node: { id: "$jwt.sub" } } }])
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
 
                 const errors = getError(executeValidate);
@@ -1689,7 +1864,8 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
 
                 const errors = getError(executeValidate);
@@ -1717,7 +1893,8 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 expect(executeValidate).not.toThrow();
             });
@@ -1739,7 +1916,8 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 expect(executeValidate).not.toThrow();
             });
@@ -1765,7 +1943,8 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 expect(executeValidate).not.toThrow();
             });
@@ -1786,7 +1965,8 @@ describe("schema validation", () => {
                     extend type User @authorization(filter: [{ where: { node: { id: "$jwt.sub" } } }])
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
 
                 const errors = getError(executeValidate);
@@ -1807,7 +1987,8 @@ describe("schema validation", () => {
                     extend type User @authorization(wrongFilter: [{ where: { node: { id: "$jwt.sub" } } }])
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
 
                 const errors = getError(executeValidate);
@@ -1830,7 +2011,8 @@ describe("schema validation", () => {
                         @authorization(filter: [{ where: { node: { id: "$jwt.sub" } } }])
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
 
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 expect(executeValidate).not.toThrow();
@@ -1847,7 +2029,8 @@ describe("schema validation", () => {
                         @authorization(wrongFilter: [{ where: { node: { id: "$jwt.sub" } } }])
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 const errors = getError(executeValidate);
                 expect(errors).toHaveLength(1);
@@ -1877,7 +2060,8 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
 
                 const errors = getError(executeValidate);
@@ -1913,7 +2097,8 @@ describe("schema validation", () => {
                     extend type Document @authorization(filter: [{ where: { node: { name: "$jwt.sub" } } }])
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 expect(executeValidate).not.toThrow();
             });
@@ -1942,7 +2127,8 @@ describe("schema validation", () => {
                     extend type Document @authorization(filter: [{ where: { node: { name: "$jwt.sub" } } }])
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 const errors = getError(executeValidate);
                 expect(errors).toHaveLength(1);
@@ -1971,7 +2157,8 @@ describe("schema validation", () => {
                 `;
                 const subgraph = new Subgraph(userDocument);
                 const { directives, types } = subgraph.getValidationDefinitions();
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
 
                 const executeValidate = () =>
                     validateUserDefinition({
@@ -1999,7 +2186,8 @@ describe("schema validation", () => {
                 `;
                 const subgraph = new Subgraph(userDocument);
                 const { directives, types } = subgraph.getValidationDefinitions();
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
 
                 const executeValidate = () =>
                     validateUserDefinition({
@@ -2027,7 +2215,8 @@ describe("schema validation", () => {
                 `;
                 const subgraph = new Subgraph(userDocument);
                 const { directives, types } = subgraph.getValidationDefinitions();
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
 
                 const executeValidate = () =>
                     validateUserDefinition({
@@ -2055,7 +2244,8 @@ describe("schema validation", () => {
                 `;
                 const subgraph = new Subgraph(userDocument);
                 const { directives, types } = subgraph.getValidationDefinitions();
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
 
                 const executeValidate = () =>
                     validateUserDefinition({
@@ -2093,7 +2283,8 @@ describe("schema validation", () => {
                 `;
                 const subgraph = new Subgraph(userDocument);
                 const { directives, types } = subgraph.getValidationDefinitions();
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
 
                 const executeValidate = () =>
                     validateUserDefinition({
@@ -2124,7 +2315,8 @@ describe("schema validation", () => {
                 `;
                 const subgraph = new Subgraph(userDocument);
                 const { directives, types } = subgraph.getValidationDefinitions();
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
 
                 const executeValidate = () =>
                     validateUserDefinition({
@@ -2155,7 +2347,8 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 expect(executeValidate).not.toThrow();
             });
@@ -2174,7 +2367,8 @@ describe("schema validation", () => {
                     }
                 `;
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
                 expect(executeValidate).not.toThrow();
             });
@@ -2198,7 +2392,8 @@ describe("schema validation", () => {
                     }
                 `;
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
                 expect(executeValidate).not.toThrow();
             });
@@ -2211,7 +2406,8 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
 
                 const errors = getError(executeValidate);
@@ -2228,7 +2424,8 @@ describe("schema validation", () => {
                         name: String!
                     }
                 `;
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
 
                 const errors = getError(executeValidate);
@@ -2255,7 +2452,8 @@ describe("schema validation", () => {
                     }
                 `;
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
 
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
                 expect(executeValidate).not.toThrow();
@@ -2275,7 +2473,8 @@ describe("schema validation", () => {
                     }
                 `;
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
 
                 const errors = getError(executeValidate);
@@ -2297,7 +2496,8 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
 
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 expect(executeValidate).not.toThrow();
@@ -2311,7 +2511,8 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
 
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
 
@@ -2329,7 +2530,8 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
 
                 const errors = getError(executeValidate);
@@ -2355,7 +2557,8 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
 
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 expect(executeValidate).not.toThrow();
@@ -2376,7 +2579,8 @@ describe("schema validation", () => {
                     }
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
 
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
 
@@ -2415,7 +2619,8 @@ describe("schema validation", () => {
 
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
 
                 const errors = getError(executeValidate);
@@ -2446,7 +2651,8 @@ describe("schema validation", () => {
                 `;
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
                 expect(executeValidate).not.toThrow();
             });
@@ -2474,7 +2680,8 @@ describe("schema validation", () => {
 
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
 
                 const errors = getError(executeValidate);
@@ -2509,7 +2716,8 @@ describe("schema validation", () => {
                 `;
 
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
 
                 const errors = getError(executeValidate);
@@ -2544,7 +2752,8 @@ describe("schema validation", () => {
                 `;
 
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
                 expect(executeValidate).not.toThrow();
             });
@@ -2573,7 +2782,8 @@ describe("schema validation", () => {
                 `;
 
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
                 expect(executeValidate).not.toThrow();
             });
@@ -2606,7 +2816,8 @@ describe("schema validation", () => {
                 `;
 
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
                 expect(executeValidate).not.toThrow();
             });
@@ -2627,7 +2838,8 @@ describe("schema validation", () => {
                     extend type User @authentication(operations: [CREATE])
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
 
                 const errors = getError(executeValidate);
@@ -2648,7 +2860,8 @@ describe("schema validation", () => {
                     extend type User @authentication(ops: [CREATE])
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
 
                 const errors = getError(executeValidate);
@@ -2672,7 +2885,8 @@ describe("schema validation", () => {
                     extend type User @plural(value: "Users") @authentication(operations: [CREATE], jwt: { sub: "test" })
                 `;
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
 
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
                 expect(executeValidate).not.toThrow();
@@ -2687,7 +2901,8 @@ describe("schema validation", () => {
                     extend type User @plural(value: "Users") @authentication(wrongField: { sub: "test" })
                 `;
 
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
                 const errors = getError(executeValidate);
                 expect(errors).toHaveLength(1);
@@ -2724,7 +2939,8 @@ describe("schema validation", () => {
                 `;
 
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
 
                 const errors = getError(executeValidate);
@@ -2770,7 +2986,8 @@ describe("schema validation", () => {
                 `;
 
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
                 expect(executeValidate).not.toThrow();
             });
@@ -2806,7 +3023,8 @@ describe("schema validation", () => {
                 `;
 
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                 const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument, jwt });
                 const errors = getError(executeValidate);
                 expect(errors).toHaveLength(1);
@@ -2839,7 +3057,8 @@ describe("schema validation", () => {
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
                 const subgraph = new Subgraph(userDocument);
                 const { directives, types } = subgraph.getValidationDefinitions();
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
 
                 const executeValidate = () =>
                     validateUserDefinition({
@@ -2875,7 +3094,8 @@ describe("schema validation", () => {
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
                 const subgraph = new Subgraph(userDocument);
                 const { directives, types } = subgraph.getValidationDefinitions();
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
 
                 const executeValidate = () =>
                     validateUserDefinition({
@@ -2911,7 +3131,8 @@ describe("schema validation", () => {
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
                 const subgraph = new Subgraph(userDocument);
                 const { directives, types } = subgraph.getValidationDefinitions();
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
 
                 const executeValidate = () =>
                     validateUserDefinition({
@@ -2940,7 +3161,8 @@ describe("schema validation", () => {
                 `;
                 const subgraph = new Subgraph(userDocument);
                 const { directives, types } = subgraph.getValidationDefinitions();
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
 
                 const executeValidate = () =>
                     validateUserDefinition({
@@ -2985,7 +3207,8 @@ describe("schema validation", () => {
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
                 const subgraph = new Subgraph(userDocument);
                 const { directives, types } = subgraph.getValidationDefinitions();
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
 
                 const executeValidate = () =>
                     validateUserDefinition({
@@ -3021,7 +3244,8 @@ describe("schema validation", () => {
                 const jwt = parse(jwtType).definitions[0] as ObjectTypeDefinitionNode;
                 const subgraph = new Subgraph(userDocument);
                 const { directives, types } = subgraph.getValidationDefinitions();
-                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                const schemaModel = generateModel(userDocument);
+                const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
 
                 const executeValidate = () =>
                     validateUserDefinition({
@@ -3049,7 +3273,8 @@ describe("schema validation", () => {
                 }
             `;
 
-            const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+            const schemaModel = generateModel(userDocument);
+            const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
 
             const executeValidate = () =>
                 validateUserDefinition({
@@ -3069,7 +3294,8 @@ describe("schema validation", () => {
                 }
             `;
 
-            const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+            const schemaModel = generateModel(userDocument);
+            const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
 
             const executeValidate = () =>
                 validateUserDefinition({
@@ -3083,9 +3309,9 @@ describe("schema validation", () => {
             const errors = getError(executeValidate);
             expect(errors).toHaveLength(2);
             expect(errors[0]).not.toBeInstanceOf(NoErrorThrownError);
-            expect(errors[0]).toHaveProperty("message", "Field cannot named keanu");
+            expect(errors[0]).toHaveProperty("message", "Field cannot be named keanu");
             expect(errors[1]).not.toBeInstanceOf(NoErrorThrownError);
-            expect(errors[1]).toHaveProperty("message", "Field cannot named keanu");
+            expect(errors[1]).toHaveProperty("message", "Field cannot be named keanu");
         });
     });
 
@@ -3100,7 +3326,8 @@ describe("schema validation", () => {
                         }
                     `;
 
-                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                    const schemaModel = generateModel(userDocument);
+                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                     const executeValidate = () =>
                         validateUserDefinition({
                             userDocument,
@@ -3119,7 +3346,8 @@ describe("schema validation", () => {
                         }
                     `;
 
-                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                    const schemaModel = generateModel(userDocument);
+                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                     const executeValidate = () =>
                         validateUserDefinition({
                             userDocument,
@@ -3143,7 +3371,8 @@ describe("schema validation", () => {
                         }
                     `;
 
-                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                    const schemaModel = generateModel(userDocument);
+                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                     const executeValidate = () =>
                         validateUserDefinition({
                             userDocument,
@@ -3167,7 +3396,8 @@ describe("schema validation", () => {
                         }
                     `;
 
-                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                    const schemaModel = generateModel(userDocument);
+                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                     const executeValidate = () =>
                         validateUserDefinition({
                             userDocument,
@@ -3188,7 +3418,8 @@ describe("schema validation", () => {
                         }
                     `;
 
-                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                    const schemaModel = generateModel(userDocument);
+                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                     const executeValidate = () =>
                         validateUserDefinition({
                             userDocument,
@@ -3239,7 +3470,8 @@ describe("schema validation", () => {
                         }
                     `;
 
-                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                    const schemaModel = generateModel(userDocument);
+                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                     const executeValidate = () =>
                         validateUserDefinition({
                             userDocument,
@@ -3265,7 +3497,8 @@ describe("schema validation", () => {
                         }
                     `;
 
-                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                    const schemaModel = generateModel(userDocument);
+                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                     const executeValidate = () =>
                         validateUserDefinition({
                             userDocument,
@@ -3296,7 +3529,8 @@ describe("schema validation", () => {
                         }
                     `;
 
-                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                    const schemaModel = generateModel(userDocument);
+                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                     const executeValidate = () =>
                         validateUserDefinition({
                             userDocument,
@@ -3338,7 +3572,8 @@ describe("schema validation", () => {
                         }
                     `;
 
-                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                    const schemaModel = generateModel(userDocument);
+                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                     const executeValidate = () =>
                         validateUserDefinition({
                             userDocument,
@@ -3368,7 +3603,8 @@ describe("schema validation", () => {
                         }
                     `;
 
-                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                    const schemaModel = generateModel(userDocument);
+                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                     const executeValidate = () =>
                         validateUserDefinition({
                             userDocument,
@@ -3387,7 +3623,8 @@ describe("schema validation", () => {
                         }
                     `;
 
-                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                    const schemaModel = generateModel(userDocument);
+                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                     const executeValidate = () =>
                         validateUserDefinition({
                             userDocument,
@@ -3412,7 +3649,8 @@ describe("schema validation", () => {
                         }
                     `;
 
-                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                    const schemaModel = generateModel(userDocument);
+                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                     const executeValidate = () =>
                         validateUserDefinition({
                             userDocument,
@@ -3437,7 +3675,8 @@ describe("schema validation", () => {
                         }
                     `;
 
-                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                    const schemaModel = generateModel(userDocument);
+                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                     const executeValidate = () =>
                         validateUserDefinition({
                             userDocument,
@@ -3458,7 +3697,8 @@ describe("schema validation", () => {
                         }
                     `;
 
-                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                    const schemaModel = generateModel(userDocument);
+                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                     const executeValidate = () =>
                         validateUserDefinition({
                             userDocument,
@@ -3484,7 +3724,8 @@ describe("schema validation", () => {
                         }
                     `;
 
-                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                    const schemaModel = generateModel(userDocument);
+                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                     const executeValidate = () =>
                         validateUserDefinition({
                             userDocument,
@@ -3510,7 +3751,8 @@ describe("schema validation", () => {
                         }
                     `;
 
-                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                    const schemaModel = generateModel(userDocument);
+                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                     const executeValidate = () =>
                         validateUserDefinition({
                             userDocument,
@@ -3550,7 +3792,8 @@ describe("schema validation", () => {
                         }
                     `;
 
-                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                    const schemaModel = generateModel(userDocument);
+                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                     const executeValidate = () =>
                         validateUserDefinition({
                             userDocument,
@@ -3593,7 +3836,8 @@ describe("schema validation", () => {
                         }
                     `;
 
-                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument);
+                    const schemaModel = generateModel(userDocument);
+                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {}, schemaModel);
                     const executeValidate = () =>
                         validateUserDefinition({
                             userDocument,
@@ -3628,7 +3872,7 @@ function noKeanuFields(context: SDLValidationContext): ASTVisitor {
     return {
         FieldDefinition(node: FieldDefinitionNode) {
             if (node.name.value === "keanu") {
-                context.reportError(new GraphQLError("Field cannot named keanu"));
+                context.reportError(new GraphQLError("Field cannot be named keanu"));
             }
         },
     };
