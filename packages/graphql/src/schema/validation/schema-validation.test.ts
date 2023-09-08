@@ -17,15 +17,15 @@
  * limitations under the License.
  */
 
-import { gql } from "graphql-tag";
 import type { ASTVisitor, FieldDefinitionNode, ObjectTypeDefinitionNode } from "graphql";
-import { parse, GraphQLError } from "graphql";
+import { GraphQLError, parse } from "graphql";
+import { gql } from "graphql-tag";
 import type { SDLValidationContext } from "graphql/validation/ValidationContext";
+import { NoErrorThrownError, getError } from "../../../tests/utils/get-error";
 import { Subgraph } from "../../classes/Subgraph";
+import { generateModel } from "../../schema-model/generate-model";
 import makeAugmentedSchema from "../make-augmented-schema";
 import { validateUserDefinition } from "./schema-validation";
-import { getError, NoErrorThrownError } from "../../../tests/utils/get-error";
-import { generateModel } from "../../schema-model/generate-model";
 
 describe("schema validation", () => {
     describe("JWT", () => {
@@ -3447,9 +3447,14 @@ describe("schema validation", () => {
                         }
                     `;
 
-                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(userDocument, {
-                        generateSubscriptions: true,
-                    });
+                    const schemaModel = generateModel(userDocument);
+                    const { typeDefs: augmentedDocument } = makeAugmentedSchema(
+                        userDocument,
+                        {
+                            generateSubscriptions: true,
+                        },
+                        schemaModel
+                    );
 
                     const executeValidate = () => validateUserDefinition({ userDocument, augmentedDocument });
 
