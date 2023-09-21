@@ -142,5 +142,23 @@ export class InterfaceType {
         this.isRequired = isRequired;
     }
 }
+export class OtherType {
+    public name: string;
+    public isRequired: boolean;
+    // TODO: identify what this can be apart from Input Type
 
-export type AttributeType = ScalarType | UserScalarType | ObjectType | ListType | EnumType | UnionType | InterfaceType;
+    constructor(name: string, isRequired: boolean) {
+        this.name = name;
+        this.isRequired = isRequired;
+    }
+}
+
+export type AttributeType =
+    | ScalarType
+    | UserScalarType
+    | ObjectType
+    | ListType
+    | EnumType
+    | UnionType
+    | InterfaceType
+    | OtherType;
