@@ -21,6 +21,7 @@ import type { DirectiveNode, FieldDefinitionNode, TypeNode } from "graphql";
 import { Kind } from "graphql";
 import type { AttributeType, Neo4jGraphQLScalarType } from "../attribute/AttributeType";
 import {
+    OtherType,
     ScalarType,
     EnumType,
     UserScalarType,
@@ -67,8 +68,8 @@ function getDatabaseName(
 ): string | undefined {
     const aliasUsage = findDirective(fieldDefinitionNode.directives, aliasDirective.name);
     if (aliasUsage) {
-        const { property } = parseArguments(aliasDirective, aliasUsage) as { property: string };
-        return property;
+        const { property } = parseArguments(aliasDirective, aliasUsage);
+        return property as string;
     }
     const inheritedAliasUsage = inheritedFields?.reduce<DirectiveNode | undefined>((aliasUsage, field) => {
         // TODO: takes the first one
@@ -79,8 +80,8 @@ function getDatabaseName(
         return aliasUsage;
     }, undefined);
     if (inheritedAliasUsage) {
-        const { property } = parseArguments(aliasDirective, inheritedAliasUsage) as { property: string };
-        return property;
+        const { property } = parseArguments(aliasDirective, inheritedAliasUsage);
+        return property as string;
     }
 }
 
@@ -118,7 +119,7 @@ function parseTypeNode(
             } else if (isInterface(definitionCollection, typeNode.name.value)) {
                 return new InterfaceType(typeNode.name.value, isRequired);
             } else {
-                throw new Error(`Error while parsing Attribute with name: ${typeNode.name.value}`);
+                return new OtherType(typeNode.name.value, isRequired);
             }
         }
 
