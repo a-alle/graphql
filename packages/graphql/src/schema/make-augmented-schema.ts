@@ -88,6 +88,7 @@ import { getResolveAndSubscriptionMethods } from "./get-resolve-and-subscription
 import { filterInterfaceTypes } from "./make-augmented-schema/filter-interface-types";
 import { getUserDefinedDirectives } from "./make-augmented-schema/user-defined-directives";
 import { generateSubscriptionTypes } from "./subscriptions/generate-subscription-types";
+import { type ComplexityEstimatorHelper } from "../classes/ComplexityEstimatorHelper";
 
 function definitionNodeHasName(x: DefinitionNode): x is DefinitionNode & { name: NameNode } {
     return "name" in x;
@@ -99,12 +100,14 @@ function makeAugmentedSchema({
     userCustomResolvers,
     subgraph,
     schemaModel,
+    complexityEstimatorHelper,
 }: {
     document: DocumentNode;
     features?: Neo4jFeaturesSettings;
     userCustomResolvers?: IResolvers | Array<IResolvers>;
     subgraph?: Subgraph;
     schemaModel: Neo4jGraphQLSchemaModel;
+    complexityEstimatorHelper: ComplexityEstimatorHelper;
 }): {
     nodes: Node[];
     relationships: Relationship[];
@@ -223,11 +226,12 @@ function makeAugmentedSchema({
                 graphqlDirectivesToCompose(userDefinedDirectivesForUnion.get(unionEntityAdapter.name) || [])
             );
             if (unionEntityAdapter.isReadable) {
+                complexityEstimatorHelper.registerField("Query", unionEntityAdapter.operations.rootTypeFieldNames.read)
                 composer.Query.addFields({
                     [unionEntityAdapter.operations.rootTypeFieldNames.read]: findResolver({
                         entityAdapter: unionEntityAdapter,
                         composer,
-                        isLimitRequired: features?.limitRequired,
+                        isLimitRequired: features?.limitRequired,                     
                     }),
                 });
             }
@@ -246,6 +250,7 @@ function makeAugmentedSchema({
                 aggregationTypesMapper,
                 seenRelationshipPropertiesTypes,
                 features,
+                complexityEstimatorHelper,
             });
             const connectionFields = createConnectionFields({
                 entityAdapter: interfaceEntityAdapter,
@@ -287,6 +292,7 @@ function makeAugmentedSchema({
                 seenRelationshipPropertiesTypes,
                 userDefinedDirectivesForNode,
                 userDefinedFieldDirectivesForNode,
+                complexityEstimatorHelper,
             });
 
             const connectionFields = createConnectionFields({
@@ -359,10 +365,11 @@ function makeAugmentedSchema({
     if (!Object.values(composer.Subscription.getFields()).length) {
         composer.delete("Subscription");
     }
+
     const generatedTypeDefs = composer.toSDL();
-
+    
     let parsedDoc = parse(generatedTypeDefs);
-
+    
     const documentNames = new Set(parsedDoc.definitions.filter(definitionNodeHasName).map((x) => x.name.value));
     const resolveMethods = getResolveAndSubscriptionMethods(composer);
 
@@ -422,57 +429,10 @@ function makeAugmentedSchema({
         }
     });
 
-    // do not propagate Neo4jGraphQL directives on schema extensions
-    const schemaExtensionsWithoutNeo4jDirectives = asArray(schemaExtensions).map(
-        (schemaExtension): SchemaExtensionNode => {
-            return {
-                kind: schemaExtension.kind,
-                loc: schemaExtension.loc,
-                operationTypes: schemaExtension.operationTypes,
-                directives: schemaExtension.directives?.filter(
-                    (schemaDirective) =>
-                        !["query", "mutation", "subscription", "authentication"].includes(schemaDirective.name.value)
-                ),
-            };
-        }
-    );
-    const seen = {};
     parsedDoc = {
         ...parsedDoc,
-        definitions: [
-            ...parsedDoc.definitions.filter((definition) => {
-                // Filter out default scalars, they are not needed and can cause issues
-                if (definition.kind === Kind.SCALAR_TYPE_DEFINITION) {
-                    if (
-                        [
-                            GraphQLBoolean.name,
-                            GraphQLFloat.name,
-                            GraphQLID.name,
-                            GraphQLInt.name,
-                            GraphQLString.name,
-                        ].includes(definition.name.value)
-                    ) {
-                        return false;
-                    }
-                }
-
-                if (!("name" in definition)) {
-                    return true;
-                }
-
-                const n = definition.name?.value as string;
-
-                if (seen[n]) {
-                    return false;
-                }
-
-                seen[n] = n;
-
-                return true;
-            }),
-            ...schemaExtensionsWithoutNeo4jDirectives,
-        ],
-    };
+        definitions: getFinalDefinitionNodes(schemaExtensions, parsedDoc.definitions, complexityEstimatorHelper),
+    }
 
     return {
         nodes,
@@ -480,6 +440,60 @@ function makeAugmentedSchema({
         typeDefs: parsedDoc,
         resolvers: generatedResolvers,
     };
+}
+
+function getFinalDefinitionNodes(schemaExtensions: SchemaExtensionNode | undefined, definitions: readonly DefinitionNode[], complexityEstimatorHelper: ComplexityEstimatorHelper): DefinitionNode[] {
+    const definitionNodes: DefinitionNode[] = []
+    // do not propagate Neo4jGraphQL directives on schema extensions
+    asArray(schemaExtensions).reduce(
+      (acc, schemaExtension: SchemaExtensionNode) => {
+           acc.push({
+              kind: schemaExtension.kind,
+              loc: schemaExtension.loc,
+              operationTypes: schemaExtension.operationTypes,
+              directives: schemaExtension.directives?.filter(
+                  (schemaDirective) =>
+                      !["query", "mutation", "subscription", "authentication"].includes(schemaDirective.name.value)
+              ),
+          })
+          return acc;
+      }, definitionNodes)
+    // filter out some definition nodes
+    // add FieldEstimator extensions for complexity calculation
+    const seen = {}
+    definitions.reduce<DefinitionNode[]>((acc, definition) => {
+        if (shouldKeepDefinitionNode(definition, seen)) {
+            acc.push(complexityEstimatorHelper.hydrateDefinitionNodeWithComplexityExtensions(definition))
+        }
+        return acc;
+    }, definitionNodes)
+    return definitionNodes;
+}
+
+function shouldKeepDefinitionNode(definition: DefinitionNode, seen: Record<string, any>) {
+      // Filter out default scalars, they are not needed and can cause issues
+      if (definition.kind === Kind.SCALAR_TYPE_DEFINITION) {
+          if (
+              [
+                  GraphQLBoolean.name,
+                  GraphQLFloat.name,
+                  GraphQLID.name,
+                  GraphQLInt.name,
+                  GraphQLString.name,
+              ].includes(definition.name.value)
+          ) {
+              return false;
+          }
+      }
+      if (!("name" in definition)) {
+          return true;
+      }
+      const n = definition.name?.value as string;
+      if (seen[n]) {
+          return false;
+      }
+      seen[n] = n;
+      return true;
 }
 
 export default makeAugmentedSchema;
@@ -499,6 +513,7 @@ function generateObjectType({
     seenRelationshipPropertiesTypes,
     userDefinedDirectivesForNode,
     userDefinedFieldDirectivesForNode,
+    complexityEstimatorHelper,
 }: {
     composer: SchemaComposer;
     concreteEntityAdapter: ConcreteEntityAdapter;
@@ -512,6 +527,7 @@ function generateObjectType({
     seenRelationshipPropertiesTypes: Set<string>;
     userDefinedDirectivesForNode: Map<string, DirectiveNode[]>;
     userDefinedFieldDirectivesForNode: Map<string, Map<string, DirectiveNode[]>>;
+    complexityEstimatorHelper: ComplexityEstimatorHelper;
 }) {
     withWhereInputType({
         entityAdapter: concreteEntityAdapter,
@@ -519,8 +535,8 @@ function generateObjectType({
         features,
         composer,
     });
-    augmentFulltextSchema({ composer, concreteEntityAdapter, features });
-    augmentVectorSchema({ composer, concreteEntityAdapter, features });
+    augmentFulltextSchema({ composer, concreteEntityAdapter, features, complexityEstimatorHelper });
+    augmentVectorSchema({ composer, concreteEntityAdapter, features, complexityEstimatorHelper });
     withUniqueWhereInputType({ concreteEntityAdapter, composer });
     withCreateInputType({ entityAdapter: concreteEntityAdapter, userDefinedFieldDirectives, composer });
     withUpdateInputType({ entityAdapter: concreteEntityAdapter, userDefinedFieldDirectives, composer });
@@ -541,12 +557,14 @@ function generateObjectType({
         userDefinedFieldDirectivesForNode,
         features,
         seenRelationshipPropertiesTypes,
+        complexityEstimatorHelper,
     });
 
     ensureNonEmptyInput(composer, concreteEntityAdapter.operations.updateInputTypeName);
     ensureNonEmptyInput(composer, concreteEntityAdapter.operations.createInputTypeName);
 
     if (concreteEntityAdapter.isReadable) {
+        complexityEstimatorHelper.registerField("Query", concreteEntityAdapter.operations.rootTypeFieldNames.read)
         composer.Query.addFields({
             [concreteEntityAdapter.operations.rootTypeFieldNames.read]: findResolver({
                 entityAdapter: concreteEntityAdapter,
@@ -559,6 +577,8 @@ function generateObjectType({
             graphqlDirectivesToCompose(propagatedDirectives)
         );
 
+
+        complexityEstimatorHelper.registerField("Query", concreteEntityAdapter.operations.rootTypeFieldNames.connection)
         composer.Query.addFields({
             [concreteEntityAdapter.operations.rootTypeFieldNames.connection]: rootConnectionResolver({
                 composer,
@@ -641,6 +661,7 @@ function generateInterfaceObjectType({
     propagatedDirectivesForNode,
     aggregationTypesMapper,
     seenRelationshipPropertiesTypes,
+    complexityEstimatorHelper,
 }: {
     composer: SchemaComposer;
     interfaceEntityAdapter: InterfaceEntityAdapter;
@@ -651,6 +672,7 @@ function generateInterfaceObjectType({
     propagatedDirectivesForNode: Map<string, DirectiveNode[]>;
     aggregationTypesMapper: AggregationTypesMapper;
     seenRelationshipPropertiesTypes: Set<string>;
+    complexityEstimatorHelper: ComplexityEstimatorHelper;
 }) {
     const userDefinedFieldDirectives = userDefinedFieldDirectivesForNode.get(interfaceEntityAdapter.name) as Map<
         string,
@@ -681,10 +703,12 @@ function generateInterfaceObjectType({
         userDefinedFieldDirectivesForNode,
         features,
         seenRelationshipPropertiesTypes,
+        complexityEstimatorHelper,
     });
 
     const propagatedDirectives = propagatedDirectivesForNode.get(interfaceEntityAdapter.name) || [];
     if (interfaceEntityAdapter.isReadable) {
+        complexityEstimatorHelper.registerField("Query", interfaceEntityAdapter.operations.rootTypeFieldNames.read)
         composer.Query.addFields({
             [interfaceEntityAdapter.operations.rootTypeFieldNames.read]: findResolver({
                 entityAdapter: interfaceEntityAdapter,
@@ -698,6 +722,7 @@ function generateInterfaceObjectType({
             graphqlDirectivesToCompose(propagatedDirectives)
         );
 
+        complexityEstimatorHelper.registerField("Query", interfaceEntityAdapter.operations.rootTypeFieldNames.connection)
         composer.Query.addFields({
             [interfaceEntityAdapter.operations.rootTypeFieldNames.connection]: rootConnectionResolver({
                 composer,

@@ -30,12 +30,16 @@ import { createServer } from "http";
 import type { AddressInfo } from "ws";
 import { WebSocketServer } from "ws";
 import type { Neo4jGraphQL } from "../../../src";
+import {getComplexity} from "graphql-query-complexity";
+import { type DocumentNode } from "graphql";
+
 
 export interface TestGraphQLServer {
     path: string;
     wsPath: string;
     start(port?: number): Promise<void>;
     close(): Promise<void>;
+    computeQueryComplexity(query: DocumentNode): Promise<number>;
 }
 
 type CustomContext = ExpressMiddlewareOptions<any>["context"];
@@ -61,6 +65,17 @@ export class ApolloTestServer implements TestGraphQLServer {
         return this.path.replace("http://", "ws://");
     }
 
+    public async computeQueryComplexity(query: DocumentNode): Promise<number> {
+        const schema = await this.schema.getSchema();
+        const complexity = getComplexity({
+            schema,
+            query,
+            variables: {},
+            estimators: this.schema.getComplexityEstimators(),
+        });
+        return complexity;
+    }
+
     async start(): Promise<void> {
         if (this.server) throw new Error(`Server already running on "${this.path}"`);
         const app = express();
@@ -72,7 +87,8 @@ export class ApolloTestServer implements TestGraphQLServer {
         this.server = httpServer;
         this.wsServer = wsServer;
 
-        const schema = await this.schema.getSchema();
+        const neo4jGraphql = this.schema;
+        const schema = await neo4jGraphql.getSchema();
 
         const serverCleanup = useServer(
             {
@@ -86,6 +102,27 @@ export class ApolloTestServer implements TestGraphQLServer {
         const server = new ApolloServer({
             schema,
             plugins: [
+                {
+                    requestDidStart() {
+                        return  Promise.resolve({
+                             didResolveOperation({ request, document }) {
+                                const complexity = getComplexity({
+                                        schema,
+                                        query: document,
+                                        variables: request.variables,
+                                        estimators: neo4jGraphql.getComplexityEstimators(),
+                                    });
+
+                                    if (complexity > 100) {
+                                        throw new Error(
+                                            `Query is too complex: ${complexity}. Maximum allowed complexity is 100.`
+                                        );
+                                    }
+                                    return Promise.resolve();
+                            },
+                        });
+                    },
+                },
                 ApolloServerPluginDrainHttpServer({ httpServer }),
                 {
                     serverWillStart() {
@@ -95,6 +132,7 @@ export class ApolloTestServer implements TestGraphQLServer {
                             },
                         });
                     },
+                    
                 },
             ],
         });

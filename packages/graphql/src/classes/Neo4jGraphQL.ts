@@ -23,7 +23,7 @@ import type { IExecutableSchemaDefinition } from "@graphql-tools/schema";
 import { addResolversToSchema, makeExecutableSchema } from "@graphql-tools/schema";
 import { forEachField, getResolversFromSchema } from "@graphql-tools/utils";
 import Debug from "debug";
-import { type DocumentNode, type GraphQLSchema } from "graphql";
+import {  type DocumentNode, type GraphQLSchema } from "graphql";
 import type { Driver, SessionConfig } from "neo4j-driver";
 import { DEBUG_ALL } from "../constants";
 import { makeAugmentedSchema } from "../schema";
@@ -50,6 +50,8 @@ import { Neo4jGraphQLSubscriptionsCDCEngine } from "./subscription/Neo4jGraphQLS
 import { assertIndexesAndConstraints } from "./utils/asserts-indexes-and-constraints";
 import { generateResolverComposition } from "./utils/generate-resolvers-composition";
 import checkNeo4jCompat from "./utils/verify-database";
+import type { ComplexityEstimator} from "graphql-query-complexity";
+import { ComplexityEstimatorHelper } from "./ComplexityEstimatorHelper";
 
 type TypeDefinitions = string | DocumentNode | TypeDefinitions[] | (() => TypeDefinitions);
 
@@ -75,6 +77,7 @@ class Neo4jGraphQL {
     private jwtFieldsMap?: Map<string, string>;
 
     private schemaModel?: Neo4jGraphQLSchemaModel;
+    private complexityEstimatorHelper: ComplexityEstimatorHelper;
 
     private executableSchema?: Promise<GraphQLSchema>;
     private subgraphSchema?: Promise<GraphQLSchema>;
@@ -108,6 +111,8 @@ class Neo4jGraphQL {
 
             this.authorization = new Neo4jGraphQLAuthorization(authorizationSettings);
         }
+
+        this.complexityEstimatorHelper = new ComplexityEstimatorHelper(!!this.features.complexityEstimators);
     }
 
     public async getSchema(): Promise<GraphQLSchema> {
@@ -190,6 +195,10 @@ class Neo4jGraphQL {
             sessionConfig,
             schemaModel: this.schemaModel,
         });
+    }
+
+    public getComplexityEstimators(): ComplexityEstimator[] {
+        return this.complexityEstimatorHelper.getComplexityEstimators();
     }
 
     private get nodes(): Node[] {
@@ -393,6 +402,7 @@ class Neo4jGraphQL {
                 features: this.features,
                 userCustomResolvers: this.resolvers,
                 schemaModel: this.schemaModel,
+                complexityEstimatorHelper: this.complexityEstimatorHelper,
             });
 
             if (this.validate) {
@@ -406,6 +416,7 @@ class Neo4jGraphQL {
                 typeDefs,
                 resolvers,
             });
+            this.complexityEstimatorHelper.hydrateSchemaFromSDLWithASTNodeExtensions(schema);
 
             resolve(this.composeSchema(schema));
         });
@@ -457,6 +468,7 @@ class Neo4jGraphQL {
             userCustomResolvers: this.resolvers,
             subgraph,
             schemaModel: this.schemaModel,
+            complexityEstimatorHelper: this.complexityEstimatorHelper,
         });
 
         if (this.validate) {
