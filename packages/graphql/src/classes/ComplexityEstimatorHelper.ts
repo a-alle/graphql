@@ -31,10 +31,8 @@ export class ComplexityEstimatorHelper {
 
     public registerField(parentObjectTypeNameOrInterfaceTypeName: string, fieldName: string): void {
         if(this.useComplexityEstimators) {
-            const existingFieldsForTypeName = this.objectTypeNameToFieldNamesMapForComplexityExtensions.get(parentObjectTypeNameOrInterfaceTypeName) || []
+            const existingFieldsForTypeName = this.objectTypeNameToFieldNamesMapForComplexityExtensions.get(parentObjectTypeNameOrInterfaceTypeName) ?? []
             this.objectTypeNameToFieldNamesMapForComplexityExtensions.set(parentObjectTypeNameOrInterfaceTypeName, existingFieldsForTypeName.concat(fieldName))
-
-            console.log(this.objectTypeNameToFieldNamesMapForComplexityExtensions)
         }
     }
 
@@ -94,7 +92,7 @@ export class ComplexityEstimatorHelper {
 
     public getComplexityEstimators(): ComplexityEstimator[] {
         if (!this.useComplexityEstimators) {
-            return [simpleEstimator({ defaultComplexity: 1 })]
+            return []
         }
         return [
             fieldExtensionsEstimator(),

@@ -39,7 +39,7 @@ export interface TestGraphQLServer {
     wsPath: string;
     start(port?: number): Promise<void>;
     close(): Promise<void>;
-    computeQueryComplexity(query: DocumentNode): Promise<number>;
+    computeQueryComplexity(query: DocumentNode): Promise<number | undefined>;
 }
 
 type CustomContext = ExpressMiddlewareOptions<any>["context"];
@@ -65,15 +65,16 @@ export class ApolloTestServer implements TestGraphQLServer {
         return this.path.replace("http://", "ws://");
     }
 
-    public async computeQueryComplexity(query: DocumentNode): Promise<number> {
+    public async computeQueryComplexity(query: DocumentNode): Promise<number | undefined> {
         const schema = await this.schema.getSchema();
-        const complexity = getComplexity({
-            schema,
-            query,
-            variables: {},
-            estimators: this.schema.getComplexityEstimators(),
-        });
-        return complexity;
+        if(this.schema.getComplexityEstimators().length) {
+            return getComplexity({
+                schema,
+                query,
+                variables: {},
+                estimators: this.schema.getComplexityEstimators(),
+            });
+        }
     }
 
     async start(): Promise<void> {
@@ -106,17 +107,20 @@ export class ApolloTestServer implements TestGraphQLServer {
                     requestDidStart() {
                         return  Promise.resolve({
                              didResolveOperation({ request, document }) {
-                                const complexity = getComplexity({
-                                        schema,
-                                        query: document,
-                                        variables: request.variables,
-                                        estimators: neo4jGraphql.getComplexityEstimators(),
-                                    });
+                                const estimators = neo4jGraphql.getComplexityEstimators()
+                                if(estimators.length) {
+                                    const complexity = getComplexity({
+                                            schema,
+                                            query: document,
+                                            variables: request.variables,
+                                            estimators,
+                                        });
 
-                                    if (complexity > 100) {
-                                        throw new Error(
-                                            `Query is too complex: ${complexity}. Maximum allowed complexity is 100.`
-                                        );
+                                        if (complexity > 100) {
+                                            throw new Error(
+                                                `Query is too complex: ${complexity}. Maximum allowed complexity is 100.`
+                                            );
+                                        }
                                     }
                                     return Promise.resolve();
                             },

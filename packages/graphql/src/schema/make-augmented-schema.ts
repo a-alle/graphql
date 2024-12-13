@@ -431,7 +431,7 @@ function makeAugmentedSchema({
 
     parsedDoc = {
         ...parsedDoc,
-        definitions: getFinalDefinitionNodes(schemaExtensions, parsedDoc.definitions, complexityEstimatorHelper),
+        definitions: getTransformedDefinitionNodesForAugmentedSchema({schemaExtensions, definitions: parsedDoc.definitions, complexityEstimatorHelper}),
     }
 
     return {
@@ -442,7 +442,15 @@ function makeAugmentedSchema({
     };
 }
 
-function getFinalDefinitionNodes(schemaExtensions: SchemaExtensionNode | undefined, definitions: readonly DefinitionNode[], complexityEstimatorHelper: ComplexityEstimatorHelper): DefinitionNode[] {
+function getTransformedDefinitionNodesForAugmentedSchema({ 
+  schemaExtensions, 
+  definitions,
+  complexityEstimatorHelper,
+}: {
+  schemaExtensions: SchemaExtensionNode | undefined; 
+  definitions: readonly DefinitionNode[]; 
+  complexityEstimatorHelper: ComplexityEstimatorHelper
+}): DefinitionNode[] {
     const definitionNodes: DefinitionNode[] = []
     // do not propagate Neo4jGraphQL directives on schema extensions
     asArray(schemaExtensions).reduce(
