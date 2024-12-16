@@ -1,5 +1,11 @@
 # @neo4j/graphql
 
+## 5.11.2
+
+### Patch Changes
+
+-   [#5889](https://github.com/neo4j/graphql/pull/5889) [`b125790`](https://github.com/neo4j/graphql/commit/b125790965658cf84282fc593b28b3b114a467c7) Thanks [@darrellwarde](https://github.com/darrellwarde)! - Fix incorrect relationship direction when performing a delete operation nested under a delete operation
+
 ## 5.11.1
 
 ### Patch Changes
