@@ -28,7 +28,7 @@ import { checkEntityAuthentication } from "../../../authorization/check-authenti
 import type { Filter } from "../../ast/filters/Filter";
 import { DeleteOperation } from "../../ast/operations/DeleteOperation";
 import { NodeSelection } from "../../ast/selection/NodeSelection";
-import { RelationshipSelection } from "../../ast/selection/RelationshipSelection";
+import { DirectedRelationshipSelection } from "../../ast/selection/RelationshipSelection";
 import { getConcreteEntities } from "../../utils/get-concrete-entities";
 import { isInterfaceEntity } from "../../utils/is-interface-entity";
 import { isUnionEntity } from "../../utils/is-union-entity";
@@ -205,9 +205,8 @@ export class DeleteFactory {
             context,
         });
 
-        const selection = new RelationshipSelection({
+        const selection = new DirectedRelationshipSelection({
             relationship,
-            directed: true,
             optional: true,
             targetOverride: target,
         });

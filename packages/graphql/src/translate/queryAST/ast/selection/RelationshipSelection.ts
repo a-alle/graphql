@@ -26,7 +26,7 @@ import type { QueryASTContext } from "../QueryASTContext";
 import { EntitySelection, type SelectionClause } from "./EntitySelection";
 
 export class RelationshipSelection extends EntitySelection {
-    private relationship: RelationshipAdapter;
+    protected relationship: RelationshipAdapter;
     // Overrides relationship target for composite entities
     private targetOverride: ConcreteEntityAdapter | undefined;
     private alias: string | undefined;
@@ -64,7 +64,7 @@ export class RelationshipSelection extends EntitySelection {
         const relationshipTarget = this.targetOverride ?? this.relationship.target;
         const targetNode = createNode(this.alias);
         const labels = getEntityLabels(relationshipTarget, context.neo4jGraphQLContext);
-        const relDirection = this.relationship.getCypherDirection(this.directed);
+        const relDirection = this.getRelationshipDirection();
 
         const pattern = new Cypher.Pattern(context.target)
             .related(relVar, { direction: relDirection, type: this.relationship.type })
@@ -80,5 +80,15 @@ export class RelationshipSelection extends EntitySelection {
             nestedContext: nestedContext,
             selection: match,
         };
+    }
+
+    protected getRelationshipDirection(): "left" | "right" | "undirected" {
+        return this.relationship.getCypherDirection(this.directed);
+    }
+}
+
+export class DirectedRelationshipSelection extends RelationshipSelection {
+    protected getRelationshipDirection(): "left" | "right" {
+        return this.relationship.cypherDirectionFromRelDirection();
     }
 }
