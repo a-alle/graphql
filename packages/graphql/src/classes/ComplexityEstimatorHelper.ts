@@ -60,8 +60,8 @@ export class ComplexityEstimatorHelper {
                     complexity: ({childComplexity, args}) => {
                         const fieldDefaultComplexity = 1
                         const defaultLimitIfNotProvided = 1
-                        if(args.limit || args.first) {
-                            return childComplexity + (args.limit || args.first) * fieldDefaultComplexity
+                        if(args.limit ?? args.first) {
+                            return childComplexity + (args.limit ?? args.first) * fieldDefaultComplexity
                         }
                         return childComplexity + defaultLimitIfNotProvided
                         
