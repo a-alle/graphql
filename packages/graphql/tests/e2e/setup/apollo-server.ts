@@ -30,9 +30,9 @@ import { createServer } from "http";
 import type { AddressInfo } from "ws";
 import { WebSocketServer } from "ws";
 import type { Neo4jGraphQL } from "../../../src";
-import {getComplexity} from "graphql-query-complexity";
+import { getComplexity } from "graphql-query-complexity";
 import { type DocumentNode } from "graphql";
-
+import { DefaultComplexityEstimators } from "../../../src/classes";
 
 export interface TestGraphQLServer {
     path: string;
@@ -50,10 +50,12 @@ export class ApolloTestServer implements TestGraphQLServer {
     private _path?: string;
     private wsServer?: WebSocketServer;
     private customContext?: CustomContext;
+    private useEstimators: boolean;
 
-    constructor(schema: Neo4jGraphQL, customContext?: CustomContext) {
+    constructor(schema: Neo4jGraphQL, customContext?: CustomContext, useEstimators?: boolean) {
         this.schema = schema;
         this.customContext = customContext;
+        this.useEstimators = useEstimators ?? false;
     }
 
     public get path(): string {
@@ -67,12 +69,12 @@ export class ApolloTestServer implements TestGraphQLServer {
 
     public async computeQueryComplexity(query: DocumentNode): Promise<number | undefined> {
         const schema = await this.schema.getSchema();
-        if(this.schema.getComplexityEstimators().length) {
+        if (this.useEstimators) {
             return getComplexity({
                 schema,
                 query,
                 variables: {},
-                estimators: this.schema.getComplexityEstimators(),
+                estimators: DefaultComplexityEstimators,
             });
         }
     }
@@ -88,8 +90,8 @@ export class ApolloTestServer implements TestGraphQLServer {
         this.server = httpServer;
         this.wsServer = wsServer;
 
-        const neo4jGraphql = this.schema;
-        const schema = await neo4jGraphql.getSchema();
+        const useEstimators = this.useEstimators;
+        const schema = await this.schema.getSchema();
 
         const serverCleanup = useServer(
             {
@@ -105,24 +107,23 @@ export class ApolloTestServer implements TestGraphQLServer {
             plugins: [
                 {
                     requestDidStart() {
-                        return  Promise.resolve({
-                             didResolveOperation({ request, document }) {
-                                const estimators = neo4jGraphql.getComplexityEstimators()
-                                if(estimators.length) {
+                        return Promise.resolve({
+                            didResolveOperation({ request, document }) {
+                                if (useEstimators) {
                                     const complexity = getComplexity({
-                                            schema,
-                                            query: document,
-                                            variables: request.variables,
-                                            estimators,
-                                        });
+                                        schema,
+                                        query: document,
+                                        variables: request.variables,
+                                        estimators: DefaultComplexityEstimators,
+                                    });
 
-                                        if (complexity > 100) {
-                                            throw new Error(
-                                                `Query is too complex: ${complexity}. Maximum allowed complexity is 100.`
-                                            );
-                                        }
+                                    if (complexity > 100) {
+                                        throw new Error(
+                                            `Query is too complex: ${complexity}. Maximum allowed complexity is 100.`
+                                        );
                                     }
-                                    return Promise.resolve();
+                                }
+                                return Promise.resolve();
                             },
                         });
                     },
@@ -136,7 +137,6 @@ export class ApolloTestServer implements TestGraphQLServer {
                             },
                         });
                     },
-                    
                 },
             ],
         });

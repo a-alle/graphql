@@ -43,15 +43,22 @@ describe("limitRequired enabled", () => {
                 }
          `;
 
-        const neoSchema = await testHelper.initNeo4jGraphQL({ typeDefs, features: {limitRequired: true, complexityEstimators: true} });
+        const neoSchema = await testHelper.initNeo4jGraphQL({
+            typeDefs,
+            features: { limitRequired: true, complexityEstimators: true },
+        });
 
-        // eslint-disable-next-line @typescript-eslint/require-await
-        server = new ApolloTestServer(neoSchema, async ({ req }) => ({
-            sessionConfig: {
-                database: testHelper.database,
-            },
-            token: req.headers.authorization,
-        }));
+        server = new ApolloTestServer(
+            neoSchema,
+            // eslint-disable-next-line @typescript-eslint/require-await
+            async ({ req }) => ({
+                sessionConfig: {
+                    database: testHelper.database,
+                },
+                token: req.headers.authorization,
+            }),
+            true
+        );
         await server.start();
     });
 
@@ -61,18 +68,21 @@ describe("limitRequired enabled", () => {
     });
 
     test("movies  result", async () => {
-      const complexity = await server.computeQueryComplexity(parse(`
+        const complexity = await server.computeQueryComplexity(
+            parse(`
           query {
             movies(limit: 9) {
               title
             }
           }
-      `))
-      expect(complexity).toBe(10)
-  });
+      `)
+        );
+        expect(complexity).toBe(10);
+    });
 
     test("movies with actors result", async () => {
-        const complexity = await server.computeQueryComplexity(parse(`
+        const complexity = await server.computeQueryComplexity(
+            parse(`
             query {
               movies(limit: 5) {
                 title
@@ -81,12 +91,14 @@ describe("limitRequired enabled", () => {
                 }
               }
             }
-        `))
-        expect(complexity).toBe(13)
+        `)
+        );
+        expect(complexity).toBe(13);
     });
 
     test("movies with actors and directors result", async () => {
-        const complexity = await server.computeQueryComplexity(parse(`
+        const complexity = await server.computeQueryComplexity(
+            parse(`
             query {
               movies(limit: 5) {
                 title
@@ -98,12 +110,14 @@ describe("limitRequired enabled", () => {
                 }
               }
             }
-      `))
-        expect(complexity).toBe(22)
+      `)
+        );
+        expect(complexity).toBe(22);
     });
 
     test("productions with actors and directors result", async () => {
-        const complexity = await server.computeQueryComplexity(parse(`
+        const complexity = await server.computeQueryComplexity(
+            parse(`
             query {
               productions(limit: 5) {
                 title
@@ -112,18 +126,19 @@ describe("limitRequired enabled", () => {
                 }
               }
             }
-        `))
-        expect(complexity).toBe(17)
+        `)
+        );
+        expect(complexity).toBe(17);
     });
 });
 
 describe("limitRequired not enabled", () => {
-  const testHelper = new TestHelper();
+    const testHelper = new TestHelper();
 
-  let server: TestGraphQLServer;
+    let server: TestGraphQLServer;
 
-  beforeAll(async () => {
-      const typeDefs = `
+    beforeAll(async () => {
+        const typeDefs = `
               interface Production {
                   title: String
                   actors: [Actor!]! @declareRelationship
@@ -138,25 +153,30 @@ describe("limitRequired not enabled", () => {
               }
        `;
 
-      const neoSchema = await testHelper.initNeo4jGraphQL({ typeDefs, features: {complexityEstimators: true} });
+        const neoSchema = await testHelper.initNeo4jGraphQL({ typeDefs, features: { complexityEstimators: true } });
 
-      // eslint-disable-next-line @typescript-eslint/require-await
-      server = new ApolloTestServer(neoSchema, async ({ req }) => ({
-          sessionConfig: {
-              database: testHelper.database,
-          },
-          token: req.headers.authorization,
-      }));
-      await server.start();
-  });
+        server = new ApolloTestServer(
+            neoSchema,
+            // eslint-disable-next-line @typescript-eslint/require-await
+            async ({ req }) => ({
+                sessionConfig: {
+                    database: testHelper.database,
+                },
+                token: req.headers.authorization,
+            }),
+            true
+        );
+        await server.start();
+    });
 
-  afterAll(async () => {
-      await testHelper.close();
-      await server.close();
-  });
+    afterAll(async () => {
+        await testHelper.close();
+        await server.close();
+    });
 
-  test("movies with actors and directors result - no limit args", async () => {
-    const complexity = await server.computeQueryComplexity(parse(`
+    test("movies with actors and directors result - no limit args", async () => {
+        const complexity = await server.computeQueryComplexity(
+            parse(`
         query {
           movies {
             title
@@ -168,12 +188,14 @@ describe("limitRequired not enabled", () => {
             }
           }
         }
-  `))
-    expect(complexity).toBe(6)
-});
+  `)
+        );
+        expect(complexity).toBe(6);
+    });
 
-  test("productions with actors and directors result - no limit args", async () => {
-    const complexity = await server.computeQueryComplexity(parse(`
+    test("productions with actors and directors result - no limit args", async () => {
+        const complexity = await server.computeQueryComplexity(
+            parse(`
         query {
           productions {
             title
@@ -182,7 +204,8 @@ describe("limitRequired not enabled", () => {
             }
           }
         }
-    `))
-    expect(complexity).toBe(4)
-});
+    `)
+        );
+        expect(complexity).toBe(4);
+    });
 });
