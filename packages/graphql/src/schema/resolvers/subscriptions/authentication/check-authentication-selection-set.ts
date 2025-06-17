@@ -27,12 +27,14 @@ import type { SubscriptionEventType } from "../types";
 import { checkAuthentication } from "./check-authentication";
 import type { SelectionFields } from "./selection-set-parser";
 import { parseSelectionSetForAuthenticated } from "./selection-set-parser";
+import { Neo4jFeaturesSettings } from "../../../../types";
 
-export function checkAuthenticationOnSelectionSet(
+export async function checkAuthenticationOnSelectionSet(
     resolveInfo: GraphQLResolveInfo,
     entityAdapter: ConcreteEntityAdapter,
     type: SubscriptionEventType,
-    context: Neo4jGraphQLComposedSubscriptionsContext
+    context: Neo4jGraphQLComposedSubscriptionsContext,
+    features: Neo4jFeaturesSettings | undefined
 ) {
     const resolveTree = parseResolveInfo(resolveInfo) as ResolveTree | undefined | null;
     if (!resolveTree) {
@@ -46,25 +48,29 @@ export function checkAuthenticationOnSelectionSet(
         entityPayloadTypeName: entityAdapter.operations.subscriptionEventPayloadFieldNames[type],
         context,
     });
-    authenticatedSelections.forEach(({ entity, fieldSelection }) =>
-        checkAuthenticationOnSelection({ entity, fieldSelection, context })
+
+    const authenticationChecks = authenticatedSelections.map(({ entity, fieldSelection }) =>
+        checkAuthenticationOnSelection({ entity, fieldSelection, context, features })
     );
+    await Promise.all(authenticationChecks);
 }
 
-function checkAuthenticationOnSelection({
+async function checkAuthenticationOnSelection({
     fieldSelection,
     entity,
     context,
+    features,
 }: {
     fieldSelection: SelectionFields;
     entity: ConcreteEntity | ConcreteEntityAdapter;
     context: Neo4jGraphQLComposedSubscriptionsContext;
+    features: Neo4jFeaturesSettings | undefined;
 }) {
-    checkAuthentication({ authenticated: entity, operation: "READ", context });
+    await checkAuthentication({ authenticated: entity, operation: "READ", context, features });
     for (const selectedField of Object.values(fieldSelection)) {
         const field = entity.attributes.get(selectedField.name);
         if (field) {
-            checkAuthentication({ authenticated: field, operation: "READ", context });
+            await checkAuthentication({ authenticated: field, operation: "READ", context, features });
         }
     }
 }

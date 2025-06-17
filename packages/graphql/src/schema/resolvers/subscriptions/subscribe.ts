@@ -21,7 +21,7 @@ import { on } from "events";
 import type { GraphQLResolveInfo } from "graphql";
 import { Neo4jGraphQLError } from "../../../classes";
 import type { ConcreteEntityAdapter } from "../../../schema-model/entity/model-adapters/ConcreteEntityAdapter";
-import type { NodeSubscriptionsEvent, SubscriptionsEvent } from "../../../types";
+import type { Neo4jFeaturesSettings, NodeSubscriptionsEvent, SubscriptionsEvent } from "../../../types";
 import type { Neo4jGraphQLComposedSubscriptionsContext } from "../composition/wrap-subscription";
 import { checkAuthentication } from "./authentication/check-authentication";
 import { checkAuthenticationOnSelectionSet } from "./authentication/check-authentication-selection-set";
@@ -53,19 +53,21 @@ function isNodeSubscriptionEvent(event: SubscriptionsEvent | undefined): event i
 export function generateSubscribeMethod({
     entityAdapter,
     type,
+    features,
 }: {
     entityAdapter: ConcreteEntityAdapter;
     type: SubscriptionEventType;
+    features: Neo4jFeaturesSettings | undefined;
 }) {
-    return (
+    return async (
         _root: any,
         args: SubscriptionArgs,
         context: Neo4jGraphQLComposedSubscriptionsContext,
         resolveInfo: GraphQLResolveInfo
-    ): AsyncIterator<SubscriptionsEvent[]> => {
-        checkAuthenticationOnSelectionSet(resolveInfo, entityAdapter, type, context);
+    ): Promise<AsyncIterator<SubscriptionsEvent[]>> => {
+        await checkAuthenticationOnSelectionSet(resolveInfo, entityAdapter, type, context, features);
 
-        checkAuthentication({ authenticated: entityAdapter, operation: "SUBSCRIBE", context });
+        await checkAuthentication({ authenticated: entityAdapter, operation: "SUBSCRIBE", context, features });
 
         const iterable: AsyncIterableIterator<SubscriptionsEvent[]> = on(context.subscriptionsEngine.events, type);
         if (["create", "update", "delete"].includes(type)) {

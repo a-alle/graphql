@@ -28,36 +28,57 @@ import type { AttributeAdapter } from "../../../../schema-model/attribute/model-
 import type { ConcreteEntity } from "../../../../schema-model/entity/ConcreteEntity";
 import type { ConcreteEntityAdapter } from "../../../../schema-model/entity/model-adapters/ConcreteEntityAdapter";
 import { filterByValues } from "../../../../translate/authorization/utils/filter-by-values";
+import { Neo4jFeaturesSettings } from "../../../../types";
 import type { Neo4jGraphQLComposedSubscriptionsContext } from "../../composition/wrap-subscription";
 
-export function checkAuthentication({
+export async function checkAuthentication({
     authenticated,
     operation,
     context,
+    features,
 }: {
     authenticated: ConcreteEntity | Attribute | ConcreteEntityAdapter | AttributeAdapter;
     operation: AuthenticationOperation;
     context: Neo4jGraphQLComposedSubscriptionsContext;
+    features: Neo4jFeaturesSettings | undefined;
 }) {
     const schemaLevelAnnotation = context.schemaModel.annotations.authentication;
     if (schemaLevelAnnotation && schemaLevelAnnotation.operations.has(operation)) {
-        applyAuthentication(schemaLevelAnnotation, context);
+        await applyAuthentication(schemaLevelAnnotation, context, features);
     }
     const annotation = authenticated.annotations.authentication;
     if (annotation && annotation.operations.has(operation)) {
-        applyAuthentication(annotation, context);
+        await applyAuthentication(annotation, context, features);
     }
 }
 
-function applyAuthentication(annotation: AuthenticationAnnotation, context: Neo4jGraphQLComposedSubscriptionsContext) {
-    if (!context.authorization.jwt) {
-        throw new Neo4jGraphQLError(AUTHORIZATION_UNAUTHENTICATED);
-    }
-    if (annotation.jwt) {
-        const { jwt, claims } = context.authorization;
-        const result = filterByValues(annotation.jwt, jwt, claims);
-        if (!result) {
+async function applyAuthentication(
+    annotation: AuthenticationAnnotation,
+    context: Neo4jGraphQLComposedSubscriptionsContext,
+    features: Neo4jFeaturesSettings | undefined
+) {
+    if (annotation.callback) {
+        if (!features || !features.authentication || !features.authentication.callbacks) {
+            throw new Neo4jGraphQLError(`Authentication callbacks not provided.`);
+        }
+        const callbackFn = features.authentication.callbacks[annotation.callback];
+        if (!callbackFn) {
+            throw new Neo4jGraphQLError(`Authentication callback "${annotation.callback}" not found.`);
+        }
+        const callbackResult = await callbackFn();
+        if (!callbackResult) {
             throw new Neo4jGraphQLError(AUTHORIZATION_UNAUTHENTICATED);
+        }
+    } else {
+        if (!context.authorization.jwt) {
+            throw new Neo4jGraphQLError(AUTHORIZATION_UNAUTHENTICATED);
+        }
+        if (annotation.jwt) {
+            const { jwt, claims } = context.authorization;
+            const result = filterByValues(annotation.jwt, jwt, claims);
+            if (!result) {
+                throw new Neo4jGraphQLError(AUTHORIZATION_UNAUTHENTICATED);
+            }
         }
     }
 }

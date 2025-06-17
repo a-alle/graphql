@@ -399,6 +399,9 @@ export interface Neo4jFiltersSettings {
 export interface Neo4jPopulatedBySettings {
     callbacks?: Neo4jGraphQLCallbacks;
 }
+export interface Neo4jAuthenticationSettings {
+    callbacks?: Record<string, () => Promise<any>>;
+}
 export interface Neo4jAuthorizationSettings {
     key: Key | ((context: Neo4jGraphQLContext) => Key);
     verify?: boolean;
@@ -440,6 +443,7 @@ export type Key = string | RemoteJWKS;
 export type Neo4jFeaturesSettings = {
     filters?: Neo4jFiltersSettings;
     populatedBy?: Neo4jPopulatedBySettings;
+    authentication?: Neo4jAuthenticationSettings;
     authorization?: Neo4jAuthorizationSettings;
     subscriptions?: boolean | Neo4jGraphQLSubscriptionsCDCEngine;
     /** If set to `true`, removes `@neo4j/graphql` fields that are marked as deprecated to reduce schema size.

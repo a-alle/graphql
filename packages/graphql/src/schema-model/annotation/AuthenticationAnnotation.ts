@@ -35,9 +35,11 @@ export class AuthenticationAnnotation implements Annotation {
 
     public readonly operations: Set<AuthenticationOperation>;
     public readonly jwt?: GraphQLWhereArg;
+    public readonly callback?: string;
 
-    constructor(operations: AuthenticationOperation[], jwt?: GraphQLWhereArg) {
+    constructor(operations: AuthenticationOperation[], jwt?: GraphQLWhereArg, callback?: string) {
         this.operations = new Set<AuthenticationOperation>(operations);
         this.jwt = jwt;
+        this.callback = callback;
     }
 }

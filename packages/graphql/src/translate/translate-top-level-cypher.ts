@@ -31,7 +31,7 @@ import { buildClause } from "./utils/build-clause";
 
 const debug = Debug(DEBUG_TRANSLATE);
 
-export function translateTopLevelCypher({
+export async function translateTopLevelCypher({
     context,
     field,
     type,
@@ -40,7 +40,7 @@ export function translateTopLevelCypher({
     field: CypherField;
 
     type: "Query" | "Mutation";
-}): Cypher.CypherResult {
+}): Promise<Cypher.CypherResult> {
     const operation = context.schemaModel.operations[type];
     if (!operation) {
         throw new Error(`Failed to find operation ${type} in Schema Model.`);
@@ -56,7 +56,7 @@ export function translateTopLevelCypher({
         const targetOperations: AuthenticationOperation[] =
             type === "Query" ? ["READ"] : ["CREATE", "UPDATE", "DELETE"];
 
-        applyAuthentication({ context, annotation, targetOperations });
+        await applyAuthentication({ context, annotation, targetOperations });
     }
     const { resolveTree } = context;
 

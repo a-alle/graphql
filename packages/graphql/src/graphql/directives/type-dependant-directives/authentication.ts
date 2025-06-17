@@ -45,6 +45,11 @@ function createAuthentication(jwtPayloadWhere: GraphQLInputObjectType): GraphQLD
             jwt: {
                 type: jwtPayloadWhere,
             },
+            callback: {
+                type: GraphQLString,
+                description:
+                    "A list of callback functions to be executed for each operation. The callback function should return a boolean indicating whether the operation is allowed.",
+            },
         },
     });
 }
@@ -66,6 +71,9 @@ export const authenticationDirectiveScaffold = new GraphQLDirective({
             type: new GraphQLList(GraphQLString),
         },
         jwt: {
+            type: GraphQLString,
+        },
+        callback: {
             type: GraphQLString,
         },
     },

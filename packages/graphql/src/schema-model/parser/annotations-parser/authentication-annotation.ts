@@ -36,14 +36,8 @@ export function parseAuthenticationAnnotation(directive: DirectiveNode): Authent
     const args = parseArgumentsFromUnknownDirective(directive) as {
         operations?: AuthenticationOperation[];
         jwt?: GraphQLWhereArg;
+        callback?: string;
     };
 
-    const constructorArgs: [AuthenticationOperation[], GraphQLWhereArg?] = [
-        args.operations || authenticationDefaultOperations,
-    ];
-    if (args.jwt) {
-        constructorArgs.push(args.jwt);
-    }
-
-    return new AuthenticationAnnotation(...constructorArgs);
+    return new AuthenticationAnnotation(args.operations || authenticationDefaultOperations, args.jwt, args.callback);
 }

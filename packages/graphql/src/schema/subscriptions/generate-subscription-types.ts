@@ -134,7 +134,7 @@ export function generateSubscriptionTypes({
                 [entityAdapter.operations.rootTypeFieldNames.subscribe.created]: {
                     ...whereArgument,
                     type: nodeCreatedEvent.NonNull,
-                    subscribe: generateSubscribeMethod({ entityAdapter, type: "create" }),
+                    subscribe: generateSubscribeMethod({ entityAdapter, type: "create", features }),
                     resolve: subscriptionResolve,
                 },
             });
@@ -144,7 +144,7 @@ export function generateSubscriptionTypes({
                 [entityAdapter.operations.rootTypeFieldNames.subscribe.updated]: {
                     ...whereArgument,
                     type: nodeUpdatedEvent.NonNull,
-                    subscribe: generateSubscribeMethod({ entityAdapter, type: "update" }),
+                    subscribe: generateSubscribeMethod({ entityAdapter, type: "update", features }),
                     resolve: subscriptionResolve,
                 },
             });
@@ -155,7 +155,7 @@ export function generateSubscriptionTypes({
                 [entityAdapter.operations.rootTypeFieldNames.subscribe.deleted]: {
                     ...whereArgument,
                     type: nodeDeletedEvent.NonNull,
-                    subscribe: generateSubscribeMethod({ entityAdapter, type: "delete" }),
+                    subscribe: generateSubscribeMethod({ entityAdapter, type: "delete", features }),
                     resolve: subscriptionResolve,
                 },
             });

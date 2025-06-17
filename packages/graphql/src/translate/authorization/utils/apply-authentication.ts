@@ -26,7 +26,7 @@ import type {
     AuthenticationOperation,
 } from "../../../schema-model/annotation/AuthenticationAnnotation";
 
-export function applyAuthentication({
+export async function applyAuthentication({
     context,
     annotation,
     targetOperations,
@@ -34,20 +34,34 @@ export function applyAuthentication({
     context: Neo4jGraphQLTranslationContext;
     annotation: AuthenticationAnnotation;
     targetOperations: AuthenticationOperation[];
-}): void {
+}): Promise<void> {
     const requiresAuthentication = targetOperations.some((targetOperation) =>
         annotation.operations.has(targetOperation)
     );
     if (!requiresAuthentication) {
         return;
     }
-    if (!context.authorization.isAuthenticated) {
-        throw new Neo4jGraphQLError(AUTHORIZATION_UNAUTHENTICATED);
-    }
-    if (annotation.jwt) {
-        const { jwt, claims } = context.authorization;
-        if (!jwt || !filterByValues(annotation.jwt, jwt, claims)) {
+    if (annotation.callback) {
+        if (!context.features.authentication || !context.features.authentication.callbacks) {
+            throw new Neo4jGraphQLError(`Authentication callbacks not provided.`);
+        }
+        const callbackFn = context.features.authentication.callbacks[annotation.callback];
+        if (!callbackFn) {
+            throw new Neo4jGraphQLError(`Authentication callback "${annotation.callback}" not found.`);
+        }
+        const callbackResult = await callbackFn();
+        if (!callbackResult) {
             throw new Neo4jGraphQLError(AUTHORIZATION_UNAUTHENTICATED);
+        }
+    } else {
+        if (!context.authorization.isAuthenticated) {
+            throw new Neo4jGraphQLError(AUTHORIZATION_UNAUTHENTICATED);
+        }
+        if (annotation.jwt) {
+            const { jwt, claims } = context.authorization;
+            if (!jwt || !filterByValues(annotation.jwt, jwt, claims)) {
+                throw new Neo4jGraphQLError(AUTHORIZATION_UNAUTHENTICATED);
+            }
         }
     }
 }

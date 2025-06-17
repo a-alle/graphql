@@ -42,7 +42,7 @@ export function cypherResolver({
 
         (context as Neo4jGraphQLTranslationContext).resolveTree = resolveTree;
 
-        const { cypher, params } = translateTopLevelCypher({
+        const { cypher, params } = await translateTopLevelCypher({
             context: context as Neo4jGraphQLTranslationContext,
             field,
             type,

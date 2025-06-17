@@ -53,7 +53,7 @@ export function checkAuthentication({
     });
 }
 
-export function checkEntityAuthentication({
+export async function checkEntityAuthentication({
     context,
     entity,
     targetOperations,
@@ -66,7 +66,7 @@ export function checkEntityAuthentication({
 }) {
     const schemaLevelAnnotation = context.schemaModel.annotations.authentication;
     if (schemaLevelAnnotation) {
-        applyAuthentication({ context, annotation: schemaLevelAnnotation, targetOperations });
+        await applyAuthentication({ context, annotation: schemaLevelAnnotation, targetOperations });
     }
 
     const annotation: AuthenticationAnnotation | undefined = field
@@ -74,17 +74,17 @@ export function checkEntityAuthentication({
         : entity.annotations.authentication;
 
     if (annotation) {
-        applyAuthentication({ context, annotation, targetOperations });
+        await applyAuthentication({ context, annotation, targetOperations });
     }
 }
 
 export const isAuthenticated =
     (targetOperations: AuthenticationOperation[], entity: Operation | undefined) =>
     (next) =>
-    (root, args, context, info) => {
+    async (root, args, context, info) => {
         const schemaLevelAnnotation = context.schemaModel.annotations.authentication;
         if (schemaLevelAnnotation) {
-            applyAuthentication({ context, annotation: schemaLevelAnnotation, targetOperations });
+            await applyAuthentication({ context, annotation: schemaLevelAnnotation, targetOperations });
         }
 
         if (entity) {
@@ -94,7 +94,7 @@ export const isAuthenticated =
                 (fieldName && entity.findUserResolvedAttributes(fieldName)?.annotations.authentication);
 
             if (annotation) {
-                applyAuthentication({ context, annotation, targetOperations });
+                await applyAuthentication({ context, annotation, targetOperations });
             }
         }
 
