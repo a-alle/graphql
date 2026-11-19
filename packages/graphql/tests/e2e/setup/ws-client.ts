@@ -3,6 +3,7 @@
  * Neo4j Sweden AB [http://neo4j.com]
  */
 
+import type { Mock } from "vitest";
 import type { Client } from "graphql-ws";
 import { createClient } from "graphql-ws";
 import { EventEmitter } from "stream";
@@ -33,7 +34,7 @@ export class WebSocketTestClient {
         });
     }
 
-    public waitForEvents(count = 1): Promise<void> {
+    public waitForEvents(count = 1, timeoutMs = 5000): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             if (this.counter >= count) {
                 // checking for events that were emitted before `waitForEvents` got the chance to execute
@@ -53,12 +54,12 @@ export class WebSocketTestClient {
                 this.eventsEmitter.removeListener(NEW_EVENT, newEventListener);
                 // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
                 reject("[waitForEvents] Timed out.");
-            }, 500);
+            }, timeoutMs);
             this.eventsEmitter.on(NEW_EVENT, newEventListener);
         });
     }
 
-    public async subscribe(query: string, callback?: jest.Mock): Promise<void> {
+    public async subscribe(query: string, callback?: Mock): Promise<void> {
         await new Promise<void>((resolve, reject) => {
             this.client.subscribe(
                 { query },
